@@ -12,73 +12,34 @@ export default function Trust() {
               Built by Landlords, for Landlords
             </h2>
             <p className="text-xl text-indigo-200/65">
-              We know your pain because we've lived it. Here's why we built Stayll.
+              We understand the challenges of property management. Here's why we built Stayll.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-            <div>
+          <div className="max-w-4xl mx-auto mb-16">
+            {/* Our Story */}
+            <div className="text-center">
               <h3 className="h3 mb-6 text-gray-200">
                 Why We Built Stayll
               </h3>
-              <div className="space-y-4 text-indigo-200/80">
+              <div className="space-y-4 text-indigo-200/80 text-lg">
                 <p>
-                  As landlords ourselves, we were drowning in rental inquiries. Missing leads at 2 AM, 
-                  spending hours on unqualified applicants, and losing good tenants to faster responses.
+                  After talking to hundreds of landlords and property managers, we discovered a common problem: 
+                  they were all drowning in rental inquiries and missing opportunities due to slow response times.
                 </p>
                 <p>
-                  We tried everything - hiring assistants, using generic templates, even working 18-hour days. 
-                  Nothing worked. That's when we realized: what if AI could handle this for us?
+                  Whether it was missing leads at 2 AM, spending hours on unqualified applicants, or losing good 
+                  tenants to faster responses, the story was the same everywhere we looked.
                 </p>
                 <p>
-                  So we built Stayll. Not just another tool, but a solution that understands the rental business 
-                  because we built it from our own frustrations. Now we help landlords across the country 
-                  fill units faster while getting their lives back.
+                  We saw landlords trying everything - hiring assistants, using generic templates, even working 
+                  18-hour days. But nothing was working effectively.
                 </p>
-              </div>
-            </div>
-
-            <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
-              <h3 className="h3 mb-6 text-gray-200">
-                Meet the Team
-              </h3>
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    AJ
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-200">Atin Jain</h4>
-                    <p className="text-sm text-indigo-200/65">Founder & CEO</p>
-                    <p className="text-sm text-indigo-200/60 mt-1">
-                      Former landlord with 15+ properties. Built Stayll after losing $50K in missed rent due to slow responses.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    MK
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-200">Mike Chen</h4>
-                    <p className="text-sm text-indigo-200/65">CTO & Co-founder</p>
-                    <p className="text-sm text-indigo-200/60 mt-1">
-                      AI/ML engineer with 10+ years experience. Previously at Google and Airbnb. Owns 8 rental properties.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-red-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    SL
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-200">Sarah Lee</h4>
-                    <p className="text-sm text-indigo-200/65">Head of Customer Success</p>
-                    <p className="text-sm text-indigo-200/60 mt-1">
-                      Property manager for 12 years. Helps landlords get the most out of Stayll and provides 24/7 support.
-                    </p>
-                  </div>
-                </div>
+                <p>
+                  That's when we realized: what if AI could handle this for them? So we built Stayll - not just 
+                  another tool, but a solution that understands the rental business and helps landlords across 
+                  the country fill units faster while getting their lives back.
+                </p>
               </div>
             </div>
           </div>
