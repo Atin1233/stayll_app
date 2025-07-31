@@ -2,13 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { name, email, unitsManaged } = body;
+    const formData = await request.formData();
+    const email = formData.get('email') as string;
+    const company = formData.get('company') as string;
+    const role = formData.get('role') as string;
+    const leaseCount = formData.get('leaseCount') as string;
+    const file = formData.get('file') as File | null;
 
     // Basic validation
-    if (!name || !email || !unitsManaged) {
+    if (!email) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Email is required' },
         { status: 400 }
       );
     }
@@ -24,17 +28,29 @@ export async function POST(request: NextRequest) {
 
     // Create lead data
     const leadData = {
-      name,
       email,
-      unitsManaged,
+      company: company || 'Not provided',
+      role: role || 'Not provided',
+      leaseCount: leaseCount || 'Not provided',
+      hasFile: !!file,
+      fileName: file ? file.name : null,
       timestamp: new Date().toISOString(),
-      source: 'Website Waitlist',
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
-      userAgent: request.headers.get('user-agent') || 'unknown',
+      source: 'AI Lease Analyst Early Access',
     };
 
     // Store the lead in console (temporary storage)
-    console.log('🎉 New Stayll Lead:', JSON.stringify(leadData, null, 2));
+    console.log('🎉 New Stayll Lease Analyst Lead:', JSON.stringify(leadData, null, 2));
+
+    // Handle file upload if provided
+    if (file) {
+      console.log('📄 File uploaded:', {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      });
+      // In production, you'd want to store this in a cloud storage service
+      // For now, we'll just log the file details
+    }
 
     // 1. SEND NOTIFICATIONS
     // Send webhook notification (Slack, Discord, etc.)
@@ -47,7 +63,7 @@ export async function POST(request: NextRequest) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            text: `🎉 New Stayll Waitlist Signup!\n\n👤 Name: ${name}\n📧 Email: ${email}\n🏠 Units: ${unitsManaged}\n⏰ Time: ${new Date().toLocaleString()}\n🌐 Source: Website Waitlist`,
+            text: `🎉 New Stayll Lease Analyst Signup!\n\n📧 Email: ${email}\n🏢 Company: ${company || 'Not provided'}\n👤 Role: ${role || 'Not provided'}\n📋 Leases: ${leaseCount || 'Not provided'}\n📄 File: ${file ? 'Yes' : 'No'}\n⏰ Time: ${new Date().toLocaleString()}\n🌐 Source: AI Lease Analyst Early Access`,
             leadData,
           }),
         });
@@ -73,10 +89,11 @@ export async function POST(request: NextRequest) {
           body: JSON.stringify({
             api_key: convertKitApiKey,
             email: email,
-            first_name: name.split(' ')[0],
             fields: { 
-              units_managed: unitsManaged,
-              full_name: name,
+              company: company || '',
+              role: role || '',
+              lease_count: leaseCount || '',
+              has_file: !!file,
               signup_date: new Date().toISOString()
             }
           })
@@ -109,11 +126,12 @@ export async function POST(request: NextRequest) {
             email_address: email,
             status: 'subscribed',
             merge_fields: {
-              FNAME: name.split(' ')[0],
-              LNAME: name.split(' ').slice(1).join(' ') || '',
-              UNITS: unitsManaged
+              COMPANY: company || '',
+              ROLE: role || '',
+              LEASECOUNT: leaseCount || '',
+              HASFILE: file ? 'Yes' : 'No'
             },
-            tags: ['Website Waitlist', 'Stayll Beta']
+            tags: ['AI Lease Analyst', 'Early Access', 'Stayll Beta']
           })
         });
 
@@ -135,12 +153,14 @@ export async function POST(request: NextRequest) {
         await fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${ga4MeasurementId}&api_secret=${process.env.GA4_API_SECRET}`, {
           method: 'POST',
           body: JSON.stringify({
-            client_id: leadData.ip, // Simple client ID
+            client_id: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
             events: [{
-              name: 'lead_signup',
+              name: 'lease_analyst_signup',
               params: {
-                lead_source: 'website_waitlist',
-                units_managed: unitsManaged,
+                lead_source: 'ai_lease_analyst_early_access',
+                role: role || 'unknown',
+                lease_count: leaseCount || 'unknown',
+                has_file: !!file,
                 value: 1
               }
             }]
@@ -155,8 +175,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         success: true, 
-        message: 'Successfully joined the waitlist!',
-        leadId: Date.now().toString() // Simple lead ID
+        message: 'Successfully joined the early access list!',
+        leadId: Date.now().toString(),
+        hasFile: !!file
       },
       { status: 200 }
     );

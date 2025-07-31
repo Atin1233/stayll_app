@@ -5,160 +5,115 @@ import FeaturesImage from "@/public/images/features.png";
 
 export default function Features() {
   return (
-    <section id="features" className="relative">
-      <div
-        className="pointer-events-none absolute left-1/2 top-0 -z-10 -mt-20 -translate-x-1/2"
-        aria-hidden="true"
-      >
-        <Image
-          className="max-w-none"
-          src={BlurredShapeGray}
-          width={760}
-          height={668}
-          alt="Blurred shape"
-        />
-      </div>
-      <div
-        className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -mb-80 -translate-x-[120%] opacity-50"
-        aria-hidden="true"
-      >
-        <Image
-          className="max-w-none"
-          src={BlurredShape}
-          width={760}
-          height={668}
-          alt="Blurred shape"
-        />
-      </div>
+    <section id="problem-solution">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
-          {/* Section header */}
-          <div className="mx-auto max-w-3xl pb-4 text-center md:pb-12">
+        <div className="py-12 md:py-20">
+          {/* Problem Statement */}
+          <div className="mx-auto max-w-3xl text-center mb-16">
+            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-red-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-red-200/50">
+              <span className="inline-flex bg-linear-to-r from-red-500 to-red-200 bg-clip-text text-transparent">
+                The Problem
+              </span>
+            </div>
+            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-red-200),var(--color-gray-50),var(--color-red-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+              Managing leases is broken.
+            </h2>
+            <p className="text-lg text-red-200/65 mb-8">
+              Property managers, landlords, and investors are buried in contracts full of risks they don't have time to find.
+            </p>
+            
+            {/* Problem Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-red-400 text-lg">⚠️</span>
+                  </div>
+                  <h3 className="text-red-300 font-semibold">Missed escalation clauses</h3>
+                </div>
+                <p className="text-red-200/65">= lost revenue</p>
+              </div>
+              
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-red-400 text-lg">🏚️</span>
+                  </div>
+                  <h3 className="text-red-300 font-semibold">Tenant terminations</h3>
+                </div>
+                <p className="text-red-200/65">= unexpected vacancy</p>
+              </div>
+              
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-red-400 text-lg">⚖️</span>
+                  </div>
+                  <h3 className="text-red-300 font-semibold">Compliance gaps</h3>
+                </div>
+                <p className="text-red-200/65">= legal exposure</p>
+              </div>
+              
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-left">
+                <div className="flex items-center mb-3">
+                  <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-red-400 text-lg">📊</span>
+                  </div>
+                  <h3 className="text-red-300 font-semibold">No system to track it all</h3>
+                </div>
+                <p className="text-red-200/65">= chaos</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Solution Overview */}
+          <div className="mx-auto max-w-4xl text-center">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                Landlord Problems Solved
+                The Solution
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Stop losing leads. Start filling units faster.
+              Stayll is an AI-powered lease and tenant intelligence platform.
             </h2>
-            <p className="text-lg text-blue-200/65">
-              See how Stayll transforms your rental management from reactive to proactive.
+            <p className="text-lg text-blue-200/65 mb-8">
+              We instantly read and understand your lease docs to extract critical terms, flag hidden risks, and score tenant risk.
             </p>
-          </div>
-          <div className="flex justify-center pb-4 md:pb-12" data-aos="fade-up">
-            <Image
-              className="max-w-none"
-              src={FeaturesImage}
-              width={1104}
-              height={384}
-              alt="Stayll Demo"
-            />
-          </div>
-          {/* Pain Points vs Solutions */}
-          <div className="mx-auto grid max-w-sm gap-12 sm:max-w-none sm:grid-cols-2 md:gap-x-14 md:gap-y-16 lg:grid-cols-3">
-            {/* Pain Point 1 */}
-            <article className="border-l-4 border-red-500/50 pl-6">
-              <svg
-                className="mb-3 fill-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                I can't reply fast enough
-              </h3>
-              <p className="text-blue-200/65">
-                Leads expect instant responses. Every minute you wait, they're messaging other landlords.
-              </p>
-            </article>
-            {/* Solution 1 */}
-            <article className="border-l-4 border-green-500/50 pl-6">
-              <svg
-                className="mb-3 fill-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                AI replies instantly 24/7
-              </h3>
-              <p className="text-blue-200/65">
-                Stayll responds within seconds, even at 2 AM. Never lose a lead to slow response times.
-              </p>
-            </article>
-            {/* Pain Point 2 */}
-            <article className="border-l-4 border-red-500/50 pl-6">
-              <svg
-                className="mb-3 fill-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                I miss leads at night
-              </h3>
-              <p className="text-blue-200/65">
-                Most rental inquiries come after hours. By morning, they've already found another place.
-              </p>
-            </article>
-            {/* Solution 2 */}
-            <article className="border-l-4 border-green-500/50 pl-6">
-              <svg
-                className="mb-3 fill-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Never miss a lead
-              </h3>
-              <p className="text-blue-200/65">
-                AI works while you sleep. Every inquiry gets an instant, professional response.
-              </p>
-            </article>
-            {/* Pain Point 3 */}
-            <article className="border-l-4 border-red-500/50 pl-6">
-              <svg
-                className="mb-3 fill-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Too many unqualified renters
-              </h3>
-              <p className="text-blue-200/65">
-                Wasting time on prospects who can't afford rent or don't meet your criteria.
-              </p>
-            </article>
-            {/* Solution 3 */}
-            <article className="border-l-4 border-green-500/50 pl-6">
-              <svg
-                className="mb-3 fill-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Filters based on income and pets
-              </h3>
-              <p className="text-blue-200/65">
-                AI pre-qualifies leads based on your criteria. Only serious prospects get your attention.
-              </p>
-            </article>
+            
+            {/* Solution Features */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-blue-400 text-xl">📋</span>
+                </div>
+                <h3 className="text-blue-300 font-semibold mb-2">Extract Critical Terms</h3>
+                <p className="text-blue-200/65 text-sm">Rent, term, escalations, renewal</p>
+              </div>
+              
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-blue-400 text-xl">🚨</span>
+                </div>
+                <h3 className="text-blue-300 font-semibold mb-2">Flag Hidden Risks</h3>
+                <p className="text-blue-200/65 text-sm">Termination clauses, exclusivity, rights to purchase</p>
+              </div>
+              
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-blue-400 text-xl">📊</span>
+                </div>
+                <h3 className="text-blue-300 font-semibold mb-2">Score Tenant Risk</h3>
+                <p className="text-blue-200/65 text-sm">Based on credit, rent history, and market trends</p>
+              </div>
+              
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-blue-400 text-xl">📝</span>
+                </div>
+                <h3 className="text-blue-300 font-semibold mb-2">Plain English Summary</h3>
+                <p className="text-blue-200/65 text-sm">Everything in under 2 minutes</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

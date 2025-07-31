@@ -26,11 +26,9 @@ export default function Header() {
 
   const navigation = [
     { name: 'How It Works', href: 'how-it-works' },
-    { name: 'Features', href: 'features' },
-    { name: 'Pricing', href: 'pricing' },
-    { name: 'Testimonials', href: 'testimonials' },
+    { name: 'Problem & Solution', href: 'problem-solution' },
+    { name: 'Who It\'s For', href: 'who-its-for' },
     { name: 'FAQ', href: 'faq' },
-    { name: 'About', href: 'trust' },
   ];
 
   return (
@@ -42,16 +40,16 @@ export default function Header() {
         <div className={`relative flex items-center justify-between py-4 transition-all duration-300 ${
           isScrolled ? 'bg-gray-950/95 backdrop-blur-md border-b border-gray-800/50' : ''
         }`}>
-          
+
           {/* Left side - Logo */}
           <div className="flex items-center">
-            <Link 
-              href="#hero" 
+            <Link
+              href="#hero"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('hero');
               }}
-              className="text-2xl font-bold text-gray-200 hover:text-indigo-300 transition-colors"
+              className="text-2xl font-bold text-gray-200 hover:text-blue-300 transition-colors"
               aria-label="Stayll"
             >
               Stayll
@@ -85,9 +83,9 @@ export default function Header() {
                 e.preventDefault();
                 scrollToSection('cta');
               }}
-              className="relative inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="relative inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              Get Early Access
+              Join Early Access
               <div className="ml-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </a>
           </div>
@@ -138,9 +136,9 @@ export default function Header() {
                       e.preventDefault();
                       scrollToSection('cta');
                     }}
-                    className="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all duration-200"
+                    className="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-all duration-200"
                   >
-                    Get Early Access
+                    Join Early Access
                     <div className="ml-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                   </a>
                 </div>

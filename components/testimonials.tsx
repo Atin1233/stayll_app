@@ -11,17 +11,17 @@ import TestimonialImage06 from "@/public/images/testimonial-06.jpg";
 export default function Testimonials() {
   return (
     <section id="testimonials">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
-          {/* Section header */}
-          <div className="mx-auto max-w-3xl pb-12 text-center">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
+        {/* Section header */}
+        <div className="mx-auto max-w-3xl pb-12 text-center">
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Loved by landlords everywhere
-            </h2>
+          </h2>
             <p className="text-lg text-blue-200/65">
               See what our customers are saying about how Stayll transformed their rental business.
-            </p>
-          </div>
+          </p>
+        </div>
 
           {/* Testimonials */}
           <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3">
@@ -35,7 +35,7 @@ export default function Testimonials() {
                   height={48}
                   alt="Testimonial 01"
                 />
-                <div>
+        <div>
                   <div className="font-semibold text-gray-200">Sarah Johnson</div>
                   <div className="text-sm text-blue-200/65">Property Manager</div>
                 </div>
@@ -47,7 +47,7 @@ export default function Testimonials() {
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
+                </svg>
                 ))}
               </div>
             </div>
@@ -76,8 +76,8 @@ export default function Testimonials() {
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
-              </div>
             </div>
+          </div>
 
             {/* Testimonial 3 */}
             <div className="flex flex-col h-full p-6 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl" data-aos="fade-up" data-aos-delay={200}>
@@ -102,9 +102,9 @@ export default function Testimonials() {
                   <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
-                ))}
-              </div>
-            </div>
+            ))}
+          </div>
+        </div>
 
             {/* Testimonial 4 */}
             <div className="flex flex-col h-full p-6 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl" data-aos="fade-up" data-aos-delay={300}>
@@ -130,8 +130,8 @@ export default function Testimonials() {
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
-              </div>
-            </div>
+      </div>
+    </div>
 
             {/* Testimonial 5 */}
             <div className="flex flex-col h-full p-6 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl" data-aos="fade-up" data-aos-delay={400}>
@@ -143,7 +143,7 @@ export default function Testimonials() {
                   height={48}
                   alt="Testimonial 05"
                 />
-                <div>
+        <div>
                   <div className="font-semibold text-gray-200">Lisa Park</div>
                   <div className="text-sm text-blue-200/65">Landlord</div>
                 </div>
@@ -158,12 +158,12 @@ export default function Testimonials() {
                   </svg>
                 ))}
               </div>
-            </div>
+        </div>
 
             {/* Testimonial 6 */}
             <div className="flex flex-col h-full p-6 bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl" data-aos="fade-up" data-aos-delay={500}>
               <div className="flex items-center mb-4">
-                <Image
+          <Image
                   className="rounded-full mr-4"
                   src={TestimonialImage06}
                   width={48}

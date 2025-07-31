@@ -1,61 +1,75 @@
-import Image from "next/image";
-import BlurredShape from "@/public/images/blurred-shape.svg";
-import LeadForm from "@/components/lead-form";
+import LeadForm from "./lead-form";
 
 export default function Cta() {
   return (
-    <section id="cta" className="relative overflow-hidden">
-      <div
-        className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -mb-24 ml-20 -translate-x-1/2"
-        aria-hidden="true"
-      >
-        <Image
-          className="max-w-none"
-          src={BlurredShape}
-          width={760}
-          height={668}
-          alt="Blurred shape"
-        />
-      </div>
-      <div className="max-w6xl mx-auto px-4 sm:px-6">
-        <div className="bg-linear-to-r from-transparent via-gray-800/50 py-12 md:py-20">
-          <div className="mx-auto max-w-6xl">
-            <div className="grid gap-12 lg:grid-cols-2 lg:gap-8">
-              {/* Left side - CTA content */}
-              <div className="flex items-center">
-                <div className="text-center lg:text-left">
-                  <h2
-                    className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-8 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
-                    data-aos="fade-up"
-                  >
-                    Stop Losing Leads. Start Filling Units Faster.
-                  </h2>
-                  <p
-                    className="mb-8 text-lg text-blue-200/65"
-                    data-aos="fade-up"
-                    data-aos-delay={200}
-                  >
-                    Join landlords using AI to close more leases — with zero effort.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <div data-aos="fade-up" data-aos-delay={400}>
-                      <a
-                        className="btn group bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%]"
-                        href="#0"
-                      >
-                        Schedule Demo
-                      </a>
+    <section id="cta" className="relative">
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-gray-900/20 pointer-events-none" aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="py-12 md:py-20">
+          <div className="mx-auto max-w-4xl">
+            <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
+              {/* Left side - Content */}
+              <div className="text-center lg:text-left">
+                <h2
+                  className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-8 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
+                  data-aos="fade-up"
+                >
+                  Want to be one of the first?
+                </h2>
+                <p
+                  className="mb-8 text-lg text-blue-200/65"
+                  data-aos="fade-up"
+                  data-aos-delay={200}
+                >
+                  We're launching a private beta for early partners.
+                </p>
+                
+                <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-green-400 text-sm">✓</span>
                     </div>
+                    <span className="text-gray-200">Get free lease audits</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-green-400 text-sm">✓</span>
+                    </div>
+                    <span className="text-gray-200">Give feedback, shape the product</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-green-400 text-sm">✓</span>
+                    </div>
+                    <span className="text-gray-200">Lock in lifetime discounts</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <div data-aos="fade-up" data-aos-delay={600}>
+                    <a
+                      className="btn group bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                      href="#0"
+                    >
+                      <span className="relative inline-flex items-center">
+                        Get your first lease audit free
+                        <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
+                          -&gt;
+                        </span>
+                      </span>
+                    </a>
                   </div>
                 </div>
               </div>
-              
+
               {/* Right side - Lead form */}
               <div className="flex items-center justify-center">
                 <div className="w-full max-w-md" data-aos="fade-up" data-aos-delay={400}>
                   <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                     <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                      Get Early Access
+                      Join the Early Access List
                     </h3>
                     <LeadForm />
                   </div>

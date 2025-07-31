@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Stayll - Never Miss a Renter Again. Let AI Reply for You.",
-  description: "Stayll auto-replies to Zillow, Apartments.com, and Facebook leads instantly — so you close more tenants without lifting a finger.",
+  title: "Stayll - The AI Lease Analyst That Never Sleeps",
+  description: "Upload any lease. Stayll reads it, flags the risks, and gives you a report your team can actually use.",
 };
 
 import PageIllustration from "@/components/page-illustration";
@@ -8,9 +8,7 @@ import Hero from "@/components/hero-home";
 import Workflows from "@/components/workflows";
 import Features from "@/components/features";
 import Pricing from "@/components/pricing";
-import Testimonials from "@/components/testimonials";
 import FAQ from "@/components/faq";
-import Trust from "@/components/trust";
 import Cta from "@/components/cta";
 
 export default function Home() {
@@ -21,9 +19,7 @@ export default function Home() {
       <Workflows />
       <Features />
       <Pricing />
-      <Testimonials />
       <FAQ />
-      <Trust />
       <Cta />
     </>
   );
