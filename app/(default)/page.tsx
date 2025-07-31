@@ -9,6 +9,8 @@ import Workflows from "@/components/workflows";
 import Features from "@/components/features";
 import Pricing from "@/components/pricing";
 import Testimonials from "@/components/testimonials";
+import FAQ from "@/components/faq";
+import Trust from "@/components/trust";
 import Cta from "@/components/cta";
 
 export default function Home() {
@@ -20,6 +22,8 @@ export default function Home() {
       <Features />
       <Pricing />
       <Testimonials />
+      <FAQ />
+      <Trust />
       <Cta />
     </>
   );

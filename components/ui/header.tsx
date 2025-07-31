@@ -29,6 +29,8 @@ export default function Header() {
     { name: 'Features', href: 'features' },
     { name: 'Pricing', href: 'pricing' },
     { name: 'Testimonials', href: 'testimonials' },
+    { name: 'FAQ', href: 'faq' },
+    { name: 'About', href: 'trust' },
   ];
 
   return (
