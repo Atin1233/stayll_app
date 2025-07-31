@@ -24,7 +24,7 @@ export default function HeroHome() {
                 <div data-aos="fade-up" data-aos-delay={400}>
                   <a
                     className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:w-auto"
-                    href="#0"
+                    href="#cta"
                   >
                     <span className="relative inline-flex items-center">
                       Get Early Access
