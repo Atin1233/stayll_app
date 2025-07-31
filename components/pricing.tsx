@@ -3,11 +3,23 @@ import BlurredShape from "@/public/images/blurred-shape.svg";
 
 export default function Pricing() {
   return (
-    <section id="who-its-for">
+    <section id="who-its-for" className="relative overflow-hidden">
+      <div
+        className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -mb-24 ml-20 -translate-x-1/2"
+        aria-hidden="true"
+      >
+        <Image
+          className="max-w-none"
+          src={BlurredShape}
+          width={760}
+          height={668}
+          alt="Blurred shape"
+        />
+      </div>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
-          {/* Who It's For */}
-          <div className="mx-auto max-w-3xl text-center mb-16">
+          {/* Section header */}
+          <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
               <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
                 Who It's For
@@ -21,59 +33,125 @@ export default function Pricing() {
             </p>
           </div>
 
-          {/* Target Audience Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 text-center">
-              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-400 text-2xl">🏢</span>
+          {/* Target Audience */}
+          <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
+                <div className="mb-8">
+                  <div className="mb-4">
+                    <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
+                      <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                        Property Managers
+                      </span>
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-2xl font-bold text-gray-200">50–5,000 units</span>
+                  </div>
+                  <p className="text-blue-200/65">Manage complex lease portfolios with AI-powered insights and risk assessment.</p>
+                </div>
+                <ul className="mb-8 space-y-3">
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">AI lease analysis</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Risk flagging</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Tenant risk scoring</span>
+                  </li>
+                </ul>
               </div>
-              <h3 className="text-gray-200 font-semibold mb-2">Property Managers</h3>
-              <p className="text-blue-200/65 text-sm">50–5,000 units</p>
             </div>
-            
-            <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 text-center">
-              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-400 text-2xl">🏘️</span>
+
+            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
+                <div className="mb-8">
+                  <div className="mb-4">
+                    <span className="btn-sm relative rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-blue-500/.15),--theme(--color-blue-500/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-blue-500/30">
+                      <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                        Legal Teams
+                      </span>
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-2xl font-bold text-gray-200">Due diligence & compliance</span>
+                  </div>
+                  <p className="text-blue-200/65">Streamline lease review processes with AI-powered legal analysis and compliance checking.</p>
+                </div>
+                <ul className="mb-8 space-y-3">
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Compliance checking</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Legal risk assessment</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Document analysis</span>
+                  </li>
+                </ul>
               </div>
-              <h3 className="text-gray-200 font-semibold mb-2">Multifamily Owners & Syndicators</h3>
-              <p className="text-blue-200/65 text-sm">Portfolio analysis</p>
             </div>
-            
-            <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 text-center">
-              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-400 text-2xl">🏭</span>
+
+            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
+                <div className="mb-8">
+                  <div className="mb-4">
+                    <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
+                      <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                        Investment Teams
+                      </span>
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-2xl font-bold text-gray-200">Portfolio optimization</span>
+                  </div>
+                  <p className="text-blue-200/65">Make data-driven investment decisions with comprehensive lease intelligence and risk analysis.</p>
+                </div>
+                <ul className="mb-8 space-y-3">
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Portfolio analysis</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Risk assessment</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Investment insights</span>
+                  </li>
+                </ul>
               </div>
-              <h3 className="text-gray-200 font-semibold mb-2">Commercial Landlords</h3>
-              <p className="text-blue-200/65 text-sm">Complex lease terms</p>
-            </div>
-            
-            <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 text-center">
-              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-400 text-2xl">⚖️</span>
-              </div>
-              <h3 className="text-gray-200 font-semibold mb-2">Real Estate Legal Teams</h3>
-              <p className="text-blue-200/65 text-sm">Due diligence & compliance</p>
-            </div>
-            
-            <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 text-center">
-              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-400 text-2xl">🔍</span>
-              </div>
-              <h3 className="text-gray-200 font-semibold mb-2">Due Diligence Analysts</h3>
-              <p className="text-blue-200/65 text-sm">Risk assessment</p>
-            </div>
-            
-            <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6 text-center">
-              <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-blue-400 text-2xl">📈</span>
-              </div>
-              <h3 className="text-gray-200 font-semibold mb-2">Investment Teams</h3>
-              <p className="text-blue-200/65 text-sm">Portfolio optimization</p>
             </div>
           </div>
 
           {/* Pricing Preview */}
-          <div className="mx-auto max-w-4xl text-center">
+          <div className="mx-auto max-w-4xl text-center mt-16">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-green-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-green-200/50">
               <span className="inline-flex bg-linear-to-r from-green-500 to-green-200 bg-clip-text text-transparent">
                 Pricing Preview
@@ -85,50 +163,6 @@ export default function Pricing() {
             <p className="text-lg text-green-200/65 mb-8">
               → Free during beta.
             </p>
-            
-            {/* Pricing Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-              <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6">
-                <h3 className="text-gray-200 font-semibold mb-2">Starter</h3>
-                <p className="text-green-400 font-bold text-2xl mb-2">$499/mo</p>
-                <p className="text-blue-200/65 text-sm mb-4">50 leases/month, basic reports</p>
-                <ul className="text-blue-200/65 text-sm space-y-2">
-                  <li>• AI lease analysis</li>
-                  <li>• Risk flagging</li>
-                  <li>• Basic reports</li>
-                  <li>• Email support</li>
-                </ul>
-              </div>
-              
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold">Most Popular</span>
-                </div>
-                <h3 className="text-gray-200 font-semibold mb-2">Pro</h3>
-                <p className="text-green-400 font-bold text-2xl mb-2">$2,500/mo</p>
-                <p className="text-blue-200/65 text-sm mb-4">500 leases + team dashboard</p>
-                <ul className="text-blue-200/65 text-sm space-y-2">
-                  <li>• Everything in Starter</li>
-                  <li>• Team dashboard</li>
-                  <li>• Advanced analytics</li>
-                  <li>• Priority support</li>
-                  <li>• API access</li>
-                </ul>
-              </div>
-              
-              <div className="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-6">
-                <h3 className="text-gray-200 font-semibold mb-2">Enterprise</h3>
-                <p className="text-green-400 font-bold text-2xl mb-2">$10,000+/mo</p>
-                <p className="text-blue-200/65 text-sm mb-4">Custom tools + API access</p>
-                <ul className="text-blue-200/65 text-sm space-y-2">
-                  <li>• Everything in Pro</li>
-                  <li>• Custom integrations</li>
-                  <li>• Dedicated support</li>
-                  <li>• White-label options</li>
-                  <li>• Custom training</li>
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
       </div>
