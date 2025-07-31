@@ -54,71 +54,35 @@ export default function FAQ() {
 
   return (
     <section id="faq" className="relative">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 to-gray-900/20 pointer-events-none" aria-hidden="true" />
-
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="py-12 md:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
           {/* Section header */}
-          <div className="mx-auto max-w-3xl text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10 mb-4">
-              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+          <div className="mx-auto max-w-3xl pb-4 text-center md:pb-12">
+            <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-blue-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-blue-200/50">
+              <span className="inline-flex bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
+                FAQ
+              </span>
             </div>
-            <h2 className="h2 mb-4 text-gray-200">
+            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-blue-200/65">
+            <p className="text-lg text-blue-200/65">
               Everything you need to know about Stayll's AI-powered lease analysis
             </p>
           </div>
 
           {/* FAQ items */}
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-4">
-              {faqs.map((faq, index) => (
-                <div
-                  key={index}
-                  className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-gray-800/70"
-                >
-                  <button
-                    className="w-full px-6 py-5 text-left focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded-2xl"
-                    onClick={() => toggleItem(index)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-200 pr-8">
-                        {faq.question}
-                      </h3>
-                      <div className="flex-shrink-0 ml-4">
-                        <svg
-                          className={`w-5 h-5 text-blue-400 transition-transform duration-300 ${
-                            openItem === index ? 'rotate-180' : ''
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </button>
-
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      openItem === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    <div className="px-6 pb-5">
-                      <p className="text-blue-200/80 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-2 lg:gap-x-14 md:gap-y-16">
+            {faqs.map((faq, index) => (
+              <article key={index} className="border-l-4 border-blue-500/50 pl-6">
+                <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-gray-200">
+                  {faq.question}
+                </h3>
+                <p className="text-blue-200/65">
+                  {faq.answer}
+                </p>
+              </article>
+            ))}
           </div>
 
           {/* CTA section */}
