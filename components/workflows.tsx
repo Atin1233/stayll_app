@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Spotlight from "./spotlight";
-import WorflowImg01 from "@/public/images/workflow-01.jpg";
-import WorflowImg02 from "@/public/images/workflow-02.jpg";
-import WorflowImg03 from "@/public/images/workflow-03.jpg";
+import WorflowImg01 from "@/public/images/workflow-01.png";
+import WorflowImg02 from "@/public/images/workflow-02.png";
+import WorflowImg03 from "@/public/images/workflow-03.png";
 
 export default function Workflows() {
   return (
