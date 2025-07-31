@@ -53,15 +53,15 @@ export default function FAQ() {
         <div className="py-12 md:py-20">
           {/* Section header */}
           <div className="mx-auto max-w-3xl text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500/10 mb-4">
-              <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10 mb-4">
+              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <h2 className="h2 mb-4 text-gray-200">
               Frequently Asked Questions
             </h2>
-            <p className="text-xl text-indigo-200/65">
+            <p className="text-xl text-blue-200/65">
               Everything you need to know about Stayll's AI-powered rental management
             </p>
           </div>
@@ -75,7 +75,7 @@ export default function FAQ() {
                   className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-gray-800/70"
                 >
                   <button
-                    className="w-full px-6 py-5 text-left focus:outline-none focus:ring-2 focus:ring-indigo-500/20 rounded-2xl"
+                    className="w-full px-6 py-5 text-left focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded-2xl"
                     onClick={() => toggleItem(index)}
                   >
                     <div className="flex items-center justify-between">
@@ -84,7 +84,7 @@ export default function FAQ() {
                       </h3>
                       <div className="flex-shrink-0 ml-4">
                         <svg
-                          className={`w-5 h-5 text-indigo-400 transition-transform duration-300 ${
+                          className={`w-5 h-5 text-blue-400 transition-transform duration-300 ${
                             openItem === index ? 'rotate-180' : ''
                           }`}
                           fill="none"
@@ -103,7 +103,7 @@ export default function FAQ() {
                     }`}
                   >
                     <div className="px-6 pb-5">
-                      <p className="text-indigo-200/80 leading-relaxed">
+                      <p className="text-blue-200/80 leading-relaxed">
                         {faq.answer}
                       </p>
                     </div>
@@ -115,13 +115,13 @@ export default function FAQ() {
 
           {/* CTA section */}
           <div className="text-center mt-12 md:mt-16">
-            <p className="text-indigo-200/65 mb-6">
+            <p className="text-blue-200/65 mb-6">
               Still have questions? We're here to help!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#cta"
-                className="btn bg-indigo-600 hover:bg-indigo-500 text-white"
+                className="btn bg-blue-600 hover:bg-blue-500 text-white"
               >
                 Get Started Today
               </a>

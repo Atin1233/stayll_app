@@ -12,15 +12,15 @@ export default function Trust() {
         <div className="py-12 md:py-20">
           {/* Section header */}
           <div className="mx-auto max-w-3xl text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500/10 mb-4">
-              <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/10 mb-4">
+              <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
             <h2 className="h2 mb-4 text-gray-200">
               Built by Landlords, for Landlords
             </h2>
-            <p className="text-xl text-indigo-200/65">
+            <p className="text-xl text-blue-200/65">
               We understand the challenges of property management. Here's why we built Stayll.
             </p>
           </div>
@@ -29,8 +29,8 @@ export default function Trust() {
           <div className="max-w-5xl mx-auto">
             <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-3xl p-8 md:p-12">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 mb-6">
-                  <svg className="w-10 h-10 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/20 mb-6">
+                  <svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
@@ -43,14 +43,14 @@ export default function Trust() {
                 {/* Left column */}
                 <div className="space-y-6">
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-indigo-500/20 to-blue-500/20 rounded-xl flex items-center justify-center">
-                      <svg className="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-xl flex items-center justify-center">
+                      <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                       </svg>
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-200 mb-2">The Problem We Discovered</h4>
-                      <p className="text-indigo-200/80 leading-relaxed">
+                      <p className="text-blue-200/80 leading-relaxed">
                         After talking to hundreds of landlords and property managers, we discovered a common problem: 
                         they were all drowning in rental inquiries and missing opportunities due to slow response times.
                       </p>
@@ -65,7 +65,7 @@ export default function Trust() {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-200 mb-2">The Pain Points</h4>
-                      <p className="text-indigo-200/80 leading-relaxed">
+                      <p className="text-blue-200/80 leading-relaxed">
                         Whether it was missing leads at 2 AM, spending hours on unqualified applicants, or losing good 
                         tenants to faster responses, the story was the same everywhere we looked.
                       </p>
@@ -83,7 +83,7 @@ export default function Trust() {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-200 mb-2">Failed Solutions</h4>
-                      <p className="text-indigo-200/80 leading-relaxed">
+                      <p className="text-blue-200/80 leading-relaxed">
                         We saw landlords trying everything - hiring assistants, using generic templates, even working 
                         18-hour days. But nothing was working effectively.
                       </p>
@@ -98,7 +98,7 @@ export default function Trust() {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-200 mb-2">The AI Solution</h4>
-                      <p className="text-indigo-200/80 leading-relaxed">
+                      <p className="text-blue-200/80 leading-relaxed">
                         That's when we realized: what if AI could handle this for them? So we built Stayll - not just 
                         another tool, but a solution that understands the rental business and helps landlords across 
                         the country fill units faster while getting their lives back.
@@ -110,12 +110,12 @@ export default function Trust() {
               
               {/* Call to action */}
               <div className="text-center mt-10 pt-8 border-t border-gray-700/50">
-                <p className="text-indigo-200/65 mb-6">
+                <p className="text-blue-200/65 mb-6">
                   Ready to transform your rental management?
                 </p>
                 <a
                   href="#cta"
-                  className="inline-flex items-center px-8 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                  className="inline-flex items-center px-8 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                 >
                   Get Started Today
                   <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

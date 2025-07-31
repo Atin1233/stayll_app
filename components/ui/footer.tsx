@@ -23,26 +23,26 @@ export default function Footer() {
             {/* Company Info */}
             <div className="text-center md:text-left">
               <div className="text-xl font-bold text-gray-200 mb-2">Stayll</div>
-              <p className="text-sm text-indigo-200/65 mb-3">
+              <p className="text-sm text-blue-200/65 mb-3">
                 © 2024 Stayll, Inc. All rights reserved.
               </p>
-              <p className="text-xs text-indigo-200/50 max-w-md">
+              <p className="text-xs text-blue-200/50 max-w-md">
                 AI-powered rental management platform that helps landlords automate lead responses and fill units faster.
               </p>
             </div>
 
             {/* Legal Links */}
             <div className="flex gap-4 text-sm">
-              <a
-                className="text-indigo-200/65 transition hover:text-indigo-500"
-                href="/privacy"
-              >
-                Privacy Policy
-              </a>
-              <a
-                className="text-indigo-200/65 transition hover:text-indigo-500"
-                href="/terms"
-              >
+                              <a
+                  className="text-blue-200/65 transition hover:text-blue-500"
+                  href="/privacy"
+                >
+                  Privacy Policy
+                </a>
+                <a
+                  className="text-blue-200/65 transition hover:text-blue-500"
+                  href="/terms"
+                >
                 Terms of Service
               </a>
             </div>

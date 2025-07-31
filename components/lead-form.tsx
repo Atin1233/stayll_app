@@ -43,7 +43,7 @@ export default function LeadForm() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
         <h3 className="text-lg font-semibold text-green-300 mb-2">You're on the list!</h3>
-        <p className="text-indigo-200/65">We'll notify you when Stayll launches. Thanks for your interest!</p>
+        <p className="text-blue-200/65">We'll notify you when Stayll launches. Thanks for your interest!</p>
       </div>
     );
   }
@@ -61,7 +61,7 @@ export default function LeadForm() {
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="Enter your full name"
         />
       </div>
@@ -77,7 +77,7 @@ export default function LeadForm() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="Enter your email address"
         />
       </div>
@@ -92,7 +92,7 @@ export default function LeadForm() {
           value={formData.unitsManaged}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700/50 rounded-lg text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">Select number of units</option>
           <option value="1-5">1-5 units</option>
@@ -106,7 +106,7 @@ export default function LeadForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full btn group bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full btn group bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <span className="relative inline-flex items-center">
           {isSubmitting ? 'Joining...' : 'Join Beta Waitlist'}
@@ -118,7 +118,7 @@ export default function LeadForm() {
         </span>
       </button>
       
-      <p className="text-xs text-indigo-200/50 text-center">
+      <p className="text-xs text-blue-200/50 text-center">
         We'll never spam you. Unsubscribe at any time.
       </p>
     </form>

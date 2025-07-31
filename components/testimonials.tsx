@@ -15,10 +15,10 @@ export default function Testimonials() {
         <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
           {/* Section header */}
           <div className="mx-auto max-w-3xl pb-12 text-center">
-            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+            <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Loved by landlords everywhere
             </h2>
-            <p className="text-lg text-indigo-200/65">
+            <p className="text-lg text-blue-200/65">
               See what our customers are saying about how Stayll transformed their rental business.
             </p>
           </div>
@@ -37,10 +37,10 @@ export default function Testimonials() {
                 />
                 <div>
                   <div className="font-semibold text-gray-200">Sarah Johnson</div>
-                  <div className="text-sm text-indigo-200/65">Property Manager</div>
+                  <div className="text-sm text-blue-200/65">Property Manager</div>
                 </div>
               </div>
-              <blockquote className="text-indigo-200/65 mb-4">
+              <blockquote className="text-blue-200/65 mb-4">
                 "Stayll has completely transformed how I handle rental inquiries. I went from spending hours responding to leads to having AI handle everything automatically. My occupancy rate increased by 40% in the first month!"
               </blockquote>
               <div className="flex text-yellow-400 mt-auto">
@@ -64,10 +64,10 @@ export default function Testimonials() {
                 />
                 <div>
                   <div className="font-semibold text-gray-200">Mike Chen</div>
-                  <div className="text-sm text-indigo-200/65">Real Estate Investor</div>
+                  <div className="text-sm text-blue-200/65">Real Estate Investor</div>
                 </div>
               </div>
-              <blockquote className="text-indigo-200/65 mb-4">
+              <blockquote className="text-blue-200/65 mb-4">
                 "The AI lead qualification is incredible. I used to waste so much time on unqualified prospects. Now Stayll filters them out automatically and only sends me serious renters. Game changer!"
               </blockquote>
               <div className="flex text-yellow-400 mt-auto">
@@ -91,10 +91,10 @@ export default function Testimonials() {
                 />
                 <div>
                   <div className="font-semibold text-gray-200">Emily Rodriguez</div>
-                  <div className="text-sm text-indigo-200/65">Landlord</div>
+                  <div className="text-sm text-blue-200/65">Landlord</div>
                 </div>
               </div>
-              <blockquote className="text-indigo-200/65 mb-4">
+              <blockquote className="text-blue-200/65 mb-4">
                 "I was losing leads at night because I couldn't respond fast enough. Stayll replies instantly 24/7 and books tours automatically. My units fill up so much faster now!"
               </blockquote>
               <div className="flex text-yellow-400 mt-auto">
@@ -118,10 +118,10 @@ export default function Testimonials() {
                 />
                 <div>
                   <div className="font-semibold text-gray-200">David Thompson</div>
-                  <div className="text-sm text-indigo-200/65">Property Manager</div>
+                  <div className="text-sm text-blue-200/65">Property Manager</div>
                 </div>
               </div>
-              <blockquote className="text-indigo-200/65 mb-4">
+              <blockquote className="text-blue-200/65 mb-4">
                 "The integration with Zillow and Apartments.com is seamless. I set it up once and now all my leads are handled automatically. The ROI was immediate - I'm saving 10+ hours per week!"
               </blockquote>
               <div className="flex text-yellow-400 mt-auto">
@@ -145,10 +145,10 @@ export default function Testimonials() {
                 />
                 <div>
                   <div className="font-semibold text-gray-200">Lisa Park</div>
-                  <div className="text-sm text-indigo-200/65">Landlord</div>
+                  <div className="text-sm text-blue-200/65">Landlord</div>
                 </div>
               </div>
-              <blockquote className="text-indigo-200/65 mb-4">
+              <blockquote className="text-blue-200/65 mb-4">
                 "The pet policy filtering is brilliant! I used to get so many inquiries from people with pets when my building doesn't allow them. Now Stayll handles that conversation automatically."
               </blockquote>
               <div className="flex text-yellow-400 mt-auto">
@@ -172,10 +172,10 @@ export default function Testimonials() {
                 />
                 <div>
                   <div className="font-semibold text-gray-200">Robert Kim</div>
-                  <div className="text-sm text-indigo-200/65">Real Estate Investor</div>
+                  <div className="text-sm text-blue-200/65">Real Estate Investor</div>
                 </div>
               </div>
-              <blockquote className="text-indigo-200/65 mb-4">
+              <blockquote className="text-blue-200/65 mb-4">
                 "I manage 50+ units and was drowning in inquiries. Stayll's automation has been a lifesaver. The personalized responses are so good that tenants think they're talking to a real person!"
               </blockquote>
               <div className="flex text-yellow-400 mt-auto">
