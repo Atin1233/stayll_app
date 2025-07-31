@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+
 export default function Trust() {
   return (
     <section id="trust" className="relative">
