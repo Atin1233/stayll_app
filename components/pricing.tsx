@@ -40,11 +40,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <span className="btn-sm relative rounded-full bg-green-500/20 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-green-500/.15),--theme(--color-green-500/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-green-500/30">
-                      <span className="bg-linear-to-r from-green-500 to-green-200 bg-clip-text text-transparent">
-                        Free Beta
-                      </span>
-                    </span>
+                    <h3 className="text-lg font-semibold text-gray-200">Free Beta</h3>
                   </div>
                   <div className="mb-4">
                     <span className="text-3xl font-bold text-gray-200">$0</span>
@@ -74,7 +70,7 @@ export default function Pricing() {
                 </ul>
                 <a
                   href="#cta"
-                  className="btn group w-full bg-linear-to-t from-green-600 to-green-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
                 >
                   <span className="relative inline-flex items-center">
                     Start Free
@@ -91,11 +87,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <span className="btn-sm relative rounded-full bg-blue-500/20 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-blue-500/.15),--theme(--color-blue-500/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-blue-500/30">
-                      <span className="bg-linear-to-r from-blue-500 to-blue-200 bg-clip-text text-transparent">
-                        Starter
-                      </span>
-                    </span>
+                    <h3 className="text-lg font-semibold text-gray-200">Starter</h3>
                   </div>
                   <div className="mb-4">
                     <span className="text-3xl font-bold text-gray-200">$99</span>
@@ -142,11 +134,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <span className="btn-sm relative rounded-full bg-purple-500/20 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-purple-500/.15),--theme(--color-purple-500/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-purple-500/30">
-                      <span className="bg-linear-to-r from-purple-500 to-purple-200 bg-clip-text text-transparent">
-                        Pro
-                      </span>
-                    </span>
+                    <h3 className="text-lg font-semibold text-gray-200">Pro</h3>
                   </div>
                   <div className="mb-4">
                     <span className="text-3xl font-bold text-gray-200">$299</span>
@@ -176,7 +164,7 @@ export default function Pricing() {
                 </ul>
                 <a
                   href="#cta"
-                  className="btn group w-full bg-linear-to-t from-purple-600 to-purple-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
                 >
                   <span className="relative inline-flex items-center">
                     Get Started
@@ -193,11 +181,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <span className="btn-sm relative rounded-full bg-orange-500/20 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-orange-500/.15),--theme(--color-orange-500/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-orange-500/30">
-                      <span className="bg-linear-to-r from-orange-500 to-orange-200 bg-clip-text text-transparent">
-                        Enterprise
-                      </span>
-                    </span>
+                    <h3 className="text-lg font-semibold text-gray-200">Enterprise</h3>
                   </div>
                   <div className="mb-4">
                     <span className="text-2xl font-bold text-gray-200">Custom</span>
@@ -227,7 +211,7 @@ export default function Pricing() {
                 </ul>
                 <a
                   href="#cta"
-                  className="btn group w-full bg-linear-to-t from-orange-600 to-orange-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
                 >
                   <span className="relative inline-flex items-center">
                     Contact Sales

@@ -27,7 +27,7 @@ export default function Header() {
   const navigation = [
     { name: 'How It Works', href: 'how-it-works' },
     { name: 'Problem & Solution', href: 'problem-solution' },
-    { name: 'Who It\'s For', href: 'who-its-for' },
+    { name: 'Pricing', href: 'pricing' },
     { name: 'FAQ', href: 'faq' },
   ];
 
