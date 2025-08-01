@@ -65,7 +65,12 @@ export default function SettingsPage() {
           return
         }
         
-        const { error } = await supabase.auth.admin.deleteUser(user?.id!)
+        if (!user?.id) {
+          setError('User not found')
+          return
+        }
+
+        const { error } = await supabase.auth.admin.deleteUser(user.id)
         if (error) throw error
         // Redirect to login
         window.location.href = '/auth/login'
@@ -94,12 +99,12 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700">Email</label>
-                <p className="mt-1 text-sm text-gray-900">{user?.email}</p>
+                <p className="mt-1 text-sm text-gray-900">{user?.email || 'Not available'}</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Account Created</label>
                 <p className="mt-1 text-sm text-gray-900">
-                  {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+                  {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'Not available'}
                 </p>
               </div>
             </div>

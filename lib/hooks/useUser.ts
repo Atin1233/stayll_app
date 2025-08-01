@@ -16,6 +16,7 @@ export function useUser() {
 
     // Get initial session
     const getSession = async () => {
+      if (!supabase) return
       const { data: { session } } = await supabase.auth.getSession()
       setUser(session?.user ?? null)
       setLoading(false)

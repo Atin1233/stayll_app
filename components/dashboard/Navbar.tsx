@@ -21,7 +21,7 @@ export default function Navbar() {
               <UserCircleIcon className="h-8 w-8 text-gray-400" aria-hidden="true" />
               <span className="hidden lg:flex lg:items-center">
                 <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                  {user?.email}
+                  {user?.email || 'User'}
                 </span>
               </span>
             </Menu.Button>
