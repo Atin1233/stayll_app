@@ -24,10 +24,10 @@ export default function HeroHome() {
                 <div data-aos="fade-up" data-aos-delay={400}>
                   <a
                     className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:w-auto"
-                    href="#cta"
+                    href="/auth/login"
                   >
                     <span className="relative inline-flex items-center">
-                      → Join Early Access
+                      Get Started
                       <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                         -&gt;
                       </span>
@@ -39,7 +39,7 @@ export default function HeroHome() {
                     className="btn relative bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%] sm:w-auto"
                     href="#cta"
                   >
-                    Get your first lease audit free.
+                    Join Early Access
                   </a>
                 </div>
               </div>

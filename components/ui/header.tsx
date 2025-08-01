@@ -75,8 +75,17 @@ export default function Header() {
             </div>
           </nav>
 
-          {/* Right side - CTA button with unique styling */}
-          <div className="flex items-center">
+          {/* Right side - Login and CTA buttons */}
+          <div className="flex items-center space-x-3">
+            {/* Login Button */}
+            <Link
+              href="/auth/login"
+              className="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-full transition-all duration-200"
+            >
+              Sign In
+            </Link>
+            
+            {/* CTA button with unique styling */}
             <a
               href="#cta"
               onClick={(e) => {
@@ -129,7 +138,13 @@ export default function Header() {
                     {item.name}
                   </a>
                 ))}
-                <div className="pt-2 border-t border-gray-700/50">
+                <div className="pt-2 border-t border-gray-700/50 space-y-2">
+                  <Link
+                    href="/auth/login"
+                    className="flex items-center justify-center px-6 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-xl transition-all duration-200"
+                  >
+                    Sign In
+                  </Link>
                   <a
                     href="#cta"
                     onClick={(e) => {
