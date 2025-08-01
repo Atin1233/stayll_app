@@ -150,19 +150,106 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Pricing Preview */}
-          <div className="mx-auto max-w-4xl text-center mt-16">
+          {/* Pricing Table */}
+          <div className="mx-auto max-w-6xl text-center mt-16">
             <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-green-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-green-200/50">
               <span className="inline-flex bg-linear-to-r from-green-500 to-green-200 bg-clip-text text-transparent">
-                Pricing Preview
+                Pricing
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-green-200),var(--color-gray-50),var(--color-green-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Simple, transparent pricing
             </h2>
             <p className="text-lg text-green-200/65 mb-8">
-              → Free during beta.
+              Start free during beta, scale as you grow
             </p>
+
+            {/* Pricing Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full max-w-4xl mx-auto bg-gray-900/50 rounded-lg border border-gray-700/50">
+                <thead>
+                  <tr className="border-b border-gray-700/50">
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Plan</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Who It's For</th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-300">Monthly</th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-gray-300">Annual (2 months free)</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Features</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-700/50">
+                  <tr className="hover:bg-gray-800/30">
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Free Beta
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Landlords testing the product</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-2xl font-bold text-green-400">$0</span>
+                    </td>
+                    <td className="px-6 py-4 text-center text-sm text-gray-400">—</td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Up to <strong>5 leases/month</strong>, email support, basic AI extraction</td>
+                  </tr>
+                  <tr className="hover:bg-gray-800/30">
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        Starter
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Solopreneurs, small PMs</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-2xl font-bold text-blue-400">$99</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-lg font-semibold text-blue-400">$990/year</span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Up to <strong>50 leases/month</strong>, AI insights, manual lease uploads</td>
+                  </tr>
+                  <tr className="hover:bg-gray-800/30">
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        Pro
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Growing teams, small agencies</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-2xl font-bold text-purple-400">$299</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-lg font-semibold text-purple-400">$2,990/year</span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Up to <strong>500 leases/month</strong>, team access, custom tags, API read access</td>
+                  </tr>
+                  <tr className="hover:bg-gray-800/30">
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                        Enterprise
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300">Large PMs or real estate firms</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-lg font-semibold text-orange-400">Starts at $999</span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="text-sm text-gray-400">Custom pricing</span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-300"><strong>Unlimited leases</strong>, advanced integrations, priority support, onboarding</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div className="mt-8 text-center">
+              <p className="text-sm text-gray-400 mb-4">
+                All plans include AI-powered lease analysis, risk flagging, and tenant insights
+              </p>
+              <a
+                href="#cta"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Start Free Beta
+              </a>
+            </div>
           </div>
         </div>
       </div>
