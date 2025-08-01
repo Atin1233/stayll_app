@@ -1,5 +1,3 @@
-import pdf from 'pdf-parse';
-
 export interface LeaseData {
   tenant_name?: string;
   property_address?: string;
@@ -52,6 +50,9 @@ export async function analyzeLeasePDF(file: File): Promise<AnalysisResult> {
     // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
+    
+    // Dynamically import pdf-parse to avoid build-time issues
+    const pdf = (await import('pdf-parse')).default;
     
     // Extract text from PDF
     const pdfData = await pdf(buffer);
