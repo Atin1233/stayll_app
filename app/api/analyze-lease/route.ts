@@ -42,7 +42,15 @@ export async function POST(request: NextRequest) {
 
     // Upload file to Supabase Storage
     const fileName = `${Date.now()}-${file.name}`;
-    const { data: uploadData, error: uploadError } = await supabase?.storage
+    
+    if (!supabase) {
+      return NextResponse.json(
+        { error: 'Storage service not configured' },
+        { status: 500 }
+      );
+    }
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from('leases')
       .upload(fileName, file);
 
@@ -75,7 +83,7 @@ export async function POST(request: NextRequest) {
     };
 
     const { data: dbData, error: dbError } = await supabase
-      ?.from('leases')
+      .from('leases')
       .insert([leaseData])
       .select()
       .single();
