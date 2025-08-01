@@ -15,7 +15,12 @@ export default function GoogleSignIn({ mode, className = '' }: GoogleSignInProps
     try {
       setIsLoading(true);
       
-      const { error } = await supabase?.auth.signInWithOAuth({
+      if (!supabase) {
+        alert('Authentication service not available. Please try again.');
+        return;
+      }
+
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
