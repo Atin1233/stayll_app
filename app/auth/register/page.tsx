@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { getAuthRedirectUrl } from '@/lib/utils'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -33,7 +34,7 @@ export default function RegisterPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/login`
+          emailRedirectTo: getAuthRedirectUrl('/auth/login')
         }
       })
 
@@ -50,7 +51,7 @@ export default function RegisterPage() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/login`
+          emailRedirectTo: getAuthRedirectUrl('/auth/login')
         }
       })
 
