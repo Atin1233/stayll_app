@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import { getAuthRedirectUrl } from '@/lib/utils'
+import { getAuthRedirectUrl, debugEnvironment } from '@/lib/utils'
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')
@@ -16,6 +16,11 @@ export default function RegisterPage() {
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [useMagicLink, setUseMagicLink] = useState(false)
   const router = useRouter()
+
+  // Debug environment on component mount
+  useEffect(() => {
+    debugEnvironment()
+  }, [])
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,16 +34,20 @@ export default function RegisterPage() {
     setError('')
     setMessage('')
 
+    const redirectUrl = getAuthRedirectUrl('/auth/login')
+    console.log('Registration redirect URL:', redirectUrl)
+
     if (useMagicLink) {
       // Use magic link approach
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: getAuthRedirectUrl('/auth/login')
+          emailRedirectTo: redirectUrl
         }
       })
 
       if (error) {
+        console.error('Magic link error:', error)
         setError(error.message)
         setLoading(false)
       } else {
@@ -51,11 +60,12 @@ export default function RegisterPage() {
         email,
         password,
         options: {
-          emailRedirectTo: getAuthRedirectUrl('/auth/login')
+          emailRedirectTo: redirectUrl
         }
       })
 
       if (error) {
+        console.error('Signup error:', error)
         setError(error.message)
         setLoading(false)
       } else {
@@ -77,6 +87,8 @@ export default function RegisterPage() {
     setLoading(true)
     setError('')
 
+    console.log('Attempting to verify OTP with code:', confirmationCode)
+
     const { error } = await supabase.auth.verifyOtp({
       email,
       token: confirmationCode,
@@ -84,6 +96,7 @@ export default function RegisterPage() {
     })
 
     if (error) {
+      console.error('OTP verification error:', error)
       setError(error.message)
       setLoading(false)
     } else {
