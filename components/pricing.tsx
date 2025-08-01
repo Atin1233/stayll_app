@@ -79,7 +79,7 @@ export default function Pricing() {
                   <span className="relative inline-flex items-center">
                     Start Free
                     <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      ->
+                      →
                     </span>
                   </span>
                 </a>
@@ -130,7 +130,7 @@ export default function Pricing() {
                   <span className="relative inline-flex items-center">
                     Get Started
                     <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      ->
+                      →
                     </span>
                   </span>
                 </a>
@@ -181,7 +181,7 @@ export default function Pricing() {
                   <span className="relative inline-flex items-center">
                     Get Started
                     <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      ->
+                      →
                     </span>
                   </span>
                 </a>
@@ -232,7 +232,7 @@ export default function Pricing() {
                   <span className="relative inline-flex items-center">
                     Contact Sales
                     <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      ->
+                      →
                     </span>
                   </span>
                 </a>
