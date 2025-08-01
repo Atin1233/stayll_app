@@ -13,6 +13,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const [useMagicLink, setUseMagicLink] = useState(false)
   const router = useRouter()
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -27,21 +28,40 @@ export default function RegisterPage() {
     setError('')
     setMessage('')
 
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/login`
-      }
-    })
+    if (useMagicLink) {
+      // Use magic link approach
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/login`
+        }
+      })
 
-    if (error) {
-      setError(error.message)
-      setLoading(false)
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      } else {
+        setMessage('Check your email for a magic link to sign in!')
+        setLoading(false)
+      }
     } else {
-      setMessage('Check your email for a confirmation code!')
-      setShowConfirmation(true)
-      setLoading(false)
+      // Use confirmation code approach
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/login`
+        }
+      })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      } else {
+        setMessage('Check your email for a confirmation code!')
+        setShowConfirmation(true)
+        setLoading(false)
+      }
     }
   }
 
@@ -167,6 +187,33 @@ export default function RegisterPage() {
               <div className="text-sm text-green-700">{message}</div>
             </div>
           )}
+          
+          {/* Authentication Method Toggle */}
+          <div className="flex items-center justify-center space-x-4">
+            <button
+              type="button"
+              onClick={() => setUseMagicLink(false)}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                !useMagicLink
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Password
+            </button>
+            <button
+              type="button"
+              onClick={() => setUseMagicLink(true)}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                useMagicLink
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              Magic Link
+            </button>
+          </div>
+
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
@@ -184,22 +231,24 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            {!useMagicLink && (
+              <div>
+                <label htmlFor="password" className="sr-only">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+            )}
           </div>
 
           <div>
@@ -208,9 +257,17 @@ export default function RegisterPage() {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? 'Creating account...' : 'Create account'}
+              {loading ? 'Creating account...' : useMagicLink ? 'Send Magic Link' : 'Create account'}
             </button>
           </div>
+
+          {useMagicLink && (
+            <div className="text-center">
+              <p className="text-sm text-gray-600">
+                We'll send you a magic link to sign in without a password
+              </p>
+            </div>
+          )}
         </form>
       </div>
     </div>
