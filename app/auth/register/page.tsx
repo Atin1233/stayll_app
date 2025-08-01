@@ -15,6 +15,12 @@ export default function RegisterPage() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    if (!supabase) {
+      setError('Authentication service not configured')
+      return
+    }
+
     setLoading(true)
     setError('')
     setMessage('')

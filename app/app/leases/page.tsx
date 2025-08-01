@@ -40,6 +40,10 @@ export default function LeasesPage() {
     setMessage('')
 
     try {
+      if (!supabase) {
+        throw new Error('Storage service not configured')
+      }
+
       // Upload file to Supabase Storage
       const fileName = `${Date.now()}-${file.name}`
       const { data, error } = await supabase.storage
@@ -66,7 +70,7 @@ export default function LeasesPage() {
       }
       
       mockLeases.unshift(newLease)
-    } catch (error) {
+    } catch (error: any) {
       setMessage('Error uploading file. Please try again.')
       console.error('Upload error:', error)
     } finally {

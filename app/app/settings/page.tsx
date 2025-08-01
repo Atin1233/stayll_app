@@ -27,6 +27,12 @@ export default function SettingsPage() {
     setMessage('')
     setError('')
 
+    if (!supabase) {
+      setError('Authentication service not configured')
+      setLoading(false)
+      return
+    }
+
     if (newPassword !== confirmPassword) {
       setError('New passwords do not match')
       setLoading(false)
@@ -54,6 +60,11 @@ export default function SettingsPage() {
   const handleDeleteAccount = async () => {
     if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       try {
+        if (!supabase) {
+          setError('Authentication service not configured')
+          return
+        }
+        
         const { error } = await supabase.auth.admin.deleteUser(user?.id!)
         if (error) throw error
         // Redirect to login
