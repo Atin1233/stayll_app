@@ -54,6 +54,12 @@ export default function SignUpForm({ className = '' }: SignUpFormProps) {
         return;
       }
 
+      // Get the correct site URL for email redirect
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+      const emailRedirectUrl = `${siteUrl}/auth/callback`;
+
+      console.log('Signing up with email redirect to:', emailRedirectUrl);
+
       // Sign up with Supabase
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
@@ -63,7 +69,7 @@ export default function SignUpForm({ className = '' }: SignUpFormProps) {
             full_name: formData.name,
             company_name: formData.company,
           },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
+          emailRedirectTo: emailRedirectUrl
         }
       });
 

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { debugEnvironment, getSiteUrl, getAuthRedirectUrl } from '@/lib/utils'
+import EmailDebug from '@/components/auth/EmailDebug'
 
 export default function DebugPage() {
   const [debugInfo, setDebugInfo] = useState<any>({})
@@ -78,6 +79,14 @@ export default function DebugPage() {
             <li>Redeploy the app</li>
             <li>Check this debug page again</li>
           </ol>
+        </div>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-6">
+          <h2 className="text-xl font-semibold mb-4 text-blue-900">Email Debug Tool</h2>
+          <p className="text-blue-800 mb-4">
+            Test your email configuration:
+          </p>
+          <EmailDebug />
         </div>
       </div>
     </div>
