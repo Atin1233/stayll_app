@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/lib/hooks/useUser'
-import UploadDropzone from '@/components/dashboard/UploadDropzone'
-import { DocumentTextIcon, EyeIcon, TrashIcon, CheckCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { DocumentTextIcon, EyeIcon, TrashIcon, CheckCircleIcon, ExclamationTriangleIcon, SparklesIcon, CogIcon } from '@heroicons/react/24/outline'
 
 interface Lease {
   id: string;
@@ -29,6 +28,9 @@ export default function LeasesPage() {
   const [message, setMessage] = useState('')
   const [messageType, setMessageType] = useState<'success' | 'error' | 'info'>('info')
   const [leases, setLeases] = useState<Lease[]>([])
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [analysisResult, setAnalysisResult] = useState<any>(null)
+  const [showDebug, setShowDebug] = useState(false)
   const { user } = useUser()
 
   // Load existing leases
@@ -53,21 +55,33 @@ export default function LeasesPage() {
     }
   }
 
-  const handleFileUpload = async (file: File) => {
-    if (!user) {
-      setMessage('Please sign in to upload leases')
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file && file.type === 'application/pdf') {
+      setSelectedFile(file)
+      setMessage('')
+      setAnalysisResult(null)
+    } else {
+      setMessage('Please select a valid PDF file')
       setMessageType('error')
-      return
+      setSelectedFile(null)
     }
+  }
+
+  const analyzeWithAI = async () => {
+    if (!selectedFile || !user) return
 
     setLoading(true)
-    setMessage('')
+    setMessage('🤖 Starting AI analysis...')
     setMessageType('info')
+    setAnalysisResult(null)
 
     try {
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file', selectedFile)
       formData.append('userId', user.id)
+
+      console.log('Starting AI analysis for:', selectedFile.name)
 
       const response = await fetch('/api/analyze-lease', {
         method: 'POST',
@@ -75,58 +89,190 @@ export default function LeasesPage() {
       })
 
       const result = await response.json()
+      console.log('AI Analysis result:', result)
 
       if (!response.ok) {
         throw new Error(result.error || 'Failed to analyze lease')
       }
 
-      setMessage(`Lease analyzed successfully! Confidence: ${result.analysis.confidence}%`)
+      setAnalysisResult(result)
+      setMessage(`✅ AI Analysis Complete! Confidence: ${result.analysis?.confidence || result.confidence || 0}%`)
       setMessageType('success')
       
       // Reload leases to show the new one
       await loadLeases()
       
     } catch (error: any) {
-      setMessage(error.message || 'Error analyzing lease. Please try again.')
+      console.error('AI Analysis error:', error)
+      setMessage(`❌ AI Analysis failed: ${error.message}`)
       setMessageType('error')
-      console.error('Analysis error:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const testBasicAnalysis = async () => {
+    if (!selectedFile) return
+
+    setLoading(true)
+    setMessage('🔍 Testing basic analysis...')
+    setMessageType('info')
+    setAnalysisResult(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+
+      const response = await fetch('/api/test-pdf', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await response.json()
+      console.log('Basic analysis result:', result)
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Basic analysis failed')
+      }
+
+      setAnalysisResult(result)
+      setMessage(`✅ Basic Analysis Complete! Confidence: ${result.analysis?.confidence || 0}%`)
+      setMessageType('success')
+      
+    } catch (error: any) {
+      console.error('Basic analysis error:', error)
+      setMessage(`❌ Basic analysis failed: ${error.message}`)
+      setMessageType('error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const testStorage = async () => {
+    try {
+      setMessage('🗄️ Testing storage...')
+      setMessageType('info')
+      
+      const response = await fetch('/api/test-storage')
+      const result = await response.json()
+      
+      if (response.ok) {
+        setMessage(`✅ Storage OK: ${result.message}`)
+        setMessageType('success')
+      } else {
+        setMessage(`❌ Storage Error: ${result.error}`)
+        setMessageType('error')
+      }
+    } catch (error: any) {
+      setMessage(`❌ Storage test failed: ${error.message}`)
+      setMessageType('error')
     }
   }
 
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">Leases</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">🤖 AI Lease Analysis</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Upload and manage your lease documents with AI-powered analysis.
+          Upload lease PDFs and get instant AI-powered analysis of key terms and conditions.
         </p>
       </div>
 
-      {/* Upload Section */}
-      <div className="mb-8">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Upload New Lease</h2>
-        <UploadDropzone onFileUpload={handleFileUpload} loading={loading} />
+      {/* Upload & Analysis Section */}
+      <div className="mb-8 bg-white shadow rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-medium text-gray-900">Upload & Analyze Lease</h2>
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="flex items-center text-sm text-gray-600 hover:text-gray-900"
+          >
+            <CogIcon className="h-4 w-4 mr-1" />
+            {showDebug ? 'Hide' : 'Show'} Debug
+          </button>
+        </div>
+
+        {/* File Upload */}
+        <div className="mb-4">
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileSelect}
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+          />
+        </div>
+
+        {selectedFile && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+            <p className="text-sm text-blue-800">
+              <strong>Selected:</strong> {selectedFile.name} ({Math.round(selectedFile.size / 1024)} KB)
+            </p>
+          </div>
+        )}
+
+        {/* Analysis Buttons */}
+        <div className="flex flex-wrap gap-3 mb-4">
+          <button
+            onClick={analyzeWithAI}
+            disabled={!selectedFile || loading}
+            className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <SparklesIcon className="h-4 w-4 mr-2" />
+            {loading ? '🤖 Analyzing...' : '🚀 Analyze with AI'}
+          </button>
+
+          <button
+            onClick={testBasicAnalysis}
+            disabled={!selectedFile || loading}
+            className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <DocumentTextIcon className="h-4 w-4 mr-2" />
+            {loading ? 'Testing...' : '🔍 Test Basic Analysis'}
+          </button>
+
+          <button
+            onClick={testStorage}
+            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+          >
+            <CogIcon className="h-4 w-4 mr-2" />
+            🗄️ Test Storage
+          </button>
+        </div>
+
+        {/* Status Message */}
         {message && (
-          <div className={`mt-4 p-4 rounded-md ${
-            messageType === 'error' ? 'bg-red-50 text-red-700' : 
-            messageType === 'success' ? 'bg-green-50 text-green-700' : 
-            'bg-blue-50 text-blue-700'
+          <div className={`p-4 rounded-md ${
+            messageType === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 
+            messageType === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 
+            'bg-blue-50 text-blue-700 border border-blue-200'
           }`}>
             {message}
+          </div>
+        )}
+
+        {/* Debug Results */}
+        {showDebug && analysisResult && (
+          <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded">
+            <h3 className="font-semibold text-gray-900 mb-2">🔍 Analysis Results:</h3>
+            <div className="text-sm text-gray-700">
+              <pre className="whitespace-pre-wrap overflow-auto max-h-64">
+                {JSON.stringify(analysisResult, null, 2)}
+              </pre>
+            </div>
           </div>
         )}
       </div>
 
       {/* Leases List */}
-      <div>
-        <h2 className="text-lg font-medium text-gray-900 mb-4">Your Leases ({leases.length})</h2>
+      <div className="bg-white shadow rounded-lg">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-medium text-gray-900">Your Analyzed Leases ({leases.length})</h2>
+        </div>
+        
         {leases.length === 0 ? (
-          <div className="bg-white shadow rounded-lg p-8 text-center">
+          <div className="p-8 text-center">
             <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No leases yet</h3>
-            <p className="mt-1 text-sm text-gray-500">Upload your first lease document to get started.</p>
+            <h3 className="mt-2 text-sm font-medium text-gray-900">No leases analyzed yet</h3>
+            <p className="mt-1 text-sm text-gray-500">Upload your first lease PDF above to get AI-powered analysis.</p>
           </div>
         ) : (
           <div className="bg-white shadow overflow-hidden sm:rounded-md">
