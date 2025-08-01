@@ -20,10 +20,16 @@ export default function GoogleSignIn({ mode, className = '' }: GoogleSignInProps
         return;
       }
 
+      // Get the correct site URL for redirect
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+      const redirectUrl = `${siteUrl}/auth/callback`;
+
+      console.log('Redirecting to:', redirectUrl);
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
         },
       });
 

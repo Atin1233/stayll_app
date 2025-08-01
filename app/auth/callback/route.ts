@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
   }
 
   // URL to redirect to after sign in process completes
-  // Redirect to the dashboard or home page
-  return NextResponse.redirect(`${requestUrl.origin}/app`);
+  // Redirect to the home page or dashboard
+  const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL || requestUrl.origin;
+  return NextResponse.redirect(`${redirectUrl}/`);
 } 
