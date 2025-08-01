@@ -5,7 +5,6 @@ export const metadata = {
 
 import Link from "next/link";
 import GoogleSignIn from "@/components/auth/GoogleSignIn";
-import SignUpForm from "@/components/auth/SignUpForm";
 
 export default function SignUp() {
   return (
@@ -17,15 +16,13 @@ export default function SignUp() {
             <h1 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Create an account
             </h1>
+            <p className="mt-4 text-lg text-indigo-200/65">
+              Sign up with your Google account to get started
+            </p>
           </div>
           
-          {/* Functional Sign Up Form */}
-          <SignUpForm />
-          
-          <div className="mt-6 space-y-5">
-            <div className="flex items-center gap-3 text-center text-sm italic text-gray-600 before:h-px before:flex-1 before:bg-linear-to-r before:from-transparent before:via-gray-400/25 after:h-px after:flex-1 after:bg-linear-to-r after:from-transparent after:via-gray-400/25">
-              or
-            </div>
+          {/* Google Sign-In Only */}
+          <div className="mx-auto max-w-[400px]">
             <GoogleSignIn mode="signup" />
           </div>
           
