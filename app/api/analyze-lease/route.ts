@@ -31,9 +31,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Analyze the PDF
+    console.log('Starting PDF analysis for file:', file.name, 'Size:', file.size);
     const analysis = await analyzeLeasePDF(file);
+    console.log('Analysis result:', analysis);
 
     if (!analysis.success) {
+      console.error('PDF analysis failed:', analysis.errors);
       return NextResponse.json(
         { error: 'Failed to analyze PDF', details: analysis.errors },
         { status: 500 }
