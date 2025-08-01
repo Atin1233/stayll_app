@@ -58,15 +58,14 @@ export async function analyzeLeasePDF(file: File): Promise<AnalysisResult> {
     const pdfData = await pdf(buffer);
     const text = pdfData.text;
     
-    // Analyze the text
-    const analysis = extractLeaseData(text);
+    console.log('Extracted text length:', text.length);
+    console.log('First 500 characters:', text.substring(0, 500));
     
-    return {
-      success: true,
-      data: analysis,
-      confidence: calculateConfidence(analysis),
-      raw_text: text,
-    };
+    // Use AI analysis with fallback to basic analysis
+    const { analyzeLeaseWithAI } = await import('./aiLeaseAnalysis');
+    const analysis = await analyzeLeaseWithAI(text);
+    
+    return analysis;
     
   } catch (error) {
     console.error('PDF analysis error:', error);
