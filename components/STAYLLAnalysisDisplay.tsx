@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon, InformationCircleIcon, ChartBarIcon, ShieldCheckIcon, ClockIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon, ExclamationTriangleIcon, XCircleIcon, InformationCircleIcon, ChartBarIcon, ShieldCheckIcon, ClockIcon, CurrencyDollarIcon, DocumentTextIcon, CogIcon } from '@heroicons/react/24/outline';
 
 interface STAYLLAnalysisDisplayProps {
   analysis: any;
@@ -240,6 +240,179 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                     <p className="text-sm text-gray-500">No trend data available</p>
                   )}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Format Analysis - BRUTAL CRITIQUE */}
+      {data.format_analysis && (
+        <div className="bg-white shadow-lg rounded-lg border border-gray-200">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Document Quality Assessment</h3>
+          </div>
+          <div className="p-6">
+            {/* Overall Score */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <ChartBarIcon className="h-5 w-5 text-gray-400 mr-2" />
+                  <span className="text-lg font-semibold text-gray-900">
+                    Document Quality Score: {data.format_analysis.overall_score}/100
+                  </span>
+                </div>
+                <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
+                  data.format_analysis.overall_score >= 85 ? 'text-green-600 bg-green-50 border-green-200' :
+                  data.format_analysis.overall_score >= 70 ? 'text-yellow-600 bg-yellow-50 border-yellow-200' :
+                  data.format_analysis.overall_score >= 50 ? 'text-orange-600 bg-orange-50 border-orange-200' :
+                  'text-red-600 bg-red-50 border-red-200'
+                }`}>
+                  {data.format_analysis.overall_score >= 85 ? 'ACCEPTABLE' :
+                   data.format_analysis.overall_score >= 70 ? 'NEEDS IMPROVEMENT' :
+                   data.format_analysis.overall_score >= 50 ? 'POOR QUALITY' :
+                   'CRITICALLY DEFICIENT'}
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-center">
+                    <DocumentTextIcon className="h-5 w-5 text-gray-400 mr-2" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Readability Score</p>
+                      <p className="text-lg font-semibold text-gray-900">{data.format_analysis.readability_score}/100</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-center">
+                    <ExclamationTriangleIcon className="h-5 w-5 text-gray-400 mr-2" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-500">Critical Issues</p>
+                      <p className="text-lg font-semibold text-gray-900">{data.format_analysis.critical_issues?.length || 0}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Critical Issues */}
+            {data.format_analysis.critical_issues && data.format_analysis.critical_issues.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-sm font-medium text-red-700 mb-3 flex items-center">
+                  <XCircleIcon className="h-4 w-4 mr-1" />
+                  Critical Issues
+                </h4>
+                <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                  <div className="space-y-2">
+                    {data.format_analysis.critical_issues.map((issue: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-red-700">
+                        <XCircleIcon className="h-4 w-4 text-red-600 mr-2 mt-0.5 flex-shrink-0" />
+                        {issue}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Red Flags */}
+            {data.format_analysis.red_flags && data.format_analysis.red_flags.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-sm font-medium text-orange-700 mb-3 flex items-center">
+                  <ExclamationTriangleIcon className="h-4 w-4 mr-1" />
+                  Legal Red Flags
+                </h4>
+                <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                  <div className="space-y-2">
+                    {data.format_analysis.red_flags.map((flag: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-orange-700">
+                        <ExclamationTriangleIcon className="h-4 w-4 text-orange-600 mr-2 mt-0.5 flex-shrink-0" />
+                        {flag}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Missing Sections */}
+            {data.format_analysis.missing_sections && data.format_analysis.missing_sections.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-sm font-medium text-yellow-700 mb-3 flex items-center">
+                  <DocumentTextIcon className="h-4 w-4 mr-1" />
+                  Missing Critical Sections
+                </h4>
+                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <div className="space-y-2">
+                    {data.format_analysis.missing_sections.map((section: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-yellow-700">
+                        <DocumentTextIcon className="h-4 w-4 text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
+                        {section}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Formatting Problems */}
+            {data.format_analysis.formatting_problems && data.format_analysis.formatting_problems.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-sm font-medium text-blue-700 mb-3 flex items-center">
+                  <CogIcon className="h-4 w-4 mr-1" />
+                  Formatting Issues
+                </h4>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <div className="space-y-2">
+                    {data.format_analysis.formatting_problems.map((problem: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-blue-700">
+                        <CogIcon className="h-4 w-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" />
+                        {problem}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Professional Standards */}
+            {data.format_analysis.professional_standards && data.format_analysis.professional_standards.length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-sm font-medium text-purple-700 mb-3 flex items-center">
+                  <ShieldCheckIcon className="h-4 w-4 mr-1" />
+                  Professional Standards Violations
+                </h4>
+                <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                  <div className="space-y-2">
+                    {data.format_analysis.professional_standards.map((standard: string, index: number) => (
+                      <div key={index} className="flex items-start text-sm text-purple-700">
+                        <ShieldCheckIcon className="h-4 w-4 text-purple-600 mr-2 mt-0.5 flex-shrink-0" />
+                        {standard}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* BRUTAL RECOMMENDATIONS */}
+            <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
+              <h4 className="text-sm font-medium text-white mb-3 flex items-center">
+                <ExclamationTriangleIcon className="h-4 w-4 mr-1" />
+                Expert Recommendations
+              </h4>
+              <div className="space-y-2">
+                {data.format_analysis.recommendations?.map((recommendation: string, index: number) => (
+                  <div key={index} className="flex items-start text-sm text-gray-200">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    {recommendation}
+                  </div>
+                )) || (
+                  <p className="text-sm text-gray-400">No specific recommendations available</p>
+                )}
               </div>
             </div>
           </div>

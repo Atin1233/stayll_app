@@ -26,6 +26,17 @@ export interface RiskAnalysis {
   recommendations: string[];
 }
 
+interface FormatAnalysis {
+  overall_score: number;
+  critical_issues: string[];
+  formatting_problems: string[];
+  missing_sections: string[];
+  readability_score: number;
+  professional_standards: string[];
+  red_flags: string[];
+  recommendations: string[];
+}
+
 export interface STAYLLAnalysis {
   lease_summary: {
     property_address: string;
@@ -33,20 +44,22 @@ export interface STAYLLAnalysis {
     lease_term: string;
     base_rent: string;
     total_value: string;
-    legal_strength: 'weak' | 'neutral' | 'strong';
+    legal_strength: "strong" | "weak" | "neutral";
   };
   clause_analysis: ClauseAnalysis[];
   risk_analysis: RiskAnalysis;
-  market_insights: {
-    rent_trend: 'increasing' | 'stable' | 'decreasing';
-    market_position: 'above' | 'at' | 'below';
-    comparable_rents: string[];
-  };
   action_items: {
     immediate: string[];
     upcoming: string[];
     long_term: string[];
   };
+  market_insights: {
+    your_rent: string;
+    market_average: string;
+    market_position: string;
+    trends: string[];
+  };
+  format_analysis: FormatAnalysis;
   confidence_score: number;
 }
 
@@ -210,78 +223,54 @@ const MARKET_DATA = {
   }
 };
 
-export async function analyzeLeaseWithSTAYLL(leaseText: string, propertyType: 'residential' | 'commercial' = 'residential'): Promise<STAYLLAnalysis> {
-  console.log('🤖 STAYLL AI Engine: Starting comprehensive lease analysis...');
+export async function analyzeLeaseWithSTAYLL(leaseText: string): Promise<STAYLLAnalysis> {
+  console.log('STAYLL AI: Starting comprehensive lease analysis...');
   
-  try {
-    // Step 1: Extract basic lease data using real AI
-    const { analyzeWithAI } = await import('./aiModel');
-    const aiDataResult = await analyzeWithAI({
-      text: leaseText,
-      task: 'extract_lease_data'
-    });
-    
-    const basicData = aiDataResult.success ? aiDataResult.data : extractBasicLeaseData(leaseText);
-    
-    // Step 2: Perform clause-by-clause analysis using AI
-    const aiClauseResult = await analyzeWithAI({
-      text: leaseText,
-      task: 'classify_clauses'
-    });
-    
-    const clauseAnalysis = aiClauseResult.success ? 
-      convertAIClauseResults(aiClauseResult.data) : 
-      await analyzeClauses(leaseText, propertyType);
-    
-    // Step 3: Calculate risk analysis using AI
-    const aiRiskResult = await analyzeWithAI({
-      text: leaseText,
-      task: 'assess_risk'
-    });
-    
-    const riskAnalysis = aiRiskResult.success ? 
-      convertAIRiskResults(aiRiskResult.data) : 
-      calculateRiskAnalysis(clauseAnalysis, basicData, propertyType);
-    
-    // Step 4: Generate recommendations using AI
-    const aiRecommendationResult = await analyzeWithAI({
-      text: leaseText,
-      task: 'generate_recommendations'
-    });
-    
-    // Step 5: Generate market insights
-    const marketInsights = generateMarketInsights(basicData, propertyType);
-    
-    // Step 6: Create action items (enhanced with AI recommendations)
-    const actionItems = generateActionItems(riskAnalysis, basicData);
-    if (aiRecommendationResult.success) {
-      actionItems.upcoming.push(...aiRecommendationResult.data.map((r: any) => r.recommendation));
-    }
-    
-    // Step 7: Calculate overall confidence (enhanced with AI confidence)
-    const aiConfidence = Math.max(
-      aiDataResult.confidence || 0,
-      aiClauseResult.confidence || 0,
-      aiRiskResult.confidence || 0
-    );
-    const confidenceScore = Math.max(calculateConfidenceScore(clauseAnalysis, basicData), aiConfidence * 100);
-    
-    // Step 8: Generate lease summary
-    const leaseSummary = generateLeaseSummary(basicData, riskAnalysis);
-    
-    return {
-      lease_summary: leaseSummary,
-      clause_analysis: clauseAnalysis,
-      risk_analysis: riskAnalysis,
-      market_insights: marketInsights,
-      action_items: actionItems,
-      confidence_score: confidenceScore
-    };
-    
-  } catch (error) {
-    console.error('STAYLL AI analysis error:', error);
-    throw new Error(`STAYLL AI analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-  }
+  // Extract basic lease data
+  const basicData = extractBasicLeaseData(leaseText);
+  console.log('STAYLL AI: Basic data extracted:', basicData);
+  
+  // Analyze clauses with AI
+  const { analyzeWithAI } = await import('./aiModel');
+  const clauseResults = await analyzeWithAI({ text: leaseText, task: 'classify_clauses' });
+  const clauses = convertAIClauseResults(clauseResults.success ? clauseResults.data : []);
+  console.log('STAYLL AI: Clauses analyzed:', clauses.length);
+  
+  // Assess risks with AI
+  const riskResults = await analyzeWithAI({ text: leaseText, task: 'assess_risk' });
+  const riskAnalysis = convertAIRiskResults(riskResults.success ? riskResults.data : {});
+  console.log('STAYLL AI: Risk assessment complete');
+  
+  // Generate recommendations with AI
+  const recommendationResults = await analyzeWithAI({ text: leaseText, task: 'generate_recommendations' });
+  const actionItems = generateActionItems(riskAnalysis, basicData);
+  console.log('STAYLL AI: Action items generated');
+  
+  // Analyze lease format and completeness BRUTALLY
+  const formatAnalysis = analyzeLeaseFormatBrutally(leaseText, basicData);
+  console.log('STAYLL AI: Format analysis complete - Score:', formatAnalysis.overall_score);
+  
+  // Generate market insights
+  const marketInsights = generateMarketInsights(basicData);
+  console.log('STAYLL AI: Market insights generated');
+  
+  // Generate lease summary
+  const leaseSummary = generateLeaseSummary(basicData, formatAnalysis);
+  console.log('STAYLL AI: Lease summary generated');
+  
+  // Calculate confidence score
+  const confidenceScore = calculateConfidenceScore(clauses, basicData);
+  console.log('STAYLL AI: Confidence score calculated:', confidenceScore);
+  
+  return {
+    lease_summary: leaseSummary,
+    clause_analysis: clauses,
+    risk_analysis: riskAnalysis,
+    action_items: actionItems,
+    market_insights: marketInsights,
+    format_analysis: formatAnalysis,
+    confidence_score: confidenceScore
+  };
 }
 
 function convertAIClauseResults(aiResults: any[]): ClauseAnalysis[] {
@@ -584,13 +573,14 @@ function generateOverallRecommendations(clauses: ClauseAnalysis[], missingClause
   return recommendations;
 }
 
-function generateMarketInsights(basicData: any, propertyType: 'residential' | 'commercial') {
-  const marketData = MARKET_DATA[propertyType];
+function generateMarketInsights(basicData: any) {
+  const marketData = MARKET_DATA['residential']; // Default to residential for now
   
   return {
-    rent_trend: marketData.market_trends['2024'] as any,
+    your_rent: basicData.base_rent || 'Rent amount not specified',
+    market_average: 'Market data unavailable',
     market_position: 'at' as any, // This would be calculated based on actual rent
-    comparable_rents: ['Market data unavailable']
+    trends: ['Market data unavailable']
   };
 }
 
@@ -624,23 +614,188 @@ function calculateConfidenceScore(clauses: ClauseAnalysis[], basicData: any): nu
   return Math.min(averageConfidence + basicDataBonus, 100);
 }
 
-function generateLeaseSummary(basicData: any, riskAnalysis: RiskAnalysis) {
-  let legalStrength: 'weak' | 'neutral' | 'strong';
+function generateLeaseSummary(basicData: any, formatAnalysis: FormatAnalysis) {
+  // Determine legal strength based on format analysis
+  let legalStrength: "strong" | "weak" | "neutral" = "neutral";
   
-  if (riskAnalysis.risk_level === 'critical' || riskAnalysis.risk_level === 'high') {
-    legalStrength = 'weak';
-  } else if (riskAnalysis.risk_level === 'medium') {
-    legalStrength = 'neutral';
-  } else {
-    legalStrength = 'strong';
+  if (formatAnalysis.overall_score >= 85 && formatAnalysis.red_flags.length === 0) {
+    legalStrength = "strong";
+  } else if (formatAnalysis.overall_score < 50 || formatAnalysis.red_flags.length > 2) {
+    legalStrength = "weak";
   }
   
   return {
-    property_address: basicData.property_address,
-    tenant_name: basicData.tenant_name,
-    lease_term: `${basicData.lease_start} to ${basicData.lease_end}`,
-    base_rent: basicData.base_rent,
-    total_value: 'Calculated from rent and term',
+    property_address: basicData.property_address || 'Address not clearly specified',
+    tenant_name: basicData.tenant_name || 'Tenant not clearly identified',
+    lease_term: basicData.lease_term || 'Term not clearly defined',
+    base_rent: basicData.base_rent || 'Rent amount not specified',
+    total_value: basicData.total_value || 'Total value cannot be calculated',
     legal_strength: legalStrength
+  };
+}
+
+function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAnalysis {
+  const issues: string[] = [];
+  const formattingProblems: string[] = [];
+  const missingSections: string[] = [];
+  const redFlags: string[] = [];
+  const professionalStandards: string[] = [];
+  const recommendations: string[] = [];
+  
+  let overallScore = 100;
+  let readabilityScore = 100;
+  
+  // BRUTAL FORMAT ANALYSIS
+  
+  // Check document length
+  const wordCount = leaseText.split(/\s+/).length;
+  if (wordCount < 1000) {
+    issues.push('CRITICAL: Document is dangerously short for a lease agreement');
+    redFlags.push('Document appears to be incomplete or missing substantial content');
+    overallScore -= 30;
+    readabilityScore -= 20;
+  } else if (wordCount < 2000) {
+    issues.push('WARNING: Document is shorter than standard lease agreements');
+    formattingProblems.push('Insufficient detail and coverage for proper lease terms');
+    overallScore -= 15;
+  }
+  
+  // Check for essential sections
+  const essentialSections = [
+    'rent', 'payment', 'term', 'duration', 'tenant', 'landlord', 'property', 'address',
+    'security deposit', 'utilities', 'maintenance', 'repairs', 'termination', 'eviction',
+    'late fees', 'damages', 'liability', 'insurance', 'pets', 'smoking', 'subletting'
+  ];
+  
+  const missingEssential = essentialSections.filter(section => 
+    !leaseText.toLowerCase().includes(section)
+  );
+  
+  if (missingEssential.length > 0) {
+    missingSections.push(...missingEssential.map(section => 
+      `MISSING CRITICAL SECTION: ${section.toUpperCase()}`
+    ));
+    overallScore -= missingEssential.length * 5;
+    redFlags.push(`Document missing ${missingEssential.length} essential lease sections`);
+  }
+  
+  // Check for legal language quality
+  const legalTerms = [
+    'whereas', 'hereby', 'hereinafter', 'party', 'parties', 'agreement', 'covenant',
+    'warrant', 'represent', 'acknowledge', 'binding', 'enforceable', 'jurisdiction'
+  ];
+  
+  const legalTermCount = legalTerms.filter(term => 
+    leaseText.toLowerCase().includes(term)
+  ).length;
+  
+  if (legalTermCount < 5) {
+    issues.push('CRITICAL: Insufficient legal terminology - document may not be legally binding');
+    professionalStandards.push('Document lacks proper legal language and structure');
+    overallScore -= 25;
+    redFlags.push('Document may not meet legal standards for enforceability');
+  }
+  
+  // Check for specific formatting issues
+  if (!leaseText.includes('§') && !leaseText.includes('Section')) {
+    formattingProblems.push('No section numbering or clear document structure');
+    readabilityScore -= 15;
+  }
+  
+  if (!leaseText.includes('1.') && !leaseText.includes('2.') && !leaseText.includes('3.')) {
+    formattingProblems.push('No numbered paragraphs or clear organization');
+    readabilityScore -= 10;
+  }
+  
+  // Check for specific data completeness
+  if (!basicData.tenant_name || basicData.tenant_name === 'Extracted from text') {
+    issues.push('CRITICAL: Tenant name not clearly identified');
+    redFlags.push('Cannot identify primary tenant - major legal risk');
+    overallScore -= 20;
+  }
+  
+  if (!basicData.property_address || basicData.property_address === 'Extracted from text') {
+    issues.push('CRITICAL: Property address not clearly specified');
+    redFlags.push('Property location unclear - document may be unenforceable');
+    overallScore -= 20;
+  }
+  
+  if (!basicData.base_rent || basicData.base_rent === 'Extracted from text') {
+    issues.push('CRITICAL: Rent amount not clearly stated');
+    redFlags.push('Financial terms unclear - major contract deficiency');
+    overallScore -= 25;
+  }
+  
+  // Check for date formatting
+  const datePatterns = /\b\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b|\b\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}\b/;
+  if (!datePatterns.test(leaseText)) {
+    formattingProblems.push('No clear date formatting found');
+    readabilityScore -= 10;
+  }
+  
+  // Check for signature blocks
+  if (!leaseText.toLowerCase().includes('signature') && !leaseText.toLowerCase().includes('signed')) {
+    issues.push('CRITICAL: No signature blocks or execution provisions');
+    redFlags.push('Document lacks execution mechanism - legally incomplete');
+    overallScore -= 30;
+  }
+  
+  // Check for boilerplate language
+  const boilerplateTerms = [
+    'entire agreement', 'governing law', 'severability', 'waiver', 'notice',
+    'force majeure', 'assignment', 'amendment'
+  ];
+  
+  const missingBoilerplate = boilerplateTerms.filter(term => 
+    !leaseText.toLowerCase().includes(term)
+  );
+  
+  if (missingBoilerplate.length > 3) {
+    professionalStandards.push(`Missing ${missingBoilerplate.length} standard legal provisions`);
+    overallScore -= missingBoilerplate.length * 3;
+  }
+  
+  // BRUTAL RECOMMENDATIONS
+  if (overallScore < 50) {
+    recommendations.push('IMMEDIATE ACTION REQUIRED: This document is legally inadequate and should be completely rewritten');
+    recommendations.push('CONSULT LEGAL COUNSEL: Document may not be enforceable in court');
+    recommendations.push('DO NOT EXECUTE: Significant legal and financial risks present');
+  } else if (overallScore < 70) {
+    recommendations.push('MAJOR REVISION NEEDED: Document requires substantial improvements before execution');
+    recommendations.push('ADD MISSING SECTIONS: Critical lease terms are absent');
+    recommendations.push('IMPROVE LEGAL LANGUAGE: Document lacks proper legal structure');
+  } else if (overallScore < 85) {
+    recommendations.push('MODERATE IMPROVEMENTS NEEDED: Several areas require attention');
+    recommendations.push('ENHANCE CLARITY: Improve readability and organization');
+    recommendations.push('ADD DETAILS: Expand on key terms and conditions');
+  } else {
+    recommendations.push('MINOR REFINEMENTS: Document is generally well-structured');
+    recommendations.push('REVIEW FOR COMPLETENESS: Ensure all terms are clearly defined');
+  }
+  
+  // Additional brutal critiques
+  if (readabilityScore < 70) {
+    issues.push('CRITICAL: Document is poorly organized and difficult to understand');
+    redFlags.push('Poor readability increases legal risk and tenant confusion');
+  }
+  
+  if (missingSections.length > 5) {
+    issues.push('CRITICAL: Document is missing too many essential sections');
+    redFlags.push('Incomplete document may not protect landlord interests');
+  }
+  
+  // Ensure scores don't go below 0
+  overallScore = Math.max(0, overallScore);
+  readabilityScore = Math.max(0, readabilityScore);
+  
+  return {
+    overall_score: overallScore,
+    critical_issues: issues,
+    formatting_problems: formattingProblems,
+    missing_sections: missingSections,
+    readability_score: readabilityScore,
+    professional_standards: professionalStandards,
+    red_flags: redFlags,
+    recommendations: recommendations
   };
 } 
