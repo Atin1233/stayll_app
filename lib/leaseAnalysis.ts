@@ -110,7 +110,7 @@ export async function analyzeLeasePDF(file: File): Promise<AnalysisResult> {
   }
 }
 
-async function extractTextFromPDF(file: File): Promise<string> {
+export async function extractTextFromPDF(file: File): Promise<string> {
   try {
     // Use PDF.js to extract text from PDF
     // This is a client-side approach that works in the browser
