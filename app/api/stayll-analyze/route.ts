@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Perform STAYLL AI analysis (no storage required)
-    const stayllAnalysis = await analyzeLeaseWithSTAYLL(text, propertyType);
+    const stayllAnalysis = await analyzeLeaseWithSTAYLL(text);
     
     console.log('🤖 STAYLL AI: Analysis completed successfully');
     console.log('Risk Level:', stayllAnalysis.risk_analysis.risk_level);
