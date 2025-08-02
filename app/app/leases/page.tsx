@@ -169,6 +169,27 @@ export default function LeasesPage() {
     }
   }
 
+  const setupStorage = async () => {
+    try {
+      setMessage('🔧 Setting up storage...')
+      setMessageType('info')
+      
+      const response = await fetch('/api/setup-storage', { method: 'POST' })
+      const result = await response.json()
+      
+      if (response.ok) {
+        setMessage(`✅ Storage Setup: ${result.message}`)
+        setMessageType('success')
+      } else {
+        setMessage(`❌ Storage Setup Error: ${result.error}`)
+        setMessageType('error')
+      }
+    } catch (error: any) {
+      setMessage(`❌ Storage setup failed: ${error.message}`)
+      setMessageType('error')
+    }
+  }
+
   return (
     <div>
       <div className="mb-8">
@@ -235,6 +256,14 @@ export default function LeasesPage() {
           >
             <CogIcon className="h-4 w-4 mr-2" />
             🗄️ Test Storage
+          </button>
+
+          <button
+            onClick={setupStorage}
+            className="flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+          >
+            <CogIcon className="h-4 w-4 mr-2" />
+            🔧 Setup Storage
           </button>
         </div>
 

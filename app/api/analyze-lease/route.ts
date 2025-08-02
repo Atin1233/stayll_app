@@ -55,7 +55,29 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    // Check if the leases bucket exists
+    console.log('Checking if leases bucket exists...');
+    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
     
+    if (bucketsError) {
+      console.error('Error checking buckets:', bucketsError);
+      return NextResponse.json(
+        { error: `Storage access error: ${bucketsError.message}` },
+        { status: 500 }
+      );
+    }
+
+    const leasesBucket = buckets?.find(bucket => bucket.name === 'leases');
+    if (!leasesBucket) {
+      console.error('Leases bucket not found. Available buckets:', buckets?.map(b => b.name));
+      return NextResponse.json(
+        { error: 'Leases bucket not found. Please create a bucket named "leases" in Supabase storage.' },
+        { status: 500 }
+      );
+    }
+
+    console.log('Uploading file to leases bucket...');
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('leases')
       .upload(fileName, file);
@@ -63,7 +85,7 @@ export async function POST(request: NextRequest) {
     if (uploadError) {
       console.error('Upload error:', uploadError);
       return NextResponse.json(
-        { error: 'Failed to upload file' },
+        { error: `Failed to upload file: ${uploadError.message}`, details: uploadError },
         { status: 500 }
       );
     }
