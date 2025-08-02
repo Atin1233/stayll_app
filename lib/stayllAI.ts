@@ -214,25 +214,59 @@ export async function analyzeLeaseWithSTAYLL(leaseText: string, propertyType: 'r
   console.log('🤖 STAYLL AI Engine: Starting comprehensive lease analysis...');
   
   try {
-    // Step 1: Extract basic lease data
-    const basicData = extractBasicLeaseData(leaseText);
+    // Step 1: Extract basic lease data using real AI
+    const { analyzeWithAI } = await import('./aiModel');
+    const aiDataResult = await analyzeWithAI({
+      text: leaseText,
+      task: 'extract_lease_data'
+    });
     
-    // Step 2: Perform clause-by-clause analysis
-    const clauseAnalysis = await analyzeClauses(leaseText, propertyType);
+    const basicData = aiDataResult.success ? aiDataResult.data : extractBasicLeaseData(leaseText);
     
-    // Step 3: Calculate risk analysis
-    const riskAnalysis = calculateRiskAnalysis(clauseAnalysis, basicData, propertyType);
+    // Step 2: Perform clause-by-clause analysis using AI
+    const aiClauseResult = await analyzeWithAI({
+      text: leaseText,
+      task: 'classify_clauses'
+    });
     
-    // Step 4: Generate market insights
+    const clauseAnalysis = aiClauseResult.success ? 
+      convertAIClauseResults(aiClauseResult.data) : 
+      await analyzeClauses(leaseText, propertyType);
+    
+    // Step 3: Calculate risk analysis using AI
+    const aiRiskResult = await analyzeWithAI({
+      text: leaseText,
+      task: 'assess_risk'
+    });
+    
+    const riskAnalysis = aiRiskResult.success ? 
+      convertAIRiskResults(aiRiskResult.data) : 
+      calculateRiskAnalysis(clauseAnalysis, basicData, propertyType);
+    
+    // Step 4: Generate recommendations using AI
+    const aiRecommendationResult = await analyzeWithAI({
+      text: leaseText,
+      task: 'generate_recommendations'
+    });
+    
+    // Step 5: Generate market insights
     const marketInsights = generateMarketInsights(basicData, propertyType);
     
-    // Step 5: Create action items
+    // Step 6: Create action items (enhanced with AI recommendations)
     const actionItems = generateActionItems(riskAnalysis, basicData);
+    if (aiRecommendationResult.success) {
+      actionItems.upcoming.push(...aiRecommendationResult.data.map((r: any) => r.recommendation));
+    }
     
-    // Step 6: Calculate overall confidence
-    const confidenceScore = calculateConfidenceScore(clauseAnalysis, basicData);
+    // Step 7: Calculate overall confidence (enhanced with AI confidence)
+    const aiConfidence = Math.max(
+      aiDataResult.confidence || 0,
+      aiClauseResult.confidence || 0,
+      aiRiskResult.confidence || 0
+    );
+    const confidenceScore = Math.max(calculateConfidenceScore(clauseAnalysis, basicData), aiConfidence * 100);
     
-    // Step 7: Generate lease summary
+    // Step 8: Generate lease summary
     const leaseSummary = generateLeaseSummary(basicData, riskAnalysis);
     
     return {
@@ -248,6 +282,30 @@ export async function analyzeLeaseWithSTAYLL(leaseText: string, propertyType: 'r
     console.error('STAYLL AI analysis error:', error);
     throw new Error(`STAYLL AI analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
+}
+
+function convertAIClauseResults(aiResults: any[]): ClauseAnalysis[] {
+  return aiResults.map(result => ({
+    type: result.clause_type as any,
+    confidence: result.confidence * 100,
+    extracted_data: { present: result.present },
+    risk_level: 'low' as any,
+    risk_factors: [],
+    recommendations: []
+  }));
+}
+
+function convertAIRiskResults(aiResults: any): RiskAnalysis {
+  return {
+    overall_risk_score: aiResults.overall_risk_score || 0,
+    risk_level: aiResults.overall_risk_level as any,
+    missing_clauses: [],
+    problematic_clauses: [],
+    cash_flow_risks: aiResults.risks?.filter((r: any) => r.risk_factor === 'no_rent_escalation').map((r: any) => r.description) || [],
+    legal_risks: aiResults.risks?.filter((r: any) => r.risk_factor === 'no_cure_period').map((r: any) => r.description) || [],
+    market_risks: [],
+    recommendations: aiResults.risks?.map((r: any) => r.description) || []
+  };
 }
 
 function extractBasicLeaseData(text: string) {
