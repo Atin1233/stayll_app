@@ -69,48 +69,7 @@ export default function LeasesPage() {
     }
   }
 
-  const analyzeWithAI = async () => {
-    if (!selectedFile || !user) return
 
-    setLoading(true)
-    setMessage('🤖 Starting AI analysis...')
-    setMessageType('info')
-    setAnalysisResult(null)
-
-    try {
-      const formData = new FormData()
-      formData.append('file', selectedFile)
-      formData.append('userId', user.id)
-
-      console.log('Starting AI analysis for:', selectedFile.name)
-
-      const response = await fetch('/api/analyze-lease', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const result = await response.json()
-      console.log('AI Analysis result:', result)
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to analyze lease')
-      }
-
-      setAnalysisResult(result)
-      setMessage(`✅ AI Analysis Complete! Confidence: ${result.analysis?.confidence || result.confidence || 0}%`)
-      setMessageType('success')
-      
-      // Reload leases to show the new one
-      await loadLeases()
-      
-    } catch (error: any) {
-      console.error('AI Analysis error:', error)
-      setMessage(`❌ AI Analysis failed: ${error.message}`)
-      setMessageType('error')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const analyzeWithSTAYLL = async () => {
     if (!selectedFile || !user) return
@@ -260,16 +219,16 @@ export default function LeasesPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">🤖 AI Lease Analysis</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">🚀 STAYLL AI Lease Analysis</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Upload lease PDFs and get instant AI-powered analysis of key terms and conditions.
+          Upload lease PDFs and get comprehensive AI-powered analysis with risk detection, recommendations, and market insights.
         </p>
       </div>
 
       {/* Upload & Analysis Section */}
       <div className="mb-8 bg-white shadow rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-medium text-gray-900">Upload & Analyze Lease</h2>
+          <h2 className="text-lg font-medium text-gray-900">Upload & Analyze with STAYLL AI</h2>
           <button
             onClick={() => setShowDebug(!showDebug)}
             className="flex items-center text-sm text-gray-600 hover:text-gray-900"
@@ -302,19 +261,10 @@ export default function LeasesPage() {
           <button
             onClick={analyzeWithSTAYLL}
             disabled={!selectedFile || loading}
-            className="flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+            className="flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg px-6 py-3"
           >
-            <SparklesIcon className="h-4 w-4 mr-2" />
+            <SparklesIcon className="h-5 w-5 mr-2" />
             {loading ? '🚀 STAYLL AI Analyzing...' : '🚀 STAYLL AI Analysis'}
-          </button>
-
-          <button
-            onClick={analyzeWithAI}
-            disabled={!selectedFile || loading}
-            className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <SparklesIcon className="h-4 w-4 mr-2" />
-            {loading ? '🤖 Analyzing...' : '🤖 Basic AI Analysis'}
           </button>
 
           <button
@@ -323,7 +273,7 @@ export default function LeasesPage() {
             className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <DocumentTextIcon className="h-4 w-4 mr-2" />
-            {loading ? 'Testing...' : '🔍 Test Basic Analysis'}
+            {loading ? 'Testing...' : '🔍 Test PDF Parsing'}
           </button>
 
           <button
