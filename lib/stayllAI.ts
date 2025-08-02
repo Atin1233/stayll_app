@@ -251,15 +251,57 @@ export async function analyzeLeaseWithSTAYLL(leaseText: string, propertyType: 'r
 }
 
 function extractBasicLeaseData(text: string) {
-  // This would use the existing patterns from leaseAnalysis.ts
-  // For now, return a basic structure
+  // Use the same patterns from leaseAnalysis.ts to extract real data
+  const data: any = {};
+  
+  // Extract rent amount
+  const rentPattern = /(?:rent|monthly rent|monthly payment|base rent|amount)[:\s]*\$?([0-9,]+(?:\.[0-9]{2})?)/gi;
+  const rentMatches = text.match(rentPattern);
+  if (rentMatches && rentMatches.length > 0) {
+    const rentValue = rentMatches[0].replace(/[^\d.]/g, '');
+    data.base_rent = `$${rentValue}`;
+  }
+  
+  // Extract dates
+  const datePattern = /(\d{1,2}\/\d{1,2}\/\d{2,4}|\d{4}-\d{2}-\d{2}|\w+ \d{1,2},? \d{4}|\d{1,2}\/\d{1,2}\/\d{2})/gi;
+  const dateMatches = text.match(datePattern);
+  if (dateMatches && dateMatches.length >= 2) {
+    data.lease_start = formatDate(dateMatches[0]);
+    data.lease_end = formatDate(dateMatches[1]);
+  } else if (dateMatches && dateMatches.length === 1) {
+    data.lease_start = formatDate(dateMatches[0]);
+  }
+  
+  // Extract address
+  const addressPattern = /(\d+\s+[A-Za-z\s]+(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Place|Pl|Court|Ct|Way|Circle|Cir|Terrace|Ter|Highway|Hwy|Parkway|Pkwy)[,\s]*[A-Za-z\s,]+(?:[A-Z]{2}\s*\d{5}(?:-\d{4})?|\d{5}(?:-\d{4})?))/gi;
+  const addressMatches = text.match(addressPattern);
+  if (addressMatches && addressMatches.length > 0) {
+    data.property_address = addressMatches[0].trim();
+  }
+  
+  // Extract tenant name
+  const namePattern = /(?:tenant|lessee|resident|occupant|tenant name)[:\s]*([A-Z][a-z]+ [A-Z][a-z]+)/gi;
+  const nameMatches = text.match(namePattern);
+  if (nameMatches && nameMatches.length > 0) {
+    data.tenant_name = nameMatches[0].trim();
+  }
+  
   return {
-    property_address: 'Extracted from text',
-    tenant_name: 'Extracted from text',
-    base_rent: 'Extracted from text',
-    lease_start: 'Extracted from text',
-    lease_end: 'Extracted from text'
+    property_address: data.property_address || 'Address not found',
+    tenant_name: data.tenant_name || 'Tenant name not found',
+    base_rent: data.base_rent || 'Rent amount not found',
+    lease_start: data.lease_start || 'Start date not found',
+    lease_end: data.lease_end || 'End date not found'
   };
+}
+
+function formatDate(dateString: string): string {
+  try {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  } catch {
+    return dateString;
+  }
 }
 
 async function analyzeClauses(text: string, propertyType: 'residential' | 'commercial'): Promise<ClauseAnalysis[]> {
