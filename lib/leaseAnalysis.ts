@@ -337,3 +337,5 @@ function calculateConfidence(data: LeaseData): number {
   
   return Math.min(score, 100);
 } 
+
+ 
