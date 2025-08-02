@@ -497,7 +497,7 @@ function generateMarketInsights(basicData: any, propertyType: 'residential' | 'c
 function generateActionItems(riskAnalysis: RiskAnalysis, basicData: any) {
   const immediate: string[] = [];
   const upcoming: string[] = [];
-  const longTerm: string[] = [];
+  const long_term: string[] = [];
   
   if (riskAnalysis.risk_level === 'critical') {
     immediate.push('Review lease with legal counsel immediately');
@@ -508,10 +508,10 @@ function generateActionItems(riskAnalysis: RiskAnalysis, basicData: any) {
   }
   
   if (riskAnalysis.overall_risk_score > 50) {
-    longTerm.push('Consider lease renegotiation for better terms');
+    long_term.push('Consider lease renegotiation for better terms');
   }
   
-  return { immediate, upcoming, longTerm };
+  return { immediate, upcoming, long_term };
 }
 
 function calculateConfidenceScore(clauses: ClauseAnalysis[], basicData: any): number {
