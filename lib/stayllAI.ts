@@ -652,27 +652,27 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
   const hasSubstantialContent = wordCount > 500; // More reasonable threshold
   
   if (wordCount < 300) {
-    issues.push('Document appears to be incomplete or missing substantial content');
+    issues.push(`Document contains only ${wordCount} words - insufficient for a comprehensive lease agreement`);
     overallScore -= 25;
     readabilityScore -= 15;
   } else if (wordCount < 800) {
-    formattingProblems.push('Document is shorter than typical lease agreements - may lack detail');
+    formattingProblems.push(`Document contains ${wordCount} words - shorter than typical lease agreements (800-2000 words expected)`);
     overallScore -= 10;
   }
   
   // Check for essential sections with better detection
   const essentialSections = [
-    { key: 'rent', terms: ['rent', 'monthly rent', 'base rent', 'payment'], required: true },
-    { key: 'term', terms: ['term', 'duration', 'start', 'end', 'lease period'], required: true },
-    { key: 'tenant', terms: ['tenant', 'lessee', 'resident', 'occupant'], required: true },
-    { key: 'property', terms: ['property', 'premises', 'address', 'location'], required: true },
-    { key: 'security_deposit', terms: ['security deposit', 'deposit', 'security'], required: false },
-    { key: 'utilities', terms: ['utilities', 'electric', 'water', 'gas', 'heat'], required: false },
-    { key: 'maintenance', terms: ['maintenance', 'repairs', 'upkeep'], required: false },
-    { key: 'termination', terms: ['termination', 'eviction', 'end of lease'], required: false },
-    { key: 'late_fees', terms: ['late fee', 'late payment', 'penalty'], required: false },
-    { key: 'pets', terms: ['pets', 'animals', 'dog', 'cat'], required: false },
-    { key: 'smoking', terms: ['smoking', 'tobacco', 'cigarette'], required: false }
+    { key: 'rent', terms: ['rent', 'monthly rent', 'base rent', 'payment'], required: true, examples: ['$2,500 monthly rent', 'rent amount: $3,000', 'monthly payment of $2,000'] },
+    { key: 'term', terms: ['term', 'duration', 'start', 'end', 'lease period'], required: true, examples: ['lease term: 12 months', 'duration: January 1 to December 31', 'start date: 01/01/2024'] },
+    { key: 'tenant', terms: ['tenant', 'lessee', 'resident', 'occupant'], required: true, examples: ['tenant: John Smith', 'lessee: ABC Corporation', 'resident: Jane Doe'] },
+    { key: 'property', terms: ['property', 'premises', 'address', 'location'], required: true, examples: ['property: 123 Main St', 'premises: 456 Oak Ave', 'address: 789 Business Blvd'] },
+    { key: 'security_deposit', terms: ['security deposit', 'deposit', 'security'], required: false, examples: ['security deposit: $2,500', 'deposit amount: $3,000'] },
+    { key: 'utilities', terms: ['utilities', 'electric', 'water', 'gas', 'heat'], required: false, examples: ['utilities included', 'tenant pays electric', 'water included'] },
+    { key: 'maintenance', terms: ['maintenance', 'repairs', 'upkeep'], required: false, examples: ['landlord responsible for maintenance', 'tenant handles minor repairs'] },
+    { key: 'termination', terms: ['termination', 'eviction', 'end of lease'], required: false, examples: ['30-day notice required', 'eviction procedures', 'early termination'] },
+    { key: 'late_fees', terms: ['late fee', 'late payment', 'penalty'], required: false, examples: ['late fee: $100', 'penalty for late payment'] },
+    { key: 'pets', terms: ['pets', 'animals', 'dog', 'cat'], required: false, examples: ['no pets allowed', 'pets permitted with deposit', 'pet policy'] },
+    { key: 'smoking', terms: ['smoking', 'tobacco', 'cigarette'], required: false, examples: ['no smoking', 'smoking prohibited', 'tobacco use policy'] }
   ];
   
   const missingEssential = essentialSections.filter(section => {
@@ -687,13 +687,14 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
   
   if (missingEssential.length > 0) {
     missingSections.push(...missingEssential.map(section => 
-      `Missing required section: ${section.key.replace('_', ' ').toUpperCase()}`
+      `MISSING REQUIRED: ${section.key.replace('_', ' ').toUpperCase()} - Document does not specify ${section.key.replace('_', ' ')}. Examples: ${section.examples.join(', ')}`
     ));
     overallScore -= missingEssential.length * 8;
   }
   
   if (missingOptional.length > 3) {
-    formattingProblems.push(`Missing ${missingOptional.length} common lease sections`);
+    const missingList = missingOptional.map(section => section.key.replace('_', ' ')).join(', ');
+    formattingProblems.push(`MISSING OPTIONAL SECTIONS: ${missingList} - Consider adding these common lease provisions for better protection`);
     overallScore -= 5;
   }
   
@@ -709,13 +710,14 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
   ).length;
   
   const legalTermPercentage = (legalTermCount / legalTerms.length) * 100;
+  const missingLegalTerms = legalTerms.filter(term => !leaseText.toLowerCase().includes(term));
   
   if (legalTermPercentage < 30) {
-    issues.push('Document lacks sufficient legal terminology for a formal lease agreement');
-    professionalStandards.push('Consider adding more formal legal language');
+    issues.push(`INSUFFICIENT LEGAL TERMINOLOGY: Document contains only ${legalTermCount}/${legalTerms.length} legal terms (${legalTermPercentage.toFixed(1)}%). Missing: ${missingLegalTerms.slice(0, 5).join(', ')}${missingLegalTerms.length > 5 ? ' and others' : ''}`);
+    professionalStandards.push(`ADD LEGAL LANGUAGE: Include terms like ${missingLegalTerms.slice(0, 3).join(', ')} for formal lease structure`);
     overallScore -= 15;
   } else if (legalTermPercentage < 50) {
-    formattingProblems.push('Document could benefit from more formal legal language');
+    formattingProblems.push(`LEGAL LANGUAGE: Document contains ${legalTermCount}/${legalTerms.length} legal terms (${legalTermPercentage.toFixed(1)}%) - could benefit from more formal language like ${missingLegalTerms.slice(0, 3).join(', ')}`);
     overallScore -= 5;
   }
   
@@ -724,7 +726,7 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
                              /\d+\.\s/.test(leaseText) || /[A-Z]\.\s/.test(leaseText);
   
   if (!hasSectionNumbering) {
-    formattingProblems.push('Document lacks clear section organization');
+    formattingProblems.push('DOCUMENT STRUCTURE: No section numbering found (e.g., "1.", "2.", "Section 1", "§1") - document lacks clear organization');
     readabilityScore -= 10;
   }
   
@@ -742,17 +744,17 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
                        basicData.base_rent !== 'Rent amount not found';
   
   if (!hasTenantName) {
-    issues.push('Tenant name not clearly identified in document');
+    issues.push('TENANT IDENTIFICATION: Tenant name not clearly identified - document should specify "Tenant: [Full Name]" or "Lessee: [Full Name]"');
     overallScore -= 15;
   }
   
   if (!hasPropertyAddress) {
-    issues.push('Property address not clearly specified');
+    issues.push('PROPERTY IDENTIFICATION: Property address not clearly specified - document should include complete address (street, city, state, zip)');
     overallScore -= 15;
   }
   
   if (!hasRentAmount) {
-    issues.push('Rent amount not clearly stated');
+    issues.push('RENT SPECIFICATION: Rent amount not clearly stated - document should specify exact amount (e.g., "Monthly Rent: $2,500" or "Base Rent: $3,000")');
     overallScore -= 15;
   }
   
@@ -765,7 +767,7 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
   
   const hasDates = datePatterns.some(pattern => pattern.test(leaseText));
   if (!hasDates) {
-    formattingProblems.push('No clear date formatting found in document');
+    formattingProblems.push('DATE FORMATTING: No clear date formatting found - document should include dates in formats like "01/01/2024", "2024-01-01", or "January 1, 2024"');
     readabilityScore -= 8;
   }
   
@@ -774,59 +776,88 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
   const hasSignatureBlock = signatureTerms.some(term => leaseText.toLowerCase().includes(term));
   
   if (!hasSignatureBlock) {
-    formattingProblems.push('No signature blocks or execution provisions found');
+    formattingProblems.push('EXECUTION PROVISIONS: No signature blocks or execution provisions found - document should include signature lines, execution date, or notary provisions');
     overallScore -= 10;
   }
   
   // Check for boilerplate language with better context
   const boilerplateTerms = [
-    'entire agreement', 'governing law', 'severability', 'waiver', 'notice',
-    'force majeure', 'assignment', 'amendment', 'modification'
+    { term: 'entire agreement', description: 'merger clause' },
+    { term: 'governing law', description: 'jurisdiction clause' },
+    { term: 'severability', description: 'severability clause' },
+    { term: 'waiver', description: 'waiver provisions' },
+    { term: 'notice', description: 'notice requirements' },
+    { term: 'force majeure', description: 'force majeure clause' },
+    { term: 'assignment', description: 'assignment restrictions' },
+    { term: 'amendment', description: 'amendment procedures' },
+    { term: 'modification', description: 'modification terms' }
   ];
   
-  const missingBoilerplate = boilerplateTerms.filter(term => 
-    !leaseText.toLowerCase().includes(term)
+  const missingBoilerplate = boilerplateTerms.filter(item => 
+    !leaseText.toLowerCase().includes(item.term)
   );
   
   if (missingBoilerplate.length > 5) {
-    professionalStandards.push(`Missing ${missingBoilerplate.length} standard legal provisions`);
+    const missingList = missingBoilerplate.map(item => `${item.term} (${item.description})`).join(', ');
+    professionalStandards.push(`MISSING STANDARD PROVISIONS: ${missingList} - These clauses provide important legal protections`);
     overallScore -= missingBoilerplate.length * 2;
+  }
+  
+  // Check for specific lease provisions
+  const specificProvisions = [
+    { term: 'quiet enjoyment', description: 'tenant right to peaceful possession' },
+    { term: 'habitability', description: 'property condition standards' },
+    { term: 'entry', description: 'landlord access rights' },
+    { term: 'subletting', description: 'sublease restrictions' },
+    { term: 'alterations', description: 'modification restrictions' },
+    { term: 'insurance', description: 'insurance requirements' },
+    { term: 'indemnification', description: 'liability protection' },
+    { term: 'default', description: 'breach procedures' }
+  ];
+  
+  const missingProvisions = specificProvisions.filter(item => 
+    !leaseText.toLowerCase().includes(item.term)
+  );
+  
+  if (missingProvisions.length > 4) {
+    const missingList = missingProvisions.map(item => `${item.term} (${item.description})`).join(', ');
+    formattingProblems.push(`MISSING LEASE PROVISIONS: ${missingList} - These provisions clarify rights and responsibilities`);
   }
   
   // INTELLIGENT RECOMMENDATIONS based on actual issues
   if (overallScore < 40) {
-    recommendations.push('Document requires significant improvement before execution');
-    recommendations.push('Consider consulting with legal counsel for proper lease drafting');
-    recommendations.push('Add missing essential sections and improve legal language');
+    recommendations.push('CRITICAL: Document requires significant improvement before execution');
+    recommendations.push('LEGAL COUNSEL: Consult with attorney for proper lease drafting');
+    recommendations.push('MISSING ESSENTIALS: Add tenant name, property address, rent amount, and lease term');
   } else if (overallScore < 60) {
-    recommendations.push('Document needs substantial improvements for legal adequacy');
-    recommendations.push('Add missing required sections and clarify key terms');
-    recommendations.push('Improve document organization and formatting');
+    recommendations.push('SUBSTANTIAL IMPROVEMENTS: Document needs major revisions for legal adequacy');
+    recommendations.push('REQUIRED SECTIONS: Add missing required sections and clarify key terms');
+    recommendations.push('ORGANIZATION: Improve document structure with numbered sections');
   } else if (overallScore < 80) {
-    recommendations.push('Document is generally adequate but could be improved');
-    recommendations.push('Add missing optional sections for better protection');
-    recommendations.push('Enhance clarity and organization of terms');
+    recommendations.push('MODERATE IMPROVEMENTS: Document is generally adequate but could be enhanced');
+    recommendations.push('OPTIONAL SECTIONS: Add missing optional sections for better protection');
+    recommendations.push('CLARITY: Enhance readability and organization of terms');
   } else {
-    recommendations.push('Document is well-structured and legally adequate');
-    recommendations.push('Review for completeness and ensure all terms are clear');
+    recommendations.push('MINOR REFINEMENTS: Document is well-structured and legally adequate');
+    recommendations.push('REVIEW: Ensure all terms are clearly defined and complete');
   }
   
   // Additional intelligent critiques based on actual content
   if (readabilityScore < 70) {
-    issues.push('Document organization could be improved for better readability');
+    issues.push('READABILITY: Document organization could be improved for better understanding - consider adding section headers and numbered paragraphs');
   }
   
   if (missingSections.length > 3) {
-    issues.push('Document is missing several important lease sections');
+    issues.push('COMPLETENESS: Document is missing several important lease sections - consider adding missing required sections');
   }
   
   // Only add red flags for truly critical issues
   if (overallScore < 50) {
-    redFlags.push('Document may not provide adequate legal protection');
+    redFlags.push('LEGAL PROTECTION: Document may not provide adequate legal protection for landlord or tenant');
   }
   
   if (!hasTenantName || !hasPropertyAddress || !hasRentAmount) {
-    redFlags.push('Critical lease terms are unclear or missing');
+    redFlags.push('CRITICAL TERMS: Essential lease terms (tenant, property, rent) are unclear or missing - document may be unenforceable');
   }
   
   // Ensure scores don't go below 0
