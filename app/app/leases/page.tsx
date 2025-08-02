@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/lib/hooks/useUser'
 import { DocumentTextIcon, EyeIcon, TrashIcon, CheckCircleIcon, ExclamationTriangleIcon, SparklesIcon, CogIcon } from '@heroicons/react/24/outline'
+import STAYLLAnalysisDisplay from '@/components/STAYLLAnalysisDisplay'
 
 interface Lease {
   id: string;
@@ -105,6 +106,46 @@ export default function LeasesPage() {
     } catch (error: any) {
       console.error('AI Analysis error:', error)
       setMessage(`❌ AI Analysis failed: ${error.message}`)
+      setMessageType('error')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const analyzeWithSTAYLL = async () => {
+    if (!selectedFile || !user) return
+
+    setLoading(true)
+    setMessage('🚀 Starting STAYLL AI analysis...')
+    setMessageType('info')
+    setAnalysisResult(null)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      formData.append('propertyType', 'residential') // Default to residential
+
+      console.log('Starting STAYLL AI analysis for:', selectedFile.name)
+
+      const response = await fetch('/api/stayll-analyze', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await response.json()
+      console.log('STAYLL AI Analysis result:', result)
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to analyze lease with STAYLL AI')
+      }
+
+      setAnalysisResult(result)
+      setMessage(`🚀 STAYLL AI Analysis Complete! Risk Level: ${result.analysis?.risk_analysis?.risk_level || 'unknown'}`)
+      setMessageType('success')
+      
+    } catch (error: any) {
+      console.error('STAYLL AI Analysis error:', error)
+      setMessage(`❌ STAYLL AI Analysis failed: ${error.message}`)
       setMessageType('error')
     } finally {
       setLoading(false)
@@ -259,12 +300,21 @@ export default function LeasesPage() {
         {/* Analysis Buttons */}
         <div className="flex flex-wrap gap-3 mb-4">
           <button
+            onClick={analyzeWithSTAYLL}
+            disabled={!selectedFile || loading}
+            className="flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+          >
+            <SparklesIcon className="h-4 w-4 mr-2" />
+            {loading ? '🚀 STAYLL AI Analyzing...' : '🚀 STAYLL AI Analysis'}
+          </button>
+
+          <button
             onClick={analyzeWithAI}
             disabled={!selectedFile || loading}
             className="flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <SparklesIcon className="h-4 w-4 mr-2" />
-            {loading ? '🤖 Analyzing...' : '🚀 Analyze with AI'}
+            {loading ? '🤖 Analyzing...' : '🤖 Basic AI Analysis'}
           </button>
 
           <button
@@ -309,6 +359,13 @@ export default function LeasesPage() {
             'bg-blue-50 text-blue-700 border border-blue-200'
           }`}>
             {message}
+          </div>
+        )}
+
+        {/* STAYLL AI Analysis Results */}
+        {analysisResult && analysisResult.analysis && (
+          <div className="mt-6">
+            <STAYLLAnalysisDisplay analysis={analysisResult} />
           </div>
         )}
 

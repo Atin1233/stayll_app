@@ -11,6 +11,8 @@ export interface LeaseData {
   parking?: string;
   pets?: string;
   smoking?: string;
+  stayll_analysis?: any; // STAYLL AI analysis results
+  confidence_score?: number; // STAYLL confidence score
 }
 
 export interface AnalysisResult {
@@ -70,8 +72,24 @@ export async function analyzeLeasePDF(file: File): Promise<AnalysisResult> {
       };
     }
     
-    // Extract data from the actual PDF text
+    // Extract basic data from the actual PDF text
     const analysis = extractLeaseData(text);
+    
+    // 🚀 NEW: Integrate STAYLL AI Engine for advanced analysis
+    try {
+      const { analyzeLeaseWithSTAYLL } = await import('./stayllAI');
+      const stayllAnalysis = await analyzeLeaseWithSTAYLL(text, 'residential');
+      
+      // Enhance the basic analysis with STAYLL insights
+      analysis.stayll_analysis = stayllAnalysis;
+      analysis.confidence_score = stayllAnalysis.confidence_score;
+      
+      console.log('🤖 STAYLL AI analysis completed successfully');
+      
+    } catch (stayllError) {
+      console.warn('STAYLL AI analysis failed, using basic analysis:', stayllError);
+      // Continue with basic analysis if STAYLL fails
+    }
     
     return {
       success: true,
