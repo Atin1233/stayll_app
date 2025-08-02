@@ -216,6 +216,42 @@ export default function LeasesPage() {
     }
   }
 
+  const diagnoseStorage = async () => {
+    try {
+      setMessage('🔍 Running comprehensive storage diagnosis...')
+      setMessageType('info')
+      
+      const response = await fetch('/api/diagnose-storage')
+      const result = await response.json()
+      
+      if (response.ok && result.success) {
+        setMessage(`✅ Storage Diagnosis: All systems working!`)
+        setMessageType('success')
+        console.log('Full diagnosis:', result.diagnosis)
+      } else {
+        const summary = result.summary || {}
+        const issues = []
+        if (!summary.bucket_listing_works) issues.push('Cannot list buckets')
+        if (!summary.leases_bucket_exists) issues.push('Leases bucket missing')
+        if (!summary.uploads_work) issues.push('Uploads blocked')
+        
+        setMessage(`❌ Storage Issues: ${issues.join(', ')}`)
+        setMessageType('error')
+        
+        // Show detailed recommendations
+        if (result.diagnosis?.recommendations) {
+          console.log('Storage Recommendations:', result.diagnosis.recommendations)
+        }
+        
+        // Show full diagnosis in console for debugging
+        console.log('Full storage diagnosis:', result)
+      }
+    } catch (error: any) {
+      setMessage(`❌ Diagnosis failed: ${error.message}`)
+      setMessageType('error')
+    }
+  }
+
   return (
     <div>
       <div className="mb-8">
@@ -298,6 +334,14 @@ export default function LeasesPage() {
           >
             <CogIcon className="h-4 w-4 mr-2" />
             🔍 Check Policies
+          </button>
+
+          <button
+            onClick={diagnoseStorage}
+            className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+          >
+            <CogIcon className="h-4 w-4 mr-2" />
+            🔍 Diagnose Storage
           </button>
         </div>
 
