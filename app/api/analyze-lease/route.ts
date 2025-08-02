@@ -37,8 +37,11 @@ export async function POST(request: NextRequest) {
 
     if (!analysis.success) {
       console.error('PDF analysis failed:', analysis.errors);
+      const errorMessage = analysis.errors && analysis.errors.length > 0 
+        ? analysis.errors.join(', ') 
+        : 'Unknown PDF analysis error';
       return NextResponse.json(
-        { error: 'Failed to analyze PDF', details: analysis.errors },
+        { error: `Failed to analyze PDF: ${errorMessage}`, details: analysis.errors },
         { status: 500 }
       );
     }
@@ -110,8 +113,9 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Lease analysis error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: `Internal server error: ${errorMessage}` },
       { status: 500 }
     );
   }
