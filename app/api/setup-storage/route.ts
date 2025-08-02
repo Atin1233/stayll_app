@@ -46,6 +46,19 @@ export async function POST() {
 
     if (createError) {
       console.error('Error creating bucket:', createError);
+      
+      // Check if it's an RLS policy error
+      if (createError.message.includes('row-level security policy')) {
+        return NextResponse.json(
+          { 
+            error: 'RLS policy error: Cannot create bucket due to security policies. Please create the bucket manually in Supabase dashboard or disable RLS for storage.',
+            details: createError.message,
+            solution: 'See SUPABASE_STORAGE_SETUP.md for manual setup instructions'
+          },
+          { status: 500 }
+        );
+      }
+      
       return NextResponse.json(
         { error: `Failed to create bucket: ${createError.message}` },
         { status: 500 }
