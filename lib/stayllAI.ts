@@ -525,14 +525,22 @@ function calculateConfidenceScore(clauses: ClauseAnalysis[], basicData: any): nu
 }
 
 function generateLeaseSummary(basicData: any, riskAnalysis: RiskAnalysis) {
+  let legalStrength: 'weak' | 'neutral' | 'strong';
+  
+  if (riskAnalysis.risk_level === 'critical' || riskAnalysis.risk_level === 'high') {
+    legalStrength = 'weak';
+  } else if (riskAnalysis.risk_level === 'medium') {
+    legalStrength = 'neutral';
+  } else {
+    legalStrength = 'strong';
+  }
+  
   return {
     property_address: basicData.property_address,
     tenant_name: basicData.tenant_name,
     lease_term: `${basicData.lease_start} to ${basicData.lease_end}`,
     base_rent: basicData.base_rent,
     total_value: 'Calculated from rent and term',
-    legal_strength: riskAnalysis.risk_level === 'critical' ? 'weak' : 
-                   riskAnalysis.risk_level === 'high' ? 'weak' : 
-                   riskAnalysis.risk_level === 'medium' ? 'neutral' : 'strong'
+    legal_strength: legalStrength
   };
 } 
