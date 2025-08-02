@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useUser } from '@/lib/hooks/useUser'
-import { DocumentTextIcon, EyeIcon, TrashIcon, CheckCircleIcon, ExclamationTriangleIcon, SparklesIcon, CogIcon } from '@heroicons/react/24/outline'
+import { DocumentTextIcon, EyeIcon, TrashIcon, CheckCircleIcon, ExclamationTriangleIcon, SparklesIcon, CogIcon, ChartBarIcon, ShieldCheckIcon, ClockIcon } from '@heroicons/react/24/outline'
 import STAYLLAnalysisDisplay from '@/components/STAYLLAnalysisDisplay'
 
 interface Lease {
@@ -32,6 +32,7 @@ export default function LeasesPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [analysisResult, setAnalysisResult] = useState<any>(null)
   const [showDebug, setShowDebug] = useState(false)
+  const [activeTab, setActiveTab] = useState<'analysis' | 'portfolio' | 'reports' | 'settings'>('analysis')
   const { user } = useUser()
 
   // Load existing leases
@@ -69,20 +70,18 @@ export default function LeasesPage() {
     }
   }
 
-
-
   const analyzeWithSTAYLL = async () => {
     if (!selectedFile || !user) return
 
     setLoading(true)
-    setMessage('🚀 Starting STAYLL AI analysis...')
+    setMessage('Initializing STAYLL AI analysis engine...')
     setMessageType('info')
     setAnalysisResult(null)
 
     try {
       const formData = new FormData()
       formData.append('file', selectedFile)
-      formData.append('propertyType', 'residential') // Default to residential
+      formData.append('propertyType', 'residential')
 
       console.log('Starting STAYLL AI analysis for:', selectedFile.name)
 
@@ -99,12 +98,12 @@ export default function LeasesPage() {
       }
 
       setAnalysisResult(result)
-      setMessage(`🚀 STAYLL AI Analysis Complete! Risk Level: ${result.analysis?.risk_analysis?.risk_level || 'unknown'}`)
+      setMessage(`Analysis complete. Risk level: ${result.analysis?.risk_analysis?.risk_level || 'unknown'}`)
       setMessageType('success')
       
     } catch (error: any) {
       console.error('STAYLL AI Analysis error:', error)
-      setMessage(`❌ STAYLL AI Analysis failed: ${error.message}`)
+      setMessage(`Analysis failed: ${error.message}`)
       setMessageType('error')
     } finally {
       setLoading(false)
@@ -115,7 +114,7 @@ export default function LeasesPage() {
     if (!selectedFile) return
 
     setLoading(true)
-    setMessage('🔍 Testing basic analysis...')
+    setMessage('Executing PDF parsing validation...')
     setMessageType('info')
     setAnalysisResult(null)
 
@@ -136,12 +135,12 @@ export default function LeasesPage() {
       }
 
       setAnalysisResult(result)
-      setMessage(`✅ Basic Analysis Complete! Confidence: ${result.analysis?.confidence || 0}%`)
+      setMessage(`PDF parsing validation complete. Confidence: ${result.analysis?.confidence || 0}%`)
       setMessageType('success')
       
     } catch (error: any) {
       console.error('Basic analysis error:', error)
-      setMessage(`❌ Basic analysis failed: ${error.message}`)
+      setMessage(`PDF parsing failed: ${error.message}`)
       setMessageType('error')
     } finally {
       setLoading(false)
@@ -150,311 +149,416 @@ export default function LeasesPage() {
 
   const testStorage = async () => {
     try {
-      setMessage('🗄️ Testing storage...')
+      setMessage('Validating storage infrastructure...')
       setMessageType('info')
       
       const response = await fetch('/api/test-storage')
       const result = await response.json()
       
       if (response.ok) {
-        setMessage(`✅ Storage OK: ${result.message}`)
+        setMessage(`Storage validation successful: ${result.message}`)
         setMessageType('success')
       } else {
-        setMessage(`❌ Storage Error: ${result.error}`)
+        setMessage(`Storage validation failed: ${result.error}`)
         setMessageType('error')
       }
     } catch (error: any) {
-      setMessage(`❌ Storage test failed: ${error.message}`)
+      setMessage(`Storage validation error: ${error.message}`)
       setMessageType('error')
     }
   }
 
   const setupStorage = async () => {
     try {
-      setMessage('🔧 Setting up storage...')
+      setMessage('Initializing storage infrastructure...')
       setMessageType('info')
       
       const response = await fetch('/api/setup-storage', { method: 'POST' })
       const result = await response.json()
       
       if (response.ok) {
-        setMessage(`✅ Storage Setup: ${result.message}`)
+        setMessage(`Storage initialization: ${result.message}`)
         setMessageType('success')
       } else {
-        setMessage(`❌ Storage Setup Error: ${result.error}`)
+        setMessage(`Storage initialization failed: ${result.error}`)
         setMessageType('error')
       }
     } catch (error: any) {
-      setMessage(`❌ Storage setup failed: ${error.message}`)
+      setMessage(`Storage initialization error: ${error.message}`)
       setMessageType('error')
     }
   }
 
   const checkStoragePolicies = async () => {
     try {
-      setMessage('🔍 Checking storage policies...')
+      setMessage('Analyzing storage security policies...')
       setMessageType('info')
       
       const response = await fetch('/api/check-storage-policies')
       const result = await response.json()
       
       if (response.ok && result.success) {
-        setMessage(`✅ Storage Policies OK: ${result.uploadTest.success ? 'Uploads work' : 'Upload test failed'}`)
+        setMessage(`Security policy validation: ${result.uploadTest.success ? 'All policies compliant' : 'Policy violations detected'}`)
         setMessageType('success')
       } else {
-        setMessage(`❌ Storage Policy Issue: ${result.uploadTest?.error || result.error}`)
+        setMessage(`Security policy analysis failed: ${result.uploadTest?.error || result.error}`)
         setMessageType('error')
         
-        // Show suggestions in debug mode
         if (result.suggestions) {
-          console.log('Storage Policy Suggestions:', result.suggestions)
+          console.log('Policy recommendations:', result.suggestions)
         }
       }
     } catch (error: any) {
-      setMessage(`❌ Policy check failed: ${error.message}`)
+      setMessage(`Policy analysis error: ${error.message}`)
       setMessageType('error')
     }
   }
 
   const diagnoseStorage = async () => {
     try {
-      setMessage('🔍 Running comprehensive storage diagnosis...')
+      setMessage('Executing comprehensive infrastructure diagnostics...')
       setMessageType('info')
       
       const response = await fetch('/api/diagnose-storage')
       const result = await response.json()
       
       if (response.ok && result.success) {
-        setMessage(`✅ Storage Diagnosis: All systems working!`)
+        setMessage(`Infrastructure diagnostics: All systems operational`)
         setMessageType('success')
         console.log('Full diagnosis:', result.diagnosis)
       } else {
         const summary = result.summary || {}
         const issues = []
-        if (!summary.bucket_listing_works) issues.push('Cannot list buckets')
-        if (!summary.leases_bucket_exists) issues.push('Leases bucket missing')
-        if (!summary.uploads_work) issues.push('Uploads blocked')
+        if (!summary.bucket_listing_works) issues.push('Bucket enumeration failure')
+        if (!summary.leases_bucket_exists) issues.push('Storage container missing')
+        if (!summary.uploads_work) issues.push('Write permissions blocked')
         
-        setMessage(`❌ Storage Issues: ${issues.join(', ')}`)
+        setMessage(`Infrastructure issues detected: ${issues.join(', ')}`)
         setMessageType('error')
         
-        // Show detailed recommendations
         if (result.diagnosis?.recommendations) {
-          console.log('Storage Recommendations:', result.diagnosis.recommendations)
+          console.log('Infrastructure recommendations:', result.diagnosis.recommendations)
         }
         
-        // Show full diagnosis in console for debugging
-        console.log('Full storage diagnosis:', result)
+        console.log('Full infrastructure diagnosis:', result)
       }
     } catch (error: any) {
-      setMessage(`❌ Diagnosis failed: ${error.message}`)
+      setMessage(`Diagnostic execution error: ${error.message}`)
       setMessageType('error')
     }
   }
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-gray-900">🚀 STAYLL AI Lease Analysis</h1>
-        <p className="mt-2 text-sm text-gray-600">
-          Upload lease PDFs and get comprehensive AI-powered analysis with risk detection, recommendations, and market insights.
-        </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Enterprise Header */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">STAYLL Enterprise Lease Intelligence Platform</h1>
+              <p className="mt-1 text-sm text-gray-500">
+                Advanced AI-powered lease analysis and portfolio management
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center text-sm text-gray-500">
+                <ChartBarIcon className="h-4 w-4 mr-1" />
+                {leases.length} Active Leases
+              </div>
+              <div className="flex items-center text-sm text-gray-500">
+                <ShieldCheckIcon className="h-4 w-4 mr-1" />
+                Enterprise Security
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Upload & Analysis Section */}
-      <div className="mb-8 bg-white shadow rounded-lg p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-medium text-gray-900">Upload & Analyze with STAYLL AI</h2>
-          <button
-            onClick={() => setShowDebug(!showDebug)}
-            className="flex items-center text-sm text-gray-600 hover:text-gray-900"
-          >
-            <CogIcon className="h-4 w-4 mr-1" />
-            {showDebug ? 'Hide' : 'Show'} Debug
-          </button>
+      {/* Navigation Tabs */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            {[
+              { id: 'analysis', name: 'Lease Analysis', icon: DocumentTextIcon },
+              { id: 'portfolio', name: 'Portfolio Overview', icon: ChartBarIcon },
+              { id: 'reports', name: 'Risk Reports', icon: ShieldCheckIcon },
+              { id: 'settings', name: 'System Configuration', icon: CogIcon }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center ${
+                  activeTab === tab.id
+                    ? 'border-indigo-500 text-indigo-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <tab.icon className="h-4 w-4 mr-2" />
+                {tab.name}
+              </button>
+            ))}
+          </nav>
         </div>
+      </div>
 
-        {/* File Upload */}
-        <div className="mb-4">
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={handleFileSelect}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-          />
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'analysis' && (
+          <div className="space-y-8">
+            {/* Analysis Engine Section */}
+            <div className="bg-white shadow-lg rounded-lg border border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold text-gray-900">Advanced Lease Analysis Engine</h2>
+                  <button
+                    onClick={() => setShowDebug(!showDebug)}
+                    className="flex items-center text-sm text-gray-600 hover:text-gray-900"
+                  >
+                    <CogIcon className="h-4 w-4 mr-1" />
+                    {showDebug ? 'Hide' : 'Show'} System Diagnostics
+                  </button>
+                </div>
+              </div>
 
-        {selectedFile && (
-          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
-            <p className="text-sm text-blue-800">
-              <strong>Selected:</strong> {selectedFile.name} ({Math.round(selectedFile.size / 1024)} KB)
-            </p>
-          </div>
-        )}
+              <div className="p-6">
+                {/* File Upload Interface */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Document Upload
+                  </label>
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileSelect}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                  />
+                </div>
 
-        {/* Analysis Buttons */}
-        <div className="flex flex-wrap gap-3 mb-4">
-          <button
-            onClick={analyzeWithSTAYLL}
-            disabled={!selectedFile || loading}
-            className="flex items-center px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-lg px-6 py-3"
-          >
-            <SparklesIcon className="h-5 w-5 mr-2" />
-            {loading ? '🚀 STAYLL AI Analyzing...' : '🚀 STAYLL AI Analysis'}
-          </button>
+                {selectedFile && (
+                  <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-md">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          Selected Document: {selectedFile.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Size: {Math.round(selectedFile.size / 1024)} KB | Type: PDF
+                        </p>
+                      </div>
+                      <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                    </div>
+                  </div>
+                )}
 
-          <button
-            onClick={testBasicAnalysis}
-            disabled={!selectedFile || loading}
-            className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <DocumentTextIcon className="h-4 w-4 mr-2" />
-            {loading ? 'Testing...' : '🔍 Test PDF Parsing'}
-          </button>
+                {/* Analysis Controls */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                  <button
+                    onClick={analyzeWithSTAYLL}
+                    disabled={!selectedFile || loading}
+                    className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium rounded-md hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    <SparklesIcon className="h-5 w-5 mr-2" />
+                    {loading ? 'Executing Analysis...' : 'Execute STAYLL AI Analysis'}
+                  </button>
 
-          <button
-            onClick={testStorage}
-            className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-          >
-            <CogIcon className="h-4 w-4 mr-2" />
-            🗄️ Test Storage
-          </button>
+                  <button
+                    onClick={testBasicAnalysis}
+                    disabled={!selectedFile || loading}
+                    className="flex items-center justify-center px-6 py-3 bg-gray-600 text-white font-medium rounded-md hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    <DocumentTextIcon className="h-5 w-5 mr-2" />
+                    {loading ? 'Validating...' : 'Validate PDF Parsing'}
+                  </button>
+                </div>
 
-          <button
-            onClick={setupStorage}
-            className="flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
-          >
-            <CogIcon className="h-4 w-4 mr-2" />
-            🔧 Setup Storage
-          </button>
+                {/* System Diagnostics */}
+                {showDebug && (
+                  <div className="border-t border-gray-200 pt-6">
+                    <h3 className="text-sm font-medium text-gray-900 mb-4">System Infrastructure Diagnostics</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      <button
+                        onClick={testStorage}
+                        className="flex items-center justify-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700 transition-colors"
+                      >
+                        <CogIcon className="h-4 w-4 mr-1" />
+                        Validate Storage
+                      </button>
 
-          <button
-            onClick={checkStoragePolicies}
-            className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-          >
-            <CogIcon className="h-4 w-4 mr-2" />
-            🔍 Check Policies
-          </button>
+                      <button
+                        onClick={setupStorage}
+                        className="flex items-center justify-center px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded-md hover:bg-orange-700 transition-colors"
+                      >
+                        <CogIcon className="h-4 w-4 mr-1" />
+                        Initialize Storage
+                      </button>
 
-          <button
-            onClick={diagnoseStorage}
-            className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-          >
-            <CogIcon className="h-4 w-4 mr-2" />
-            🔍 Diagnose Storage
-          </button>
-        </div>
+                      <button
+                        onClick={checkStoragePolicies}
+                        className="flex items-center justify-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-md hover:bg-purple-700 transition-colors"
+                      >
+                        <ShieldCheckIcon className="h-4 w-4 mr-1" />
+                        Security Policies
+                      </button>
 
-        {/* Status Message */}
-        {message && (
-          <div className={`p-4 rounded-md ${
-            messageType === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 
-            messageType === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 
-            'bg-blue-50 text-blue-700 border border-blue-200'
-          }`}>
-            {message}
-          </div>
-        )}
+                      <button
+                        onClick={diagnoseStorage}
+                        className="flex items-center justify-center px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors"
+                      >
+                        <CogIcon className="h-4 w-4 mr-1" />
+                        Full Diagnostics
+                      </button>
+                    </div>
+                  </div>
+                )}
 
-        {/* STAYLL AI Analysis Results */}
-        {analysisResult && analysisResult.analysis && (
-          <div className="mt-6">
-            <STAYLLAnalysisDisplay analysis={analysisResult} />
-          </div>
-        )}
+                {/* Status Messages */}
+                {message && (
+                  <div className={`mt-4 p-4 rounded-md border ${
+                    messageType === 'error' ? 'bg-red-50 text-red-700 border-red-200' : 
+                    messageType === 'success' ? 'bg-green-50 text-green-700 border-green-200' : 
+                    'bg-blue-50 text-blue-700 border-blue-200'
+                  }`}>
+                    <div className="flex items-center">
+                      {messageType === 'error' ? (
+                        <ExclamationTriangleIcon className="h-4 w-4 mr-2" />
+                      ) : messageType === 'success' ? (
+                        <CheckCircleIcon className="h-4 w-4 mr-2" />
+                      ) : (
+                        <ClockIcon className="h-4 w-4 mr-2" />
+                      )}
+                      <span className="text-sm font-medium">{message}</span>
+                    </div>
+                  </div>
+                )}
 
-        {/* Debug Results */}
-        {showDebug && analysisResult && (
-          <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded">
-            <h3 className="font-semibold text-gray-900 mb-2">🔍 Analysis Results:</h3>
-            <div className="text-sm text-gray-700">
-              <pre className="whitespace-pre-wrap overflow-auto max-h-64">
-                {JSON.stringify(analysisResult, null, 2)}
-              </pre>
+                {/* Analysis Results */}
+                {analysisResult && analysisResult.analysis && (
+                  <div className="mt-6">
+                    <STAYLLAnalysisDisplay analysis={analysisResult} />
+                  </div>
+                )}
+
+                {/* Debug Results */}
+                {showDebug && analysisResult && (
+                  <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-md">
+                    <h3 className="font-medium text-gray-900 mb-2">System Response Data:</h3>
+                    <div className="text-sm text-gray-700">
+                      <pre className="whitespace-pre-wrap overflow-auto max-h-64">
+                        {JSON.stringify(analysisResult, null, 2)}
+                      </pre>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Portfolio Overview */}
+            <div className="bg-white shadow-lg rounded-lg border border-gray-200">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Lease Portfolio Management</h2>
+              </div>
+              
+              <div className="p-6">
+                {leases.length === 0 ? (
+                  <div className="text-center py-12">
+                    <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">No analyzed leases</h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Upload your first lease document to begin portfolio analysis.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="overflow-hidden">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Tenant
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Property
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Monthly Rent
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Lease Term
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {leases.map((lease) => (
+                          <tr key={lease.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">
+                                {lease.tenant_name}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{lease.property_address}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{lease.monthly_rent}</div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">
+                                {lease.lease_start} - {lease.lease_end}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                {lease.confidence_score && lease.confidence_score >= 70 ? (
+                                  <CheckCircleIcon className="h-4 w-4 text-green-500 mr-1" />
+                                ) : (
+                                  <ExclamationTriangleIcon className="h-4 w-4 text-yellow-500 mr-1" />
+                                )}
+                                <span className="text-xs text-gray-500">
+                                  {lease.confidence_score || 0}% confidence
+                                </span>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <button className="text-indigo-600 hover:text-indigo-900 mr-3">
+                                <EyeIcon className="h-4 w-4" />
+                              </button>
+                              <button className="text-red-600 hover:text-red-900">
+                                <TrashIcon className="h-4 w-4" />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
-      </div>
 
-      {/* Leases List */}
-      <div className="bg-white shadow rounded-lg">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-medium text-gray-900">Your Analyzed Leases ({leases.length})</h2>
-        </div>
-        
-        {leases.length === 0 ? (
-          <div className="p-8 text-center">
-            <DocumentTextIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No leases analyzed yet</h3>
-            <p className="mt-1 text-sm text-gray-500">Upload your first lease PDF above to get AI-powered analysis.</p>
+        {activeTab === 'portfolio' && (
+          <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Portfolio Overview</h2>
+            <p className="text-gray-500">Advanced portfolio analytics and risk assessment dashboard coming soon.</p>
           </div>
-        ) : (
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">
-            <ul className="divide-y divide-gray-200">
-              {leases.map((lease) => (
-                <li key={lease.id}>
-                  <div className="px-4 py-4 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                          <DocumentTextIcon className="h-8 w-8 text-blue-500" />
-                        </div>
-                        <div className="ml-4">
-                          <div className="flex items-center">
-                            <p className="text-sm font-medium text-gray-900">
-                              {lease.tenant_name}
-                            </p>
-                            {lease.confidence_score && (
-                              <div className="ml-2 flex items-center">
-                                {lease.confidence_score >= 70 ? (
-                                  <CheckCircleIcon className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <ExclamationTriangleIcon className="h-4 w-4 text-yellow-500" />
-                                )}
-                                <span className="ml-1 text-xs text-gray-500">
-                                  {lease.confidence_score}% confidence
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="mt-1 flex items-center text-sm text-gray-500">
-                            <p>{lease.property_address}</p>
-                          </div>
-                          <div className="mt-1 flex items-center text-sm text-gray-500">
-                            <p className="mr-4">Rent: {lease.monthly_rent}</p>
-                            <p className="mr-4">Due: {lease.due_date}</p>
-                            <p>Late Fee: {lease.late_fee}</p>
-                          </div>
-                          {lease.security_deposit && (
-                            <div className="mt-1 text-sm text-gray-500">
-                              <p>Security Deposit: {lease.security_deposit}</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <button className="text-blue-600 hover:text-blue-900">
-                          <EyeIcon className="h-5 w-5" />
-                        </button>
-                        <button className="text-red-600 hover:text-red-900">
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="mt-2 sm:flex sm:justify-between">
-                      <div className="sm:flex">
-                        <p className="flex items-center text-sm text-gray-500">
-                          Lease: {lease.lease_start} to {lease.lease_end}
-                        </p>
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                        <p>Uploaded: {new Date(lease.created_at).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+        )}
+
+        {activeTab === 'reports' && (
+          <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Risk Reports</h2>
+            <p className="text-gray-500">Comprehensive risk analysis and compliance reporting system coming soon.</p>
+          </div>
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">System Configuration</h2>
+            <p className="text-gray-500">Advanced system settings and integration management coming soon.</p>
           </div>
         )}
       </div>
