@@ -78,7 +78,7 @@ export async function analyzeLeasePDF(file: File): Promise<AnalysisResult> {
     // 🚀 NEW: Integrate STAYLL AI Engine for advanced analysis
     try {
       const { analyzeLeaseWithSTAYLL } = await import('./stayllAI');
-      const stayllAnalysis = await analyzeLeaseWithSTAYLL(text, 'residential');
+      const stayllAnalysis = await analyzeLeaseWithSTAYLL(text);
       
       // Enhance the basic analysis with STAYLL insights
       analysis.stayll_analysis = stayllAnalysis;
