@@ -31,11 +31,41 @@ export async function GET() {
       );
     }
 
+    // Test if we can upload a small test file
+    console.log('Testing file upload to leases bucket...');
+    const testFileName = `test-${Date.now()}.txt`;
+    const testContent = 'Test file for storage verification';
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('leases')
+      .upload(testFileName, testContent, {
+        contentType: 'text/plain'
+      });
+
+    if (uploadError) {
+      console.error('Upload test error:', uploadError);
+      return NextResponse.json(
+        { 
+          error: `Upload test failed: ${uploadError.message}`,
+          details: uploadError,
+          bucket: leasesBucket,
+          suggestion: 'Check RLS policies for the leases bucket'
+        },
+        { status: 500 }
+      );
+    }
+
+    // Clean up test file
+    await supabase.storage
+      .from('leases')
+      .remove([testFileName]);
+
     return NextResponse.json({
       success: true,
-      message: 'Storage is properly configured',
+      message: 'Storage is properly configured and uploads work',
       buckets: buckets?.map(b => b.name),
-      leasesBucket: leasesBucket
+      leasesBucket: leasesBucket,
+      uploadTest: 'Passed'
     });
 
   } catch (error) {

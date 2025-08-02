@@ -190,6 +190,32 @@ export default function LeasesPage() {
     }
   }
 
+  const checkStoragePolicies = async () => {
+    try {
+      setMessage('🔍 Checking storage policies...')
+      setMessageType('info')
+      
+      const response = await fetch('/api/check-storage-policies')
+      const result = await response.json()
+      
+      if (response.ok && result.success) {
+        setMessage(`✅ Storage Policies OK: ${result.uploadTest.success ? 'Uploads work' : 'Upload test failed'}`)
+        setMessageType('success')
+      } else {
+        setMessage(`❌ Storage Policy Issue: ${result.uploadTest?.error || result.error}`)
+        setMessageType('error')
+        
+        // Show suggestions in debug mode
+        if (result.suggestions) {
+          console.log('Storage Policy Suggestions:', result.suggestions)
+        }
+      }
+    } catch (error: any) {
+      setMessage(`❌ Policy check failed: ${error.message}`)
+      setMessageType('error')
+    }
+  }
+
   return (
     <div>
       <div className="mb-8">
@@ -264,6 +290,14 @@ export default function LeasesPage() {
           >
             <CogIcon className="h-4 w-4 mr-2" />
             🔧 Setup Storage
+          </button>
+
+          <button
+            onClick={checkStoragePolicies}
+            className="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+          >
+            <CogIcon className="h-4 w-4 mr-2" />
+            🔍 Check Policies
           </button>
         </div>
 
