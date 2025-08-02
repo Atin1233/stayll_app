@@ -29,8 +29,7 @@ export async function GET() {
       if (bucketsError) {
         diagnosis.bucket_listing = {
           success: false,
-          error: bucketsError.message,
-          code: bucketsError.code
+          error: bucketsError.message
         };
         diagnosis.recommendations.push('Cannot list buckets - check Supabase configuration');
       } else {
@@ -86,7 +85,6 @@ export async function GET() {
           diagnosis.upload_test = {
             success: false,
             error: uploadError.message,
-            code: uploadError.code,
             details: uploadError
           };
           
