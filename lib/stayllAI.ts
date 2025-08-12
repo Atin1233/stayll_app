@@ -61,6 +61,36 @@ export interface STAYLLAnalysis {
   };
   format_analysis: FormatAnalysis;
   confidence_score: number;
+  portfolio_impact: {
+    revenue_impact: {
+      annual_revenue: number;
+      total_lease_value: number;
+      monthly_cash_flow: number;
+      roi_estimate: string;
+    };
+    risk_exposure: {
+      total_risk_value: number;
+      portfolio_risk_contribution: string;
+      diversification_impact: string;
+    };
+    market_positioning: {
+      rent_per_sqft: string;
+      competitive_position: string;
+      growth_potential: string;
+    };
+  };
+  compliance_assessment: {
+    compliance_score: number;
+    compliance_issues: string[];
+    regulatory_requirements: string[];
+    recommended_actions: string[];
+  };
+  strategic_recommendations: {
+    immediate_actions: string[];
+    strategic_planning: string[];
+    long_term_vision: string[];
+    portfolio_optimization: string[];
+  };
 }
 
 // AI Clause Classification Patterns
@@ -246,21 +276,33 @@ export async function analyzeLeaseWithSTAYLL(leaseText: string): Promise<STAYLLA
   const actionItems = generateActionItems(riskAnalysis, basicData);
   console.log('STAYLL AI: Action items generated');
   
-  // Analyze lease format and completeness BRUTALLY
+  // Analyze lease format and completeness
   const formatAnalysis = analyzeLeaseFormatBrutally(leaseText, basicData);
   console.log('STAYLL AI: Format analysis complete - Score:', formatAnalysis.overall_score);
   
-  // Generate market insights
+  // Generate market insights with portfolio context
   const marketInsights = generateMarketInsights(basicData);
   console.log('STAYLL AI: Market insights generated');
   
-  // Generate lease summary
+  // Generate comprehensive lease summary
   const leaseSummary = generateLeaseSummary(basicData, formatAnalysis);
   console.log('STAYLL AI: Lease summary generated');
   
   // Calculate confidence score
   const confidenceScore = calculateConfidenceScore(clauses, basicData);
   console.log('STAYLL AI: Confidence score calculated:', confidenceScore);
+  
+  // Generate portfolio impact analysis
+  const portfolioImpact = generatePortfolioImpact(basicData, riskAnalysis);
+  console.log('STAYLL AI: Portfolio impact analysis complete');
+  
+  // Generate compliance assessment
+  const complianceAssessment = generateComplianceAssessment(leaseText, basicData);
+  console.log('STAYLL AI: Compliance assessment complete');
+  
+  // Generate strategic recommendations
+  const strategicRecommendations = generateStrategicRecommendations(basicData, marketInsights, riskAnalysis);
+  console.log('STAYLL AI: Strategic recommendations generated');
   
   return {
     lease_summary: leaseSummary,
@@ -269,7 +311,10 @@ export async function analyzeLeaseWithSTAYLL(leaseText: string): Promise<STAYLLA
     action_items: actionItems,
     market_insights: marketInsights,
     format_analysis: formatAnalysis,
-    confidence_score: confidenceScore
+    confidence_score: confidenceScore,
+    portfolio_impact: portfolioImpact,
+    compliance_assessment: complianceAssessment,
+    strategic_recommendations: strategicRecommendations
   };
 }
 
@@ -873,5 +918,147 @@ function analyzeLeaseFormatBrutally(leaseText: string, basicData: any): FormatAn
     professional_standards: professionalStandards,
     red_flags: redFlags,
     recommendations: recommendations
+  };
+} 
+
+function generatePortfolioImpact(basicData: any, riskAnalysis: any) {
+  const rentAmount = parseFloat(basicData.base_rent?.replace(/[$,]/g, '') || '0');
+  const leaseTerm = parseInt(basicData.lease_term?.replace(/\D/g, '') || '12');
+  
+  return {
+    revenue_impact: {
+      annual_revenue: rentAmount * 12,
+      total_lease_value: rentAmount * leaseTerm,
+      monthly_cash_flow: rentAmount,
+      roi_estimate: rentAmount > 2000 ? 'High' : rentAmount > 1500 ? 'Medium' : 'Low'
+    },
+    risk_exposure: {
+      total_risk_value: rentAmount * leaseTerm * (riskAnalysis.risk_level === 'High' ? 0.3 : riskAnalysis.risk_level === 'Medium' ? 0.15 : 0.05),
+      portfolio_risk_contribution: riskAnalysis.risk_level === 'High' ? 'Significant' : riskAnalysis.risk_level === 'Medium' ? 'Moderate' : 'Minimal',
+      diversification_impact: rentAmount > 3000 ? 'High-value property - consider portfolio balance' : 'Standard portfolio addition'
+    },
+    market_positioning: {
+      rent_per_sqft: rentAmount > 2000 ? 'Premium' : rentAmount > 1500 ? 'Market Rate' : 'Below Market',
+      competitive_position: rentAmount > 2500 ? 'High-end market' : rentAmount > 1800 ? 'Mid-market' : 'Value segment',
+      growth_potential: rentAmount < 2000 ? 'High - below market rates' : rentAmount < 2500 ? 'Moderate' : 'Limited - already premium'
+    }
+  };
+}
+
+function generateComplianceAssessment(leaseText: string, basicData: any) {
+  const complianceIssues: string[] = [];
+  const complianceScore = 100;
+  
+  // Check for essential compliance elements
+  const complianceChecks = [
+    {
+      category: 'Fair Housing',
+      terms: ['discrimination', 'fair housing', 'equal opportunity', 'protected class'],
+      required: true,
+      description: 'Fair Housing Act compliance'
+    },
+    {
+      category: 'Security Deposit',
+      terms: ['security deposit', 'deposit', 'escrow'],
+      required: false,
+      description: 'Security deposit handling requirements'
+    },
+    {
+      category: 'Lead Paint',
+      terms: ['lead paint', 'lead-based paint', 'lead disclosure'],
+      required: false,
+      description: 'Lead paint disclosure for older properties'
+    },
+    {
+      category: 'Mold Disclosure',
+      terms: ['mold', 'mildew', 'moisture', 'water damage'],
+      required: false,
+      description: 'Mold and moisture disclosure'
+    },
+    {
+      category: 'Bed Bug',
+      terms: ['bed bug', 'bedbug', 'pest control'],
+      required: false,
+      description: 'Bed bug disclosure and policies'
+    },
+    {
+      category: 'Smoke Detector',
+      terms: ['smoke detector', 'fire alarm', 'safety equipment'],
+      required: false,
+      description: 'Safety equipment requirements'
+    },
+    {
+      category: 'Carbon Monoxide',
+      terms: ['carbon monoxide', 'co detector'],
+      required: false,
+      description: 'Carbon monoxide detector requirements'
+    }
+  ];
+  
+  const missingCompliance = complianceChecks.filter(check => {
+    if (!check.required) return false;
+    return !check.terms.some(term => leaseText.toLowerCase().includes(term));
+  });
+  
+  if (missingCompliance.length > 0) {
+    complianceIssues.push(...missingCompliance.map(check => 
+      `MISSING COMPLIANCE: ${check.category} - ${check.description}`
+    ));
+  }
+  
+  return {
+    compliance_score: complianceScore - (missingCompliance.length * 10),
+    compliance_issues: complianceIssues,
+    regulatory_requirements: missingCompliance.map(check => check.category),
+    recommended_actions: missingCompliance.map(check => 
+      `Add ${check.category.toLowerCase()} disclosure and compliance language`
+    )
+  };
+}
+
+function generateStrategicRecommendations(basicData: any, marketInsights: any, riskAnalysis: any) {
+  const rentAmount = parseFloat(basicData.base_rent?.replace(/[$,]/g, '') || '0');
+  const recommendations: string[] = [];
+  
+  // Revenue optimization
+  if (rentAmount < 2000) {
+    recommendations.push('REVENUE OPPORTUNITY: Consider rent increase to market rates - current rent appears below market');
+  }
+  
+  if (rentAmount > 3000) {
+    recommendations.push('PREMIUM POSITIONING: High-value property - focus on tenant quality and retention strategies');
+  }
+  
+  // Risk mitigation
+  if (riskAnalysis.risk_level === 'High') {
+    recommendations.push('RISK MITIGATION: High-risk lease - implement additional monitoring and contingency planning');
+  }
+  
+  // Market positioning
+  if (rentAmount < 1800) {
+    recommendations.push('MARKET POSITIONING: Below-market rates suggest opportunity for value-add improvements or rent increases');
+  }
+  
+  // Portfolio strategy
+  if (rentAmount > 2500) {
+    recommendations.push('PORTFOLIO STRATEGY: Premium property - consider as anchor asset in portfolio diversification');
+  }
+  
+  // Operational efficiency
+  recommendations.push('OPERATIONAL EFFICIENCY: Implement automated rent collection and maintenance request systems');
+  
+  // Technology integration
+  recommendations.push('TECHNOLOGY INTEGRATION: Consider smart building features for premium positioning and operational efficiency');
+  
+  return {
+    immediate_actions: recommendations.slice(0, 3),
+    strategic_planning: recommendations.slice(3, 6),
+    long_term_vision: recommendations.slice(6),
+    portfolio_optimization: [
+      'Diversify property types and locations',
+      'Implement automated property management systems',
+      'Develop tenant retention and satisfaction programs',
+      'Consider value-add improvements for underperforming properties'
+    ]
   };
 } 
