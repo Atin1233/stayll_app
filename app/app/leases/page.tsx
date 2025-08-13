@@ -248,6 +248,28 @@ export default function LeasesPage() {
     }
   }
 
+  const testDatabase = async () => {
+    try {
+      setMessage('Testing database and storage connections...')
+      setMessageType('info')
+      
+      const response = await fetch('/api/test-db')
+      const result = await response.json()
+      
+      if (response.ok && result.success) {
+        setMessage(`Database test successful: ${result.message}`)
+        setMessageType('success')
+        console.log('Database test details:', result)
+      } else {
+        setMessage(`Database test failed: ${result.error}`)
+        setMessageType('error')
+      }
+    } catch (error: any) {
+      setMessage(`Database test error: ${error.message}`)
+      setMessageType('error')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Enterprise Header */}
@@ -405,6 +427,14 @@ export default function LeasesPage() {
                       >
                         <CogIcon className="h-4 w-4 mr-1" />
                         Full Diagnostics
+                      </button>
+
+                      <button
+                        onClick={testDatabase}
+                        className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+                      >
+                        <CogIcon className="h-4 w-4 mr-1" />
+                        Test Database
                       </button>
                     </div>
                   </div>

@@ -30,16 +30,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Analyze the PDF
-    console.log('Starting PDF analysis for file:', file.name, 'Size:', file.size);
+    // Analyze the PDF with STAYLL
+    console.log('Starting STAYLL analysis for file:', file.name, 'Size:', file.size);
     const analysis = await analyzeLeasePDF(file);
-    console.log('Analysis result:', analysis);
+    console.log('STAYLL analysis result:', analysis);
 
     if (!analysis.success) {
-      console.error('PDF analysis failed:', analysis.errors);
+      console.error('STAYLL analysis failed:', analysis.errors);
       const errorMessage = analysis.errors && analysis.errors.length > 0 
         ? analysis.errors.join(', ') 
-        : 'Unknown PDF analysis error';
+        : 'Unknown STAYLL analysis error';
       return NextResponse.json(
         { error: `Failed to analyze PDF: ${errorMessage}`, details: analysis.errors },
         { status: 500 }
@@ -90,26 +90,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save lease data to database
+    // Extract basic lease data for database storage
+    const basicData = analysis.data;
+    
+    // Save complete lease data to database with full STAYLL analysis
     const leaseData = {
       user_id: userId,
-      tenant_name: analysis.data.tenant_name || 'Unknown',
-      property_address: analysis.data.property_address || 'Unknown',
-      monthly_rent: analysis.data.monthly_rent || '$0',
-      lease_start: analysis.data.lease_start || new Date().toISOString().split('T')[0],
-      lease_end: analysis.data.lease_end || '2025-12-31',
-      due_date: analysis.data.due_date || '1st of each month',
-      late_fee: analysis.data.late_fee || '$50',
-      security_deposit: analysis.data.security_deposit || 'Not specified',
-      utilities: analysis.data.utilities || 'Not specified',
-      parking: analysis.data.parking || 'Not specified',
-      pets: analysis.data.pets || 'Not specified',
-      smoking: analysis.data.smoking || 'Not specified',
+      tenant_name: basicData.tenant_name || 'Unknown',
+      property_address: basicData.property_address || 'Unknown',
+      monthly_rent: basicData.base_rent || '$0',
+      lease_start: basicData.lease_start || new Date().toISOString().split('T')[0],
+      lease_end: basicData.lease_end || '2025-12-31',
+      due_date: basicData.due_date || '1st of each month',
+      late_fee: basicData.late_fee || '$50',
+      security_deposit: basicData.security_deposit || 'Not specified',
+      utilities: basicData.utilities || 'Not specified',
+      parking: basicData.parking || 'Not specified',
+      pets: basicData.pets || 'Not specified',
+      smoking: basicData.smoking || 'Not specified',
       file_url: uploadData?.path || '',
+      file_name: file.name,
+      file_size: file.size,
       confidence_score: analysis.confidence,
+      // Store complete STAYLL analysis data
+      analysis_data: {
+        lease_summary: analysis.data.lease_summary,
+        clause_analysis: analysis.data.clause_analysis,
+        risk_analysis: analysis.data.risk_analysis,
+        action_items: analysis.data.action_items,
+        market_insights: analysis.data.market_insights,
+        format_analysis: analysis.data.format_analysis,
+        confidence_score: analysis.confidence
+      },
+      // Store portfolio impact analysis
+      portfolio_impact: analysis.data.portfolio_impact || null,
+      // Store compliance assessment
+      compliance_assessment: analysis.data.compliance_assessment || null,
+      // Store strategic recommendations
+      strategic_recommendations: analysis.data.strategic_recommendations || null,
       created_at: new Date().toISOString(),
     };
 
+    console.log('Saving lease data to database...');
     const { data: dbData, error: dbError } = await supabase
       .from('leases')
       .insert([leaseData])
@@ -119,22 +141,32 @@ export async function POST(request: NextRequest) {
     if (dbError) {
       console.error('Database error:', dbError);
       return NextResponse.json(
-        { error: 'Failed to save lease data' },
+        { error: 'Failed to save lease data to database', details: dbError },
         { status: 500 }
       );
     }
+
+    console.log('Lease data saved successfully:', dbData.id);
 
     return NextResponse.json({
       success: true,
       lease: dbData,
       analysis: {
         confidence: analysis.confidence,
-        extracted_fields: Object.keys(analysis.data).filter(key => analysis.data[key as keyof typeof analysis.data]),
+        extracted_fields: Object.keys(basicData).filter(key => basicData[key as keyof typeof basicData]),
+        portfolio_impact: analysis.data.portfolio_impact ? 'Available' : 'Not available',
+        compliance_assessment: analysis.data.compliance_assessment ? 'Available' : 'Not available',
+        strategic_recommendations: analysis.data.strategic_recommendations ? 'Available' : 'Not available'
       },
+      file_info: {
+        name: file.name,
+        size: file.size,
+        uploaded_path: uploadData?.path
+      }
     });
 
   } catch (error) {
-    console.error('Lease analysis error:', error);
+    console.error('STAYLL lease analysis error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json(
       { error: `Internal server error: ${errorMessage}` },
