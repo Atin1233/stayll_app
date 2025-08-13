@@ -6,7 +6,39 @@ interface STAYLLAnalysisDisplayProps {
 }
 
 export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDisplayProps) {
+  // Validate the analysis structure
+  if (!analysis || !analysis.analysis) {
+    return (
+      <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-6">
+        <div className="text-center">
+          <ExclamationTriangleIcon className="mx-auto h-12 w-12 text-yellow-500" />
+          <h3 className="mt-2 text-lg font-medium text-gray-900">Analysis Data Unavailable</h3>
+          <p className="mt-1 text-sm text-gray-500">
+            The analysis data is not in the expected format. Please try analyzing the lease again.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const data = analysis.analysis;
+
+  // Safe rendering function to handle objects and null values
+  const safeRender = (value: any): string => {
+    if (value === null || value === undefined) {
+      return 'N/A';
+    }
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    }
+    if (typeof value === 'string') {
+      return value;
+    }
+    if (typeof value === 'number') {
+      return value.toString();
+    }
+    return String(value);
+  };
 
   // Safe number formatting function
   const formatNumber = (value: any): string => {
@@ -52,7 +84,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
           <h3 className="text-lg font-semibold text-gray-900">Executive Summary</h3>
         </div>
         <div className="p-6">
-          <p className="text-gray-700 leading-relaxed">{data.lease_summary}</p>
+          <p className="text-gray-700 leading-relaxed">{safeRender(data.lease_summary)}</p>
         </div>
       </div>
 
