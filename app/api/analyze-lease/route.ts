@@ -114,20 +114,20 @@ export async function POST(request: NextRequest) {
       confidence_score: analysis.confidence,
       // Store complete STAYLL analysis data
       analysis_data: {
-        lease_summary: analysis.data.lease_summary,
-        clause_analysis: analysis.data.clause_analysis,
-        risk_analysis: analysis.data.risk_analysis,
-        action_items: analysis.data.action_items,
-        market_insights: analysis.data.market_insights,
-        format_analysis: analysis.data.format_analysis,
+        lease_summary: analysis.data.stayll_analysis?.lease_summary || 'Analysis not available',
+        clause_analysis: analysis.data.stayll_analysis?.clause_analysis || null,
+        risk_analysis: analysis.data.stayll_analysis?.risk_analysis || null,
+        action_items: analysis.data.stayll_analysis?.action_items || null,
+        market_insights: analysis.data.stayll_analysis?.market_insights || null,
+        format_analysis: analysis.data.stayll_analysis?.format_analysis || null,
         confidence_score: analysis.confidence
       },
       // Store portfolio impact analysis
-      portfolio_impact: analysis.data.portfolio_impact || null,
+      portfolio_impact: analysis.data.stayll_analysis?.portfolio_impact || null,
       // Store compliance assessment
-      compliance_assessment: analysis.data.compliance_assessment || null,
+      compliance_assessment: analysis.data.stayll_analysis?.compliance_assessment || null,
       // Store strategic recommendations
-      strategic_recommendations: analysis.data.strategic_recommendations || null,
+      strategic_recommendations: analysis.data.stayll_analysis?.strategic_recommendations || null,
       created_at: new Date().toISOString(),
     };
 
@@ -154,9 +154,9 @@ export async function POST(request: NextRequest) {
       analysis: {
         confidence: analysis.confidence,
         extracted_fields: Object.keys(basicData).filter(key => basicData[key as keyof typeof basicData]),
-        portfolio_impact: analysis.data.portfolio_impact ? 'Available' : 'Not available',
-        compliance_assessment: analysis.data.compliance_assessment ? 'Available' : 'Not available',
-        strategic_recommendations: analysis.data.strategic_recommendations ? 'Available' : 'Not available'
+        portfolio_impact: analysis.data.stayll_analysis?.portfolio_impact ? 'Available' : 'Not available',
+        compliance_assessment: analysis.data.stayll_analysis?.compliance_assessment ? 'Available' : 'Not available',
+        strategic_recommendations: analysis.data.stayll_analysis?.strategic_recommendations ? 'Available' : 'Not available'
       },
       file_info: {
         name: file.name,
