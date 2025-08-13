@@ -8,6 +8,24 @@ interface STAYLLAnalysisDisplayProps {
 export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDisplayProps) {
   const data = analysis.analysis;
 
+  // Safe number formatting function
+  const formatNumber = (value: any): string => {
+    if (value === null || value === undefined || isNaN(value)) {
+      return '0';
+    }
+    const num = typeof value === 'string' ? parseFloat(value.replace(/[$,]/g, '')) : value;
+    if (isNaN(num)) {
+      return '0';
+    }
+    return num.toLocaleString();
+  };
+
+  // Safe currency formatting function
+  const formatCurrency = (value: any): string => {
+    const formatted = formatNumber(value);
+    return `$${formatted}`;
+  };
+
   const getRiskColor = (level: string) => {
     switch (level?.toLowerCase()) {
       case 'high': return 'text-red-600 bg-red-50 border-red-200';
@@ -58,19 +76,19 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-green-700">Annual Revenue:</span>
-                    <span className="font-medium">${data.portfolio_impact.revenue_impact.annual_revenue.toLocaleString()}</span>
+                    <span className="font-medium">{formatCurrency(data.portfolio_impact?.revenue_impact?.annual_revenue)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-green-700">Total Lease Value:</span>
-                    <span className="font-medium">${data.portfolio_impact.revenue_impact.total_lease_value.toLocaleString()}</span>
+                    <span className="font-medium">{formatCurrency(data.portfolio_impact?.revenue_impact?.total_lease_value)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-green-700">Monthly Cash Flow:</span>
-                    <span className="font-medium">${data.portfolio_impact.revenue_impact.monthly_cash_flow.toLocaleString()}</span>
+                    <span className="font-medium">{formatCurrency(data.portfolio_impact?.revenue_impact?.monthly_cash_flow)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-green-700">ROI Estimate:</span>
-                    <span className="font-medium">{data.portfolio_impact.revenue_impact.roi_estimate}</span>
+                    <span className="font-medium">{data.portfolio_impact?.revenue_impact?.roi_estimate || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -84,15 +102,15 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-red-700">Total Risk Value:</span>
-                    <span className="font-medium">${data.portfolio_impact.risk_exposure.total_risk_value.toLocaleString()}</span>
+                    <span className="font-medium">{formatCurrency(data.portfolio_impact?.risk_exposure?.total_risk_value)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-red-700">Portfolio Risk:</span>
-                    <span className="font-medium">{data.portfolio_impact.risk_exposure.portfolio_risk_contribution}</span>
+                    <span className="font-medium">{data.portfolio_impact?.risk_exposure?.portfolio_risk_contribution || 'N/A'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-red-700">Diversification:</span>
-                    <span className="font-medium">{data.portfolio_impact.risk_exposure.diversification_impact}</span>
+                    <span className="font-medium">{data.portfolio_impact?.risk_exposure?.diversification_impact || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -106,15 +124,15 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-blue-700">Rent Tier:</span>
-                    <span className="font-medium">{data.portfolio_impact.market_positioning.rent_per_sqft}</span>
+                    <span className="font-medium">{data.portfolio_impact?.market_positioning?.rent_per_sqft || 'N/A'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-blue-700">Competitive Position:</span>
-                    <span className="font-medium">{data.portfolio_impact.market_positioning.competitive_position}</span>
+                    <span className="font-medium">{data.portfolio_impact?.market_positioning?.competitive_position || 'N/A'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-blue-700">Growth Potential:</span>
-                    <span className="font-medium">{data.portfolio_impact.market_positioning.growth_potential}</span>
+                    <span className="font-medium">{data.portfolio_impact?.market_positioning?.growth_potential || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -133,16 +151,16 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <h3 className="text-lg font-semibold text-gray-900">Compliance Assessment</h3>
               </div>
               <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                data.compliance_assessment.compliance_score >= 90 ? 'text-green-600 bg-green-50 border-green-200' :
-                data.compliance_assessment.compliance_score >= 70 ? 'text-yellow-600 bg-yellow-50 border-yellow-200' :
+                (data.compliance_assessment?.compliance_score || 0) >= 90 ? 'text-green-600 bg-green-50 border-green-200' :
+                (data.compliance_assessment?.compliance_score || 0) >= 70 ? 'text-yellow-600 bg-yellow-50 border-yellow-200' :
                 'text-red-600 bg-red-50 border-red-200'
               }`}>
-                Score: {data.compliance_assessment.compliance_score}/100
+                Score: {data.compliance_assessment?.compliance_score || 0}/100
               </div>
             </div>
           </div>
           <div className="p-6">
-            {data.compliance_assessment.compliance_issues.length > 0 ? (
+            {data.compliance_assessment?.compliance_issues?.length > 0 ? (
               <div className="space-y-4">
                 <h4 className="font-medium text-gray-900">Compliance Issues:</h4>
                 <div className="space-y-2">
@@ -156,7 +174,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <div className="mt-4">
                   <h4 className="font-medium text-gray-900 mb-2">Recommended Actions:</h4>
                   <div className="space-y-1">
-                    {data.compliance_assessment.recommended_actions.map((action: string, index: number) => (
+                    {data.compliance_assessment?.recommended_actions?.map((action: string, index: number) => (
                       <div key={index} className="flex items-start text-sm text-gray-700">
                         <CheckCircleIcon className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0 text-green-500" />
                         {action}
@@ -193,12 +211,14 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                   Immediate Actions (0-30 days)
                 </h4>
                 <div className="space-y-2">
-                  {data.strategic_recommendations.immediate_actions.map((action: string, index: number) => (
+                  {data.strategic_recommendations?.immediate_actions?.map((action: string, index: number) => (
                     <div key={index} className="flex items-start text-sm text-gray-700">
                       <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       {action}
                     </div>
-                  ))}
+                  )) || (
+                    <p className="text-sm text-gray-500">No immediate actions required</p>
+                  )}
                 </div>
               </div>
 
@@ -209,12 +229,14 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                   Strategic Planning (30-90 days)
                 </h4>
                 <div className="space-y-2">
-                  {data.strategic_recommendations.strategic_planning.map((action: string, index: number) => (
+                  {data.strategic_recommendations?.strategic_planning?.map((action: string, index: number) => (
                     <div key={index} className="flex items-start text-sm text-gray-700">
                       <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                       {action}
                     </div>
-                  ))}
+                  )) || (
+                    <p className="text-sm text-gray-500">No strategic planning required</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -226,12 +248,14 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 Portfolio Optimization Strategies
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {data.strategic_recommendations.portfolio_optimization.map((strategy: string, index: number) => (
+                {data.strategic_recommendations?.portfolio_optimization?.map((strategy: string, index: number) => (
                   <div key={index} className="flex items-start text-sm text-gray-700">
                     <div className="w-2 h-2 bg-indigo-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                     {strategy}
                   </div>
-                ))}
+                )) || (
+                  <p className="text-sm text-gray-500">No portfolio optimization strategies available</p>
+                )}
               </div>
             </div>
           </div>
@@ -246,16 +270,16 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
               <ShieldCheckIcon className="h-5 w-5 text-red-500 mr-2" />
               <h3 className="text-lg font-semibold text-gray-900">Risk Assessment</h3>
             </div>
-            <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getRiskColor(data.risk_analysis.risk_level)}`}>
-              {data.risk_analysis.risk_level} Risk
+            <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getRiskColor(data.risk_analysis?.risk_level)}`}>
+              {data.risk_analysis?.risk_level || 'Unknown'} Risk
             </div>
           </div>
         </div>
         <div className="p-6">
           <div className="mb-4">
-            <p className="text-gray-700">{data.risk_analysis.risk_summary}</p>
+            <p className="text-gray-700">{data.risk_analysis?.risk_summary || 'Risk analysis not available'}</p>
           </div>
-          {data.risk_analysis.risk_factors && data.risk_analysis.risk_factors.length > 0 && (
+          {data.risk_analysis?.risk_factors && data.risk_analysis.risk_factors.length > 0 && (
             <div>
               <h4 className="font-medium text-gray-900 mb-3">Key Risk Factors:</h4>
               <div className="space-y-2">
@@ -281,7 +305,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
         </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {data.action_items.immediate && data.action_items.immediate.length > 0 && (
+            {data.action_items?.immediate && data.action_items.immediate.length > 0 && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <ClockIcon className="h-4 w-4 mr-2 text-red-500" />
@@ -297,7 +321,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 </div>
               </div>
             )}
-            {data.action_items.upcoming && data.action_items.upcoming.length > 0 && (
+            {data.action_items?.upcoming && data.action_items.upcoming.length > 0 && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <ClockIcon className="h-4 w-4 mr-2 text-yellow-500" />
@@ -313,7 +337,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 </div>
               </div>
             )}
-            {data.action_items.long_term && data.action_items.long_term.length > 0 && (
+            {data.action_items?.long_term && data.action_items.long_term.length > 0 && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <ClockIcon className="h-4 w-4 mr-2 text-blue-500" />
@@ -335,33 +359,33 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
 
       {/* Market Insights */}
       <div className="bg-white shadow-lg rounded-lg border border-gray-200">
-                 <div className="px-6 py-4 border-b border-gray-200">
-           <div className="flex items-center">
-             <ArrowTrendingUpIcon className="h-5 w-5 text-green-500 mr-2" />
-             <h3 className="text-lg font-semibold text-gray-900">Market Insights</h3>
-           </div>
-         </div>
+        <div className="px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center">
+            <ArrowTrendingUpIcon className="h-5 w-5 text-green-500 mr-2" />
+            <h3 className="text-lg font-semibold text-gray-900">Market Insights</h3>
+          </div>
+        </div>
         <div className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {data.market_insights.rental_trends && (
+            {data.market_insights?.rental_trends && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Rental Market Trends</h4>
                 <p className="text-gray-700 text-sm">{data.market_insights.rental_trends}</p>
               </div>
             )}
-            {data.market_insights.competitive_analysis && (
+            {data.market_insights?.competitive_analysis && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Competitive Analysis</h4>
                 <p className="text-gray-700 text-sm">{data.market_insights.competitive_analysis}</p>
               </div>
             )}
-            {data.market_insights.market_opportunities && (
+            {data.market_insights?.market_opportunities && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Market Opportunities</h4>
                 <p className="text-gray-700 text-sm">{data.market_insights.market_opportunities}</p>
               </div>
             )}
-            {data.market_insights.risk_factors && (
+            {data.market_insights?.risk_factors && (
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Market Risk Factors</h4>
                 <p className="text-gray-700 text-sm">{data.market_insights.risk_factors}</p>
@@ -384,18 +408,18 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <div className="flex items-center">
                   <ChartBarIcon className="h-5 w-5 text-gray-400 mr-2" />
                   <span className="text-lg font-semibold text-gray-900">
-                    Document Quality Score: {data.format_analysis.overall_score}/100
+                    Document Quality Score: {data.format_analysis?.overall_score || 0}/100
                   </span>
                 </div>
                 <div className={`px-3 py-1 rounded-full text-sm font-medium border ${
-                  data.format_analysis.overall_score >= 85 ? 'text-green-600 bg-green-50 border-green-200' :
-                  data.format_analysis.overall_score >= 70 ? 'text-yellow-600 bg-yellow-50 border-yellow-200' :
-                  data.format_analysis.overall_score >= 50 ? 'text-orange-600 bg-orange-50 border-orange-200' :
+                  (data.format_analysis?.overall_score || 0) >= 85 ? 'text-green-600 bg-green-50 border-green-200' :
+                  (data.format_analysis?.overall_score || 0) >= 70 ? 'text-yellow-600 bg-yellow-50 border-yellow-200' :
+                  (data.format_analysis?.overall_score || 0) >= 50 ? 'text-orange-600 bg-orange-50 border-orange-200' :
                   'text-red-600 bg-red-50 border-red-200'
                 }`}>
-                  {data.format_analysis.overall_score >= 85 ? 'ACCEPTABLE' :
-                   data.format_analysis.overall_score >= 70 ? 'NEEDS IMPROVEMENT' :
-                   data.format_analysis.overall_score >= 50 ? 'POOR QUALITY' :
+                  {(data.format_analysis?.overall_score || 0) >= 85 ? 'ACCEPTABLE' :
+                   (data.format_analysis?.overall_score || 0) >= 70 ? 'NEEDS IMPROVEMENT' :
+                   (data.format_analysis?.overall_score || 0) >= 50 ? 'POOR QUALITY' :
                    'CRITICALLY DEFICIENT'}
                 </div>
               </div>
@@ -403,19 +427,19 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
               {/* Readability Score */}
               <div className="mb-4">
                 <div className="flex justify-between text-sm text-gray-600 mb-1">
-                  <span>Readability Score: {data.format_analysis.readability_score}/100</span>
+                  <span>Readability Score: {data.format_analysis?.readability_score || 0}/100</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
                     className="bg-blue-600 h-2 rounded-full" 
-                    style={{ width: `${data.format_analysis.readability_score}%` }}
+                    style={{ width: `${data.format_analysis?.readability_score || 0}%` }}
                   ></div>
                 </div>
               </div>
             </div>
 
             {/* Critical Issues */}
-            {data.format_analysis.critical_issues && data.format_analysis.critical_issues.length > 0 && (
+            {data.format_analysis?.critical_issues && data.format_analysis.critical_issues.length > 0 && (
               <div className="mb-6">
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <ExclamationTriangleIcon className="h-4 w-4 mr-2 text-red-500" />
@@ -433,7 +457,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
             )}
 
             {/* Formatting Problems */}
-            {data.format_analysis.formatting_problems && data.format_analysis.formatting_problems.length > 0 && (
+            {data.format_analysis?.formatting_problems && data.format_analysis.formatting_problems.length > 0 && (
               <div className="mb-6">
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <DocumentTextIcon className="h-4 w-4 mr-2 text-yellow-500" />
@@ -451,7 +475,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
             )}
 
             {/* Missing Sections */}
-            {data.format_analysis.missing_sections && data.format_analysis.missing_sections.length > 0 && (
+            {data.format_analysis?.missing_sections && data.format_analysis.missing_sections.length > 0 && (
               <div className="mb-6">
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <CogIcon className="h-4 w-4 mr-2 text-blue-500" />
@@ -469,7 +493,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
             )}
 
             {/* Professional Standards */}
-            {data.format_analysis.professional_standards && data.format_analysis.professional_standards.length > 0 && (
+            {data.format_analysis?.professional_standards && data.format_analysis.professional_standards.length > 0 && (
               <div className="mb-6">
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <ScaleIcon className="h-4 w-4 mr-2 text-purple-500" />
@@ -487,7 +511,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
             )}
 
             {/* Red Flags */}
-            {data.format_analysis.red_flags && data.format_analysis.red_flags.length > 0 && (
+            {data.format_analysis?.red_flags && data.format_analysis.red_flags.length > 0 && (
               <div className="mb-6">
                 <h4 className="font-medium text-gray-900 mb-3 flex items-center">
                   <ExclamationTriangleIcon className="h-4 w-4 mr-2 text-red-500" />
@@ -511,7 +535,7 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 Expert Recommendations
               </h4>
               <div className="space-y-2">
-                {data.format_analysis.recommendations?.map((recommendation: string, index: number) => (
+                {data.format_analysis?.recommendations?.map((recommendation: string, index: number) => (
                   <div key={index} className="flex items-start text-sm text-gray-200">
                     <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                     {recommendation}
@@ -536,10 +560,10 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
                 <div className="w-full bg-gray-200 rounded-full h-2 mr-3">
                   <div 
                     className="bg-green-600 h-2 rounded-full" 
-                    style={{ width: `${data.confidence_score}%` }}
+                    style={{ width: `${data.confidence_score || 0}%` }}
                   ></div>
                 </div>
-                <span className="text-sm font-medium text-gray-700">{data.confidence_score}%</span>
+                <span className="text-sm font-medium text-gray-700">{data.confidence_score || 0}%</span>
               </div>
             </div>
             <div>
