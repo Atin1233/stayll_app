@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
       user_id: userId,
       tenant_name: basicData.tenant_name || 'Unknown',
       property_address: basicData.property_address || 'Unknown',
-      monthly_rent: basicData.base_rent || '$0',
+      monthly_rent: basicData.monthly_rent || '$0',
       lease_start: basicData.lease_start || new Date().toISOString().split('T')[0],
       lease_end: basicData.lease_end || '2025-12-31',
       due_date: basicData.due_date || '1st of each month',
