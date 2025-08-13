@@ -5,6 +5,16 @@ export async function GET(request: NextRequest) {
   try {
     console.log('Testing database and storage connections...');
 
+    // Check if supabase client is available
+    if (!supabase) {
+      console.error('Supabase client not initialized - missing environment variables');
+      return NextResponse.json({ 
+        success: false,
+        error: 'Supabase client not initialized',
+        details: 'Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables'
+      }, { status: 500 });
+    }
+
     // Test database connection
     console.log('Testing database connection...');
     const { data: dbData, error: dbError } = await supabase
