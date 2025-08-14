@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useUser } from "@/lib/hooks/useUser";
 import UserProfile from "@/components/auth/UserProfile";
 
@@ -52,10 +53,17 @@ export default function Header() {
                 e.preventDefault();
                 scrollToSection('hero');
               }}
-              className="text-2xl font-bold text-gray-200 hover:text-blue-300 transition-colors"
+              className="flex items-center space-x-2 text-2xl font-bold text-gray-200 hover:text-blue-300 transition-colors"
               aria-label="Stayll"
             >
-              Stayll
+              <Image 
+                src="/images/stayll-logo.svg" 
+                alt="Stayll Logo" 
+                width={32} 
+                height={32}
+                className="w-8 h-8"
+              />
+              <span>Stayll</span>
             </Link>
           </div>
 
