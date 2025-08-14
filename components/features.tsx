@@ -21,7 +21,7 @@ export default function Features() {
       <div
         className="pointer-events-none absolute bottom-0 left-1/2 -z-10 -mb-80 -translate-x-[120%] opacity-50"
         aria-hidden="true"
-      >
+        >
         <Image
           className="max-w-none"
           src={BlurredShape}
@@ -40,10 +40,10 @@ export default function Features() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Managing leases is broken.
+              Institutional REITs are losing millions in hidden lease revenue.
             </h2>
             <p className="text-lg text-blue-200/65">
-              Property managers, landlords, and investors are buried in contracts full of risks they don't have time to find.
+              Complex lease portfolios with thousands of contracts hide missed escalations, compliance risks, and optimization opportunities that cost REITs millions annually.
             </p>
           </div>
 
@@ -70,10 +70,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Missed escalation clauses
+                Missed revenue escalations
               </h3>
               <p className="text-blue-200/65">
-                Hidden rent increases and missed revenue opportunities buried in complex lease terms.
+                Hidden rent increases and CPI adjustments buried in complex lease terms cost REITs $15k+ per lease annually.
               </p>
             </article>
 
@@ -88,10 +88,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                AI extracts critical terms
+                Predictive revenue recovery
               </h3>
               <p className="text-blue-200/65">
-                Stayll instantly identifies rent escalations, renewal options, and key financial terms.
+                AI instantly identifies missed escalations and calculates exact revenue recovery potential across your entire portfolio.
               </p>
             </article>
 
@@ -106,10 +106,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Unexpected tenant terminations
+                Compliance blind spots
               </h3>
               <p className="text-blue-200/65">
-                Hidden termination clauses that can leave you with unexpected vacancies and lost income.
+                Regulatory changes and lease compliance requirements create massive legal and financial risks for institutional portfolios.
               </p>
             </article>
 
@@ -124,10 +124,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Risk flagging system
+                Automated compliance monitoring
               </h3>
               <p className="text-blue-200/65">
-                AI flags termination clauses, exclusivity agreements, and other hidden risks instantly.
+                Real-time monitoring of regulatory changes with automated alerts and risk scoring across your entire lease portfolio.
               </p>
             </article>
 
@@ -142,10 +142,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                No system to track it all
+                No portfolio intelligence
               </h3>
               <p className="text-blue-200/65">
-                Critical lease information scattered across documents with no centralized tracking system.
+                Critical lease data scattered across systems with no centralized intelligence to optimize portfolio performance and market positioning.
               </p>
             </article>
 
@@ -160,10 +160,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Centralized intelligence
+                Portfolio optimization engine
               </h3>
               <p className="text-blue-200/65">
-                All lease insights in one place with tenant risk scoring and actionable summaries.
+                AI-powered portfolio intelligence with market benchmarking, risk aggregation, and strategic recommendations for maximum ROI.
               </p>
             </article>
           </div>

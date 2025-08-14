@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Stayll - The AI Lease Analyst That Never Sleeps",
-  description: "Upload any lease. Stayll reads it, flags the risks, and gives you a report your team can actually use.",
+  title: "STAYLL - The Bloomberg Terminal for Leases | AI-Powered Lease Intelligence for REITs",
+  description: "AI-powered lease intelligence for institutional multifamily REITs. Recover hidden revenue, automate compliance, and optimize your portfolio with predictive insights.",
 };
 
 import PageIllustration from "@/components/page-illustration";
