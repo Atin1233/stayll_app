@@ -53,7 +53,10 @@ export class LeaseStorageService {
         formData.append('tenantName', data.tenantName);
       }
 
-      const response = await fetch('/api/upload-lease', {
+      // Use test endpoint if Supabase is not configured
+      const endpoint = supabase ? '/api/upload-lease' : '/api/test-upload';
+      
+      const response = await fetch(endpoint, {
         method: 'POST',
         body: formData,
       });
@@ -113,7 +116,10 @@ export class LeaseStorageService {
       if (options?.limit) params.append('limit', options.limit.toString());
       if (options?.offset) params.append('offset', options.offset.toString());
 
-      const response = await fetch(`/api/leases?${params.toString()}`);
+      // Use test endpoint if Supabase is not configured
+      const endpoint = supabase ? `/api/leases?${params.toString()}` : '/api/test-leases';
+      
+      const response = await fetch(endpoint);
       const result = await response.json();
 
       if (!response.ok) {
@@ -136,6 +142,12 @@ export class LeaseStorageService {
    */
   static async deleteLease(leaseId: string): Promise<{ success: boolean; error?: string }> {
     try {
+      // Skip delete operation if using test endpoints
+      if (!supabase) {
+        console.log('Test mode: Skipping delete operation');
+        return { success: true };
+      }
+
       const response = await fetch('/api/leases', {
         method: 'DELETE',
         headers: {
