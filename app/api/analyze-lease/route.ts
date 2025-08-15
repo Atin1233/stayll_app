@@ -1,175 +1,114 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analyzeLeasePDF } from '@/lib/leaseAnalysis';
-import { supabase } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const userId = formData.get('userId') as string;
-
-    if (!file) {
-      return NextResponse.json(
-        { error: 'No file provided' },
-        { status: 400 }
-      );
-    }
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'User ID required' },
-        { status: 400 }
-      );
-    }
-
-    // Validate file type
-    if (file.type !== 'application/pdf') {
-      return NextResponse.json(
-        { error: 'Only PDF files are supported' },
-        { status: 400 }
-      );
-    }
-
-    // Analyze the PDF with STAYLL
-    console.log('Starting STAYLL analysis for file:', file.name, 'Size:', file.size);
-    const analysis = await analyzeLeasePDF(file);
-    console.log('STAYLL analysis result:', analysis);
-
-    if (!analysis.success) {
-      console.error('STAYLL analysis failed:', analysis.errors);
-      const errorMessage = analysis.errors && analysis.errors.length > 0 
-        ? analysis.errors.join(', ') 
-        : 'Unknown STAYLL analysis error';
-      return NextResponse.json(
-        { error: `Failed to analyze PDF: ${errorMessage}`, details: analysis.errors },
-        { status: 500 }
-      );
-    }
-
-    // Upload file to Supabase Storage
-    const fileName = `${Date.now()}-${file.name}`;
+    // Get authenticated user
+    const supabase = createRouteHandlerClient({ cookies });
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    if (!supabase) {
+    if (authError || !user) {
       return NextResponse.json(
-        { error: 'Storage service not configured' },
-        { status: 500 }
+        { error: 'Authentication required' },
+        { status: 401 }
       );
     }
 
-    // Check if the leases bucket exists
-    console.log('Checking if leases bucket exists...');
-    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
-    
-    if (bucketsError) {
-      console.error('Error checking buckets:', bucketsError);
+    const { leaseId, analysisData } = await request.json();
+
+    if (!leaseId || !analysisData) {
       return NextResponse.json(
-        { error: `Storage access error: ${bucketsError.message}` },
-        { status: 500 }
+        { error: 'Lease ID and analysis data are required' },
+        { status: 400 }
       );
     }
 
-    const leasesBucket = buckets?.find(bucket => bucket.name === 'leases');
-    if (!leasesBucket) {
-      console.error('Leases bucket not found. Available buckets:', buckets?.map(b => b.name));
-      return NextResponse.json(
-        { error: 'Leases bucket not found. Please create a bucket named "leases" in Supabase storage.' },
-        { status: 500 }
-      );
-    }
-
-    console.log('Uploading file to leases bucket...');
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    // Verify the lease belongs to the user
+    const { data: lease, error: leaseError } = await supabase
       .from('leases')
-      .upload(fileName, file);
+      .select('*')
+      .eq('id', leaseId)
+      .eq('user_id', user.id)
+      .single();
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError);
+    if (leaseError || !lease) {
       return NextResponse.json(
-        { error: `Failed to upload file: ${uploadError.message}`, details: uploadError },
-        { status: 500 }
+        { error: 'Lease not found' },
+        { status: 404 }
       );
     }
 
-    // Extract basic lease data for database storage
-    const basicData = analysis.data;
-    
-    // Save complete lease data to database with full STAYLL analysis
-    const leaseData = {
-      user_id: userId,
-      tenant_name: basicData.tenant_name || 'Unknown',
-      property_address: basicData.property_address || 'Unknown',
-      monthly_rent: basicData.monthly_rent || '$0',
-      lease_start: basicData.lease_start || new Date().toISOString().split('T')[0],
-      lease_end: basicData.lease_end || '2025-12-31',
-      due_date: basicData.due_date || '1st of each month',
-      late_fee: basicData.late_fee || '$50',
-      security_deposit: basicData.security_deposit || 'Not specified',
-      utilities: basicData.utilities || 'Not specified',
-      parking: basicData.parking || 'Not specified',
-      pets: basicData.pets || 'Not specified',
-      smoking: basicData.smoking || 'Not specified',
-      file_url: uploadData?.path || '',
-      file_name: file.name,
-      file_size: file.size,
-      confidence_score: analysis.confidence,
-      // Store complete STAYLL analysis data
-      analysis_data: {
-        lease_summary: analysis.data.stayll_analysis?.lease_summary || 'Analysis not available',
-        clause_analysis: analysis.data.stayll_analysis?.clause_analysis || null,
-        risk_analysis: analysis.data.stayll_analysis?.risk_analysis || null,
-        action_items: analysis.data.stayll_analysis?.action_items || null,
-        market_insights: analysis.data.stayll_analysis?.market_insights || null,
-        format_analysis: analysis.data.stayll_analysis?.format_analysis || null,
-        confidence_score: analysis.confidence
-      },
-      // Store portfolio impact analysis
-      portfolio_impact: analysis.data.stayll_analysis?.portfolio_impact || null,
-      // Store compliance assessment
-      compliance_assessment: analysis.data.stayll_analysis?.compliance_assessment || null,
-      // Store strategic recommendations
-      strategic_recommendations: analysis.data.stayll_analysis?.strategic_recommendations || null,
-      created_at: new Date().toISOString(),
+    // Update the lease with analysis data
+    const updateData = {
+      analysis_data: analysisData,
+      confidence_score: analysisData.confidence || 0,
+      updated_at: new Date().toISOString()
     };
 
-    console.log('Saving lease data to database...');
-    const { data: dbData, error: dbError } = await supabase
+    // Add extracted fields if they exist in analysis
+    if (analysisData.extractedFields) {
+      const fields = analysisData.extractedFields;
+      Object.assign(updateData, {
+        monthly_rent: fields.monthlyRent || lease.monthly_rent,
+        lease_start: fields.leaseStart || lease.lease_start,
+        lease_end: fields.leaseEnd || lease.lease_end,
+        due_date: fields.dueDate || lease.due_date,
+        late_fee: fields.lateFee || lease.late_fee,
+        security_deposit: fields.securityDeposit || lease.security_deposit,
+        utilities: fields.utilities || lease.utilities,
+        parking: fields.parking || lease.parking,
+        pets: fields.pets || lease.pets,
+        smoking: fields.smoking || lease.smoking
+      });
+    }
+
+    const { data: updatedLease, error: updateError } = await supabase
       .from('leases')
-      .insert([leaseData])
+      .update(updateData)
+      .eq('id', leaseId)
       .select()
       .single();
 
-    if (dbError) {
-      console.error('Database error:', dbError);
+    if (updateError) {
+      console.error('Database update error:', updateError);
       return NextResponse.json(
-        { error: 'Failed to save lease data to database', details: dbError },
+        { error: 'Failed to save analysis results' },
         { status: 500 }
       );
     }
 
-    console.log('Lease data saved successfully:', dbData.id);
+    // Create analysis record for history
+    const analysisRecord = {
+      lease_id: leaseId,
+      user_id: user.id,
+      analysis_type: 'STAYLL',
+      analysis_data: analysisData,
+      confidence_score: analysisData.confidence || 0,
+      processing_time_ms: analysisData.processingTime || 0,
+      created_at: new Date().toISOString()
+    };
+
+    const { error: analysisError } = await supabase
+      .from('lease_analyses')
+      .insert(analysisRecord);
+
+    if (analysisError) {
+      console.error('Analysis history insert error:', analysisError);
+      // Don't fail the request if history insert fails
+    }
 
     return NextResponse.json({
       success: true,
-      lease: dbData,
-      analysis: {
-        confidence: analysis.confidence,
-        extracted_fields: Object.keys(basicData).filter(key => basicData[key as keyof typeof basicData]),
-        portfolio_impact: analysis.data.stayll_analysis?.portfolio_impact ? 'Available' : 'Not available',
-        compliance_assessment: analysis.data.stayll_analysis?.compliance_assessment ? 'Available' : 'Not available',
-        strategic_recommendations: analysis.data.stayll_analysis?.strategic_recommendations ? 'Available' : 'Not available'
-      },
-      file_info: {
-        name: file.name,
-        size: file.size,
-        uploaded_path: uploadData?.path
-      }
+      lease: updatedLease,
+      analysis: analysisData,
+      message: 'Lease analysis completed and saved'
     });
 
   } catch (error) {
-    console.error('STAYLL lease analysis error:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    console.error('Analyze lease error:', error);
     return NextResponse.json(
-      { error: `Internal server error: ${errorMessage}` },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
