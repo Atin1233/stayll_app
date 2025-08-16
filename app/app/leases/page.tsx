@@ -93,7 +93,7 @@ export default function LeasesPage() {
         <p className="mt-2 text-gray-600">
           Upload and manage your lease documents. All files are securely stored and accessible anytime.
         </p>
-        <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-gray-500">
           Welcome back, {user.email || 'User'}!
         </p>
       </div>
@@ -119,7 +119,7 @@ export default function LeasesPage() {
             onFileUpload={handleFileUpload}
             loading={uploading}
           />
-        </div>
+          </div>
 
         {/* Leases List */}
         <div>
@@ -137,14 +137,14 @@ export default function LeasesPage() {
         <div className="mt-8 bg-white border border-gray-200 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">Lease Details</h3>
-            <button
+              <button
               onClick={() => setSelectedLease(null)}
               className="text-gray-400 hover:text-gray-600"
             >
               ✕
-            </button>
-          </div>
-          
+              </button>
+      </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Property Information</h4>
@@ -157,16 +157,16 @@ export default function LeasesPage() {
                   <dt className="text-gray-500">Tenant:</dt>
                   <dd className="text-gray-900">{selectedLease.tenant_name || 'Not specified'}</dd>
                 </div>
-                <div>
+                      <div>
                   <dt className="text-gray-500">Monthly Rent:</dt>
                   <dd className="text-gray-900">{selectedLease.monthly_rent || 'Not specified'}</dd>
-                </div>
+                      </div>
                 <div>
                   <dt className="text-gray-500">Security Deposit:</dt>
                   <dd className="text-gray-900">{selectedLease.security_deposit || 'Not specified'}</dd>
                 </div>
               </dl>
-            </div>
+                  </div>
             
             <div>
               <h4 className="font-medium text-gray-900 mb-2">Lease Terms</h4>
@@ -174,23 +174,23 @@ export default function LeasesPage() {
                 <div>
                   <dt className="text-gray-500">Start Date:</dt>
                   <dd className="text-gray-900">{selectedLease.lease_start || 'Not specified'}</dd>
-                </div>
+                    </div>
                 <div>
                   <dt className="text-gray-500">End Date:</dt>
                   <dd className="text-gray-900">{selectedLease.lease_end || 'Not specified'}</dd>
-                </div>
+                  </div>
                 <div>
                   <dt className="text-gray-500">Due Date:</dt>
                   <dd className="text-gray-900">{selectedLease.due_date || 'Not specified'}</dd>
-                </div>
+                  </div>
                 <div>
                   <dt className="text-gray-500">Late Fee:</dt>
                   <dd className="text-gray-900">{selectedLease.late_fee || 'Not specified'}</dd>
-                </div>
+                    </div>
               </dl>
             </div>
-          </div>
-
+              </div>
+              
           <div className="mt-6 pt-6 border-t border-gray-200">
             <h4 className="font-medium text-gray-900 mb-2">File Information</h4>
             <div className="flex items-center justify-between">
@@ -211,8 +211,8 @@ export default function LeasesPage() {
               </a>
             </div>
           </div>
-        </div>
-      )}
+          </div>
+        )}
     </div>
   )
 } 

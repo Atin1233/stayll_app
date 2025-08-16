@@ -81,18 +81,30 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString()
     };
 
-    const { data: leaseRecord, error: dbError } = await supabase
-      .from('leases')
-      .insert(leaseData)
-      .select()
-      .single();
+    let leaseRecord;
+    try {
+      const { data, error: dbError } = await supabase
+        .from('leases')
+        .insert(leaseData)
+        .select()
+        .single();
 
-    if (dbError) {
-      console.error('Database insert error:', dbError);
-      // If database insert fails, delete the uploaded file
+      if (dbError) {
+        console.error('Database insert error:', dbError);
+        // If database insert fails, delete the uploaded file
+        await supabase.storage.from('leases').remove([fileName]);
+        return NextResponse.json(
+          { error: 'Failed to save lease record. Please run the database setup script.' },
+          { status: 500 }
+        );
+      }
+      leaseRecord = data;
+    } catch (tableError) {
+      console.error('Table not found error:', tableError);
+      // If table doesn't exist, delete the uploaded file
       await supabase.storage.from('leases').remove([fileName]);
       return NextResponse.json(
-        { error: 'Failed to save lease record' },
+        { error: 'Database table not found. Please run the MINIMAL_SETUP.sql script in Supabase SQL Editor.' },
         { status: 500 }
       );
     }

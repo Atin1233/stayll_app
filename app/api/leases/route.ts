@@ -38,12 +38,23 @@ export async function GET(request: NextRequest) {
       query = query.ilike('tenant_name', `%${tenantName}%`);
     }
 
-    const { data: leases, error, count } = await query;
-
-    if (error) {
-      console.error('Database query error:', error);
+    let leases, count;
+    try {
+      const result = await query;
+      leases = result.data;
+      count = result.count;
+      
+      if (result.error) {
+        console.error('Database query error:', result.error);
+        return NextResponse.json(
+          { error: 'Failed to fetch leases' },
+          { status: 500 }
+        );
+      }
+    } catch (tableError) {
+      console.error('Table not found error:', tableError);
       return NextResponse.json(
-        { error: 'Failed to fetch leases' },
+        { error: 'Database table not found. Please run the MINIMAL_SETUP.sql script in Supabase SQL Editor.' },
         { status: 500 }
       );
     }
