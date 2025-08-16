@@ -1,101 +1,95 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Testing database and storage connections...');
+    // Check environment variables
+    const envStatus = {
+      supabase_url_configured: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      supabase_key_configured: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      site_url_configured: !!process.env.NEXT_PUBLIC_SITE_URL,
+      node_env: process.env.NODE_ENV,
+      supabase_url_value: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not Set',
+      supabase_key_value: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not Set',
+      site_url_value: process.env.NEXT_PUBLIC_SITE_URL || 'Not Set'
+    };
 
-    // Check if supabase client is available
-    if (!supabase) {
-      console.error('Supabase client not initialized - missing environment variables');
-      return NextResponse.json({ 
-        success: false,
-        error: 'Supabase client not initialized',
-        details: 'Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables'
-      }, { status: 500 });
+    // Try to create Supabase client
+    let supabaseClient = null;
+    let supabaseError = null;
+    
+    try {
+      supabaseClient = createRouteHandlerClient({ cookies });
+      console.log('Supabase client created successfully');
+    } catch (error) {
+      supabaseError = error;
+      console.error('Failed to create Supabase client:', error);
     }
 
-    // Test database connection
-    console.log('Testing database connection...');
-    const { data: dbData, error: dbError } = await supabase
-      .from('leases')
-      .select('count')
-      .limit(1);
-
-    if (dbError) {
-      console.error('Database connection failed:', dbError);
-      return NextResponse.json({ 
-        success: false,
-        error: 'Database connection failed',
-        details: dbError.message 
-      }, { status: 500 });
+    // Test database connection if client was created
+    let dbTest = null;
+    if (supabaseClient) {
+      try {
+        const { data, error } = await supabaseClient
+          .from('leases')
+          .select('count')
+          .limit(1);
+        
+        if (error) {
+          dbTest = { success: false, error: error.message };
+        } else {
+          dbTest = { success: true, message: 'Database connection successful' };
+        }
+      } catch (error) {
+        dbTest = { success: false, error: error.message };
+      }
     }
-
-    console.log('Database connection successful');
 
     // Test storage connection
-    console.log('Testing storage connection...');
-    const { data: buckets, error: storageError } = await supabase.storage.listBuckets();
-
-    if (storageError) {
-      console.error('Storage connection failed:', storageError);
-      return NextResponse.json({ 
-        success: false,
-        error: 'Storage connection failed',
-        details: storageError.message 
-      }, { status: 500 });
-    }
-
-    console.log('Storage connection successful');
-
-    const leasesBucket = buckets?.find(bucket => bucket.name === 'leases');
-    const bucketExists = !!leasesBucket;
-
-    // Test table structure
-    console.log('Testing table structure...');
-    const { data: tableData, error: tableError } = await supabase
-      .from('leases')
-      .select('id, user_id, tenant_name, property_address, monthly_rent, confidence_score, analysis_data, portfolio_impact, compliance_assessment, strategic_recommendations, created_at')
-      .limit(1);
-
-    if (tableError) {
-      console.error('Table structure test failed:', tableError);
-      return NextResponse.json({ 
-        success: false,
-        error: 'Table structure test failed',
-        details: tableError.message 
-      }, { status: 500 });
-    }
-
-    console.log('Table structure test successful');
-
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Database and storage connections successful',
-      database: {
-        connected: true,
-        table_exists: true,
-        columns_available: tableData !== null
-      },
-      storage: {
-        connected: true,
-        buckets_available: buckets?.map(b => b.name) || [],
-        leases_bucket_exists: bucketExists,
-        leases_bucket_name: leasesBucket?.name || null
-      },
-      environment: {
-        supabase_url_configured: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-        supabase_key_configured: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-        site_url_configured: !!process.env.NEXT_PUBLIC_SITE_URL
+    let storageTest = null;
+    if (supabaseClient) {
+      try {
+        const { data, error } = await supabaseClient.storage.listBuckets();
+        if (error) {
+          storageTest = { success: false, error: error.message };
+        } else {
+          const leasesBucket = data.find(bucket => bucket.name === 'leases');
+          storageTest = { 
+            success: true, 
+            buckets: data.map(b => b.name),
+            leases_bucket_exists: !!leasesBucket
+          };
+        }
+      } catch (error) {
+        storageTest = { success: false, error: error.message };
       }
+    }
+
+    return NextResponse.json({
+      timestamp: new Date().toISOString(),
+      environment: envStatus,
+      supabase_client: supabaseClient ? 'Created' : 'Failed',
+      supabase_error: supabaseError,
+      database_test: dbTest,
+      storage_test: storageTest,
+      recommendations: [
+        'Check if environment variables are set correctly in Vercel',
+        'Verify Supabase project is active and accessible',
+        'Run MINIMAL_SETUP.sql in Supabase SQL Editor if database test fails',
+        'Create storage bucket named "leases" if storage test fails'
+      ]
     });
 
   } catch (error) {
-    console.error('Test failed:', error);
-    return NextResponse.json({ 
-      success: false,
-      error: 'Test failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    console.error('Test DB error:', error);
+    return NextResponse.json(
+      { 
+        error: 'Internal server error',
+        details: error.message,
+        timestamp: new Date().toISOString()
+      },
+      { status: 500 }
+    );
   }
 } 
