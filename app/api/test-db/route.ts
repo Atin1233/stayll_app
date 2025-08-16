@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
           dbTest = { success: true, message: 'Database connection successful' };
         }
       } catch (error) {
-        dbTest = { success: false, error: error.message };
+        dbTest = { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
       }
     }
 
@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
           };
         }
       } catch (error) {
-        storageTest = { success: false, error: error.message };
+        storageTest = { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
       }
     }
 
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        details: error.message,
+        details: error instanceof Error ? error.message : 'Unknown error',
         timestamp: new Date().toISOString()
       },
       { status: 500 }
