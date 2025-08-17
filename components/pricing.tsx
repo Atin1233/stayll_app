@@ -41,7 +41,7 @@ export default function Pricing() {
                 <div className="mb-8">
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-200">Institutional Starter</h3>
-                    <p className="text-sm text-gray-400">🚀 Land & Expand Wedge</p>
+                    <p className="text-sm text-gray-400">Land & Expand Wedge</p>
                   </div>
                   <div className="mb-4">
                     <span className="text-3xl font-bold text-gray-200">$25k</span>
@@ -82,7 +82,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">👉 Perfect for proving ROI in year one.</p>
+                  <p className="text-sm text-blue-200 font-medium">Perfect for proving ROI in year one.</p>
                 </div>
                 <a
                   href="#cta"
@@ -104,7 +104,7 @@ export default function Pricing() {
                 <div className="mb-8">
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-200">Institutional Pro</h3>
-                    <p className="text-sm text-gray-400">🏆 The Mainstay Tier</p>
+                    <p className="text-sm text-gray-400">The Mainstay Tier</p>
                   </div>
                   <div className="mb-4">
                     <span className="text-3xl font-bold text-gray-200">$50k–75k</span>
@@ -151,7 +151,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">👉 Most customers graduate here within 12 months — average recovery = $75k+ per portfolio.</p>
+                  <p className="text-sm text-blue-200 font-medium">Most customers graduate here within 12 months — average recovery = $75k+ per portfolio.</p>
                 </div>
                 <a
                   href="#cta"
@@ -173,7 +173,7 @@ export default function Pricing() {
                 <div className="mb-8">
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold text-gray-200">Enterprise Platinum</h3>
-                    <p className="text-sm text-gray-400">🛡️ The Defensible Moat</p>
+                    <p className="text-sm text-gray-400">The Defensible Moat</p>
                   </div>
                   <div className="mb-4">
                     <span className="text-2xl font-bold text-gray-200">$100k–250k</span>
@@ -220,7 +220,7 @@ export default function Pricing() {
                   </li>
                 </ul>
                 <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">👉 Designed to protect $1B+ portfolios from 7-figure risks.</p>
+                  <p className="text-sm text-blue-200 font-medium">Designed to protect $1B+ portfolios from 7-figure risks.</p>
                 </div>
                 <a
                   href="#cta"
@@ -239,7 +239,7 @@ export default function Pricing() {
 
           {/* Positioning Notes */}
           <div className="mt-12 text-center">
-            <h3 className="mb-6 text-xl font-semibold text-gray-200">🔑 Positioning Strategy</h3>
+            <h3 className="mb-6 text-xl font-semibold text-gray-200">Positioning Strategy</h3>
             <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-3">
               <div className="rounded-lg bg-gray-800 p-6">
                 <h4 className="mb-3 font-medium text-gray-200">Starter = "prove it works"</h4>
@@ -259,7 +259,7 @@ export default function Pricing() {
           {/* Bottom Note */}
           <div className="mt-12 text-center">
             <p className="text-sm text-gray-400">
-              ⚡ Brutal truth: sell "leases processed" and you'll stall at $25k. Sell "dollars saved" and you'll hit $75k+ ACV with ease.
+              Brutal truth: sell "leases processed" and you'll stall at $25k. Sell "dollars saved" and you'll hit $75k+ ACV with ease.
             </p>
             <p className="mt-4 text-sm text-gray-400">
               Free 90-day pilots available for qualified REITs • Average $75k+ recovered per portfolio • 50% reduction in legal review costs
