@@ -107,7 +107,7 @@ export default function Pricing() {
                     <p className="text-sm text-gray-400">The Mainstay Tier</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$50k–75k</span>
+                    <span className="text-3xl font-bold text-gray-200">$50k</span>
                     <span className="text-sm text-gray-400">/year</span>
                   </div>
                   <p className="text-blue-200/65">For large portfolios that need active risk & revenue intelligence.</p>
@@ -176,8 +176,7 @@ export default function Pricing() {
                     <p className="text-sm text-gray-400">The Defensible Moat</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-2xl font-bold text-gray-200">$100k–250k</span>
-                    <span className="text-sm text-gray-400">/year</span>
+                    <span className="text-2xl font-bold text-gray-200">Let's talk</span>
                   </div>
                   <p className="text-blue-200/65">For REITs and institutional owners with massive portfolios.</p>
                 </div>
