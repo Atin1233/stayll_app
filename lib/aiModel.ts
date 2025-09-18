@@ -1,9 +1,10 @@
 // Real AI Model Integration for STAYLL
-// Using Hugging Face Inference API (free tier)
+// Using Google Vertex AI (Gemini) for enterprise-grade analysis
 
 export interface AIAnalysisRequest {
   text: string;
-  task: 'extract_lease_data' | 'classify_clauses' | 'assess_risk' | 'generate_recommendations';
+  task: 'extract_lease_data' | 'classify_clauses' | 'assess_risk' | 'generate_recommendations' | 'comprehensive_analysis';
+  propertyType?: 'residential' | 'commercial';
 }
 
 export interface AIAnalysisResponse {
@@ -12,32 +13,27 @@ export interface AIAnalysisResponse {
   confidence?: number;
   model_used?: string;
   error?: string;
+  tokens_used?: number;
 }
 
-// Hugging Face Models for different tasks
+// Vertex AI Models for different tasks
 const AI_MODELS = {
-  text_classification: 'microsoft/DialoGPT-medium', // For clause classification
-  text_generation: 'gpt2', // For recommendations
-  zero_shot: 'facebook/bart-large-mnli', // For zero-shot classification
-  summarization: 'facebook/bart-large-cnn' // For lease summarization
+  primary: process.env.VERTEX_AI_MODEL || 'gemini-1.5-flash', // Primary model for all tasks
+  fallback: 'regex_fallback' // Fallback when Vertex AI is unavailable
 };
 
 export async function analyzeWithAI(request: AIAnalysisRequest): Promise<AIAnalysisResponse> {
   try {
     console.log('🤖 AI Model: Starting analysis for task:', request.task);
     
-    switch (request.task) {
-      case 'extract_lease_data':
-        return await extractLeaseDataWithAI(request.text);
-      case 'classify_clauses':
-        return await classifyClausesWithAI(request.text);
-      case 'assess_risk':
-        return await assessRiskWithAI(request.text);
-      case 'generate_recommendations':
-        return await generateRecommendationsWithAI(request.text);
-      default:
-        throw new Error(`Unknown AI task: ${request.task}`);
-    }
+    // Use Google AI enhanced analysis
+    console.log('🚀 Using Google AI enhanced analysis');
+    const { analyzeWithGoogleAI } = await import('./googleAI');
+    return await analyzeWithGoogleAI({
+      text: request.text,
+      task: request.task,
+      propertyType: request.propertyType
+    });
   } catch (error) {
     console.error('AI Model error:', error);
     return {
@@ -435,4 +431,45 @@ function parseAIResponse(response: any): any {
   // Parse the AI model response
   // This would be customized based on the actual model output
   return response;
+}
+
+async function comprehensiveAnalysisWithAI(text: string, propertyType?: string): Promise<AIAnalysisResponse> {
+  try {
+    // This is a fallback comprehensive analysis when Vertex AI is not available
+    const basicData = extractWithRegex(text);
+    const clauses = await classifyClausesWithAI(text);
+    const risks = await assessRiskWithAI(text);
+    const recommendations = await generateRecommendationsWithAI(text);
+    
+    return {
+      success: true,
+      data: {
+        lease_summary: {
+          property_address: basicData.property_address || 'Address not found',
+          tenant_name: basicData.tenant_name || 'Tenant not found',
+          lease_term: basicData.lease_term || 'Term not found',
+          base_rent: basicData.monthly_rent || 'Rent not found',
+          total_value: 'Calculated from extracted data',
+          legal_strength: 'neutral'
+        },
+        key_findings: ['Basic analysis completed using fallback methods'],
+        risk_assessment: risks.data || {},
+        recommendations: recommendations.data || {},
+        action_items: {
+          immediate: ['Review extracted data for accuracy'],
+          short_term: ['Consider professional lease review'],
+          long_term: ['Enable Vertex AI for advanced analysis']
+        }
+      },
+      confidence: 0.6,
+      model_used: 'fallback_comprehensive'
+    };
+  } catch (error) {
+    console.error('Comprehensive analysis error:', error);
+    return {
+      success: false,
+      data: null,
+      error: error instanceof Error ? error.message : 'Comprehensive analysis failed'
+    };
+  }
 } 

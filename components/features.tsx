@@ -142,10 +142,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                No portfolio intelligence
+                Expensive attorney reviews
               </h3>
               <p className="text-blue-200/65">
-                Critical lease data scattered across systems with no centralized intelligence to optimize portfolio performance and market positioning.
+                Legal review costs $500-1,500 per lease, taking 2-4 weeks. For 1,000 leases, that's $500K-1.5M in legal fees annually.
               </p>
             </article>
 
@@ -160,10 +160,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Portfolio optimization engine
+                Attorney-level AI analysis
               </h3>
               <p className="text-blue-200/65">
-                AI-powered portfolio intelligence with market benchmarking, risk aggregation, and strategic recommendations for maximum ROI.
+                Get comprehensive legal reviews in minutes for under $10 per lease. Save 99% on legal costs while getting faster, more consistent results.
               </p>
             </article>
           </div>

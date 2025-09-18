@@ -26,10 +26,10 @@ export default function Pricing() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Stayll Pricing — Built for Institutional Scale
+              Save 99% on Legal Review Costs
             </h2>
             <p className="text-lg text-blue-200/65">
-              Every tier screams ROI, not feature bloat. Scale on risk protection, compliance, and revenue recovery.
+              Attorney reviews cost $500-1,500 per lease. STAYLL delivers attorney-level analysis for under $10 per lease. For 1,000 leases, that's $500K+ in savings.
             </p>
           </div>
 
@@ -47,7 +47,7 @@ export default function Pricing() {
                     <span className="text-3xl font-bold text-gray-200">$25k</span>
                     <span className="text-sm text-gray-400">/year</span>
                   </div>
-                  <p className="text-blue-200/65">For mid-sized operators looking to cut review costs fast.</p>
+                  <p className="text-blue-200/65">For mid-sized operators looking to cut legal review costs fast.</p>
                 </div>
                 <ul className="mb-8 space-y-3">
                   <li className="flex items-center">
@@ -55,6 +55,12 @@ export default function Pricing() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                     <span className="text-blue-200/65">Up to 500 leases/year</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Attorney-level legal review (save $250K+/year)</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
@@ -118,6 +124,12 @@ export default function Pricing() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                     <span className="text-blue-200/65">Up to 2,000 leases/year</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Attorney-level legal review (save $1M+/year)</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
@@ -191,6 +203,12 @@ export default function Pricing() {
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
+                    <span className="text-blue-200/65">Attorney-level legal review (save millions/year)</span>
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
                     <span className="text-blue-200/65">Everything in Pro, plus:</span>
                   </li>
                   <li className="flex items-center">
@@ -258,10 +276,10 @@ export default function Pricing() {
           {/* Bottom Note */}
           <div className="mt-12 text-center">
             <p className="text-sm text-gray-400">
-              Brutal truth: sell "leases processed" and you'll stall at $25k. Sell "dollars saved" and you'll hit $75k+ ACV with ease.
+              Brutal truth: sell "leases processed" and you'll stall at $25k. Sell "hundreds of thousands in attorney savings" and you'll hit $75k+ ACV with ease.
             </p>
             <p className="mt-4 text-sm text-gray-400">
-              Free 90-day pilots available for qualified REITs • Average $75k+ recovered per portfolio • 50% reduction in legal review costs
+              Free 90-day pilots available for qualified REITs • Average $500K+ in attorney cost savings per portfolio • 99% reduction in legal review costs
             </p>
           </div>
         </div>

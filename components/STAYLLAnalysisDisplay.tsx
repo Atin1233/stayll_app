@@ -601,9 +601,12 @@ export default function STAYLLAnalysisDisplay({ analysis }: STAYLLAnalysisDispla
             <div>
               <h4 className="font-medium text-gray-900 mb-3">Analysis Details</h4>
               <div className="text-sm text-gray-600">
-                <p>AI Model: STAYLL Advanced Lease Intelligence</p>
+                <p>AI Model: {data.model_used || 'STAYLL Advanced Lease Intelligence'}</p>
                 <p>Analysis Type: Comprehensive Multi-Dimensional</p>
                 <p>Processing Time: Real-time</p>
+                {data.tokens_used && (
+                  <p>Tokens Used: {data.tokens_used.toLocaleString()}</p>
+                )}
               </div>
             </div>
           </div>

@@ -16,14 +16,14 @@ export default function Cta() {
                   className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-8 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
                   data-aos="fade-up"
                 >
-                  Want to be one of the first?
+                  Save Hundreds of Thousands on Legal Review
                 </h2>
                 <p
                   className="mb-8 text-lg text-blue-200/65"
                   data-aos="fade-up"
                   data-aos-delay={200}
                 >
-                  We're launching a private beta for early partners.
+                  Get attorney-level lease analysis in minutes, not months. Join our private beta and see how much you can save.
                 </p>
                 
                 <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
@@ -31,13 +31,13 @@ export default function Cta() {
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">Get free lease audits</span>
+                    <span className="text-gray-200">Free attorney-level lease analysis</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">Give feedback, shape the product</span>
+                    <span className="text-gray-200">See exactly how much you'll save on legal costs</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
@@ -54,7 +54,7 @@ export default function Cta() {
                       href="#0"
                     >
                       <span className="relative inline-flex items-center">
-                        Get your first lease audit free
+                        Get free attorney-level analysis
                         <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                           -&gt;
                         </span>

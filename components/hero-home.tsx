@@ -10,7 +10,7 @@ export default function HeroHome() {
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
               data-aos="fade-up"
             >
-              The Bloomberg Terminal for Leases.
+              Save Hundreds of Thousands on Attorney Review.
             </h1>
             <div className="mx-auto max-w-3xl">
               <p
@@ -18,7 +18,7 @@ export default function HeroHome() {
                 data-aos="fade-up"
                 data-aos-delay={200}
               >
-                AI-powered lease intelligence for institutional multifamily REITs. Recover hidden revenue, automate compliance, and optimize your portfolio with predictive insights.
+                Get attorney-level legal reviews in minutes, not months. AI-powered lease intelligence delivers comprehensive legal analysis at a fraction of the cost and time of traditional law firms.
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center gap-4">
                 <div data-aos="fade-up" data-aos-delay={400}>

@@ -260,21 +260,38 @@ export async function analyzeLeaseWithSTAYLL(leaseText: string): Promise<STAYLLA
   const basicData = extractBasicLeaseData(leaseText);
   console.log('STAYLL AI: Basic data extracted:', basicData);
   
-  // Analyze clauses with AI
+  // Perform comprehensive analysis with AI
   const { analyzeWithAI } = await import('./aiModel');
-  const clauseResults = await analyzeWithAI({ text: leaseText, task: 'classify_clauses' });
-  const clauses = convertAIClauseResults(clauseResults.success ? clauseResults.data : []);
-  console.log('STAYLL AI: Clauses analyzed:', clauses.length);
+  const comprehensiveResults = await analyzeWithAI({ 
+    text: leaseText, 
+    task: 'comprehensive_analysis',
+    propertyType: 'residential' // Default to residential, can be made configurable
+  });
   
-  // Assess risks with AI
-  const riskResults = await analyzeWithAI({ text: leaseText, task: 'assess_risk' });
-  const riskAnalysis = convertAIRiskResults(riskResults.success ? riskResults.data : {});
-  console.log('STAYLL AI: Risk assessment complete');
+  let clauses: ClauseAnalysis[] = [];
+  let riskAnalysis: RiskAnalysis;
+  let actionItems: any;
   
-  // Generate recommendations with AI
-  const recommendationResults = await analyzeWithAI({ text: leaseText, task: 'generate_recommendations' });
-  const actionItems = generateActionItems(riskAnalysis, basicData);
-  console.log('STAYLL AI: Action items generated');
+  if (comprehensiveResults.success && comprehensiveResults.data) {
+    // Use comprehensive analysis results
+    const data = comprehensiveResults.data;
+    clauses = convertComprehensiveClauseResults(data);
+    riskAnalysis = convertComprehensiveRiskResults(data);
+    actionItems = convertComprehensiveActionItems(data);
+    console.log('STAYLL AI: Comprehensive analysis complete');
+  } else {
+    // Fallback to individual analysis methods
+    const clauseResults = await analyzeWithAI({ text: leaseText, task: 'classify_clauses' });
+    clauses = convertAIClauseResults(clauseResults.success ? clauseResults.data : []);
+    console.log('STAYLL AI: Clauses analyzed:', clauses.length);
+    
+    const riskResults = await analyzeWithAI({ text: leaseText, task: 'assess_risk' });
+    riskAnalysis = convertAIRiskResults(riskResults.success ? riskResults.data : {});
+    console.log('STAYLL AI: Risk assessment complete');
+    
+    actionItems = generateActionItems(riskAnalysis, basicData);
+    console.log('STAYLL AI: Action items generated');
+  }
   
   // Analyze lease format and completeness
   const formatAnalysis = analyzeLeaseFormatBrutally(leaseText, basicData);
@@ -327,6 +344,50 @@ function convertAIClauseResults(aiResults: any[]): ClauseAnalysis[] {
     risk_factors: [],
     recommendations: []
   }));
+}
+
+function convertComprehensiveClauseResults(data: any): ClauseAnalysis[] {
+  // Convert comprehensive analysis data to clause analysis format
+  const clauses: ClauseAnalysis[] = [];
+  
+  // Map key findings to clause analysis
+  if (data.key_findings && Array.isArray(data.key_findings)) {
+    data.key_findings.forEach((finding: string, index: number) => {
+      clauses.push({
+        type: 'special' as any,
+        confidence: 85,
+        extracted_data: { finding },
+        risk_level: 'low' as any,
+        risk_factors: [],
+        recommendations: []
+      });
+    });
+  }
+  
+  return clauses;
+}
+
+function convertComprehensiveRiskResults(data: any): RiskAnalysis {
+  const riskData = data.risk_assessment || {};
+  
+  return {
+    overall_risk_score: riskData.overall_risk_score || 0,
+    risk_level: riskData.risk_level as any || 'low',
+    missing_clauses: [],
+    problematic_clauses: [],
+    cash_flow_risks: riskData.top_risks || [],
+    legal_risks: [],
+    market_risks: [],
+    recommendations: data.recommendations?.recommendations?.map((r: any) => r.recommendation) || []
+  };
+}
+
+function convertComprehensiveActionItems(data: any): any {
+  return {
+    immediate: data.action_items?.immediate || [],
+    upcoming: data.action_items?.short_term || [],
+    long_term: data.action_items?.long_term || []
+  };
 }
 
 function convertAIRiskResults(aiResults: any): RiskAnalysis {
