@@ -26,10 +26,10 @@ export default function Pricing() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Eliminate 1-3% Annual Lease Value Leakage
+              Pricing Designed Around Real ROI
             </h2>
             <p className="text-lg text-blue-200/65">
-              Financial-grade contract data with auditor-certified ≥97% accuracy. Proven ROI: mid-size REIT (1,000 leases) saves $500K-$1.5M annually.
+              Each tier tied to measurable financial impact. Refund if ROI &lt;3× pilot cost.
             </p>
           </div>
 
@@ -44,8 +44,8 @@ export default function Pricing() {
                     <p className="text-sm text-gray-400">Proof of ROI</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$10K</span>
-                    <span className="text-sm text-gray-400">-$20K</span>
+                    <span className="text-3xl font-bold text-gray-200">$15K</span>
+                    <span className="text-sm text-gray-400"> avg</span>
                   </div>
                   <p className="text-blue-200/65">100 leases, verified outputs, side-by-side audit. Guaranteed 3× ROI or refund.</p>
                 </div>
@@ -113,8 +113,8 @@ export default function Pricing() {
                     <p className="text-sm text-gray-400">Per-Contract Billing</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$50K</span>
-                    <span className="text-sm text-gray-400">-$250K</span>
+                    <span className="text-3xl font-bold text-gray-200">$150K</span>
+                    <span className="text-sm text-gray-400"> avg</span>
                   </div>
                   <p className="text-blue-200/65">For CRE portfolios with 500-2,000 leases needing verified financial data.</p>
                 </div>
@@ -182,7 +182,8 @@ export default function Pricing() {
                     <p className="text-sm text-gray-400">QA-Backed Accuracy</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-2xl font-bold text-gray-200">$250K-$800K</span>
+                    <span className="text-3xl font-bold text-gray-200">$500K</span>
+                    <span className="text-sm text-gray-400"> avg</span>
                   </div>
                   <p className="text-blue-200/65">For institutional portfolios with 2,000+ leases and mission-critical accuracy needs.</p>
                 </div>

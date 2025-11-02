@@ -10,36 +10,31 @@ export default function HeroHome() {
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
               data-aos="fade-up"
             >
-              Financial-Grade Contract Data for Commercial Real Estate.
+              The Only Financial-Grade Contract Data Layer for CRE
             </h1>
             <div className="mx-auto max-w-3xl">
               <p
-                className="mb-8 text-xl text-blue-200/65"
+                className="mb-4 text-xl text-blue-200/65"
                 data-aos="fade-up"
                 data-aos-delay={200}
               >
-                Eliminate 1-3% annual lease value leakage. Auditor-certified lease data with ≥97% accuracy. The trusted source of truth for REITs, asset managers, and portfolio accountants.
+                Eliminate leakage. Automate renewals. Get auditor-certified lease data in minutes.
+              </p>
+              <p className="mb-8 text-sm text-blue-200/50 italic" data-aos="fade-up" data-aos-delay={300}>
+                Used by portfolio managers and auditors to prevent 1-3% annual financial leakage
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center gap-4">
                 <div data-aos="fade-up" data-aos-delay={400}>
                   <a
                     className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:w-auto"
-                    href="/app"
+                    href="#cta"
                   >
                     <span className="relative inline-flex items-center">
-                      Request Demo
+                      Request a Pilot – See Verified Data in 30 Days
                       <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                         -&gt;
                       </span>
                     </span>
-                  </a>
-                </div>
-                <div data-aos="fade-up" data-aos-delay={600}>
-                  <a
-                    className="btn relative bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%] sm:w-auto"
-                    href="#pricing"
-                  >
-                    View Pricing
                   </a>
                 </div>
               </div>

@@ -13,17 +13,17 @@ export default function Cta() {
               {/* Left side - Content */}
               <div className="text-center lg:text-left">
                 <h2
-                  className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-8 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
+                  className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
                   data-aos="fade-up"
                 >
-                  Financial-Grade Contract Data for Your Portfolio
+                  Start Your Pilot Today
                 </h2>
                 <p
                   className="mb-8 text-lg text-blue-200/65"
                   data-aos="fade-up"
                   data-aos-delay={200}
                 >
-                  Join pilot program for CRE portfolios. Get auditor-verified lease data extraction, eliminate 1-3% value leakage, and secure your financial source of truth.
+                  Experience auditor-certified lease data in your portfolio in under 30 days.
                 </p>
                 
                 <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
@@ -69,7 +69,7 @@ export default function Cta() {
                 <div className="w-full max-w-md" data-aos="fade-up" data-aos-delay={400}>
                   <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                     <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                      Request Pilot Program
+                      Request Pilot / Schedule Demo
                     </h3>
                     <LeadForm />
                   </div>
