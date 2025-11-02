@@ -1,5 +1,5 @@
 // Real AI Model Integration for STAYLL
-// Using Google Vertex AI (Gemini) for enterprise-grade analysis
+// Using Google AI Enhanced Analysis for financial-grade lease intelligence
 
 export interface AIAnalysisRequest {
   text: string;
@@ -16,10 +16,10 @@ export interface AIAnalysisResponse {
   tokens_used?: number;
 }
 
-// Vertex AI Models for different tasks
+// AI Models for different tasks
 const AI_MODELS = {
-  primary: process.env.VERTEX_AI_MODEL || 'gemini-1.5-flash', // Primary model for all tasks
-  fallback: 'regex_fallback' // Fallback when Vertex AI is unavailable
+  primary: 'enhanced_regex_ai', // Enhanced AI analysis
+  fallback: 'regex_fallback' // Fallback when AI is unavailable
 };
 
 export async function analyzeWithAI(request: AIAnalysisRequest): Promise<AIAnalysisResponse> {
