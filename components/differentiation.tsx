@@ -28,10 +28,10 @@ export default function Differentiation() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              The Stayll Advantage
+              Financial-Grade Accuracy You Can Trust
             </h2>
             <p className="text-lg text-blue-200/65">
-              What makes Stayll in a league of its own—trusted outcomes and measurable metrics.
+              Not another document AI—this is auditor-certified contract data infrastructure for financial systems.
             </p>
           </div>
 
@@ -45,10 +45,10 @@ export default function Differentiation() {
                 </svg>
               </div>
               <h3 className="mb-3 font-nacelle text-xl font-semibold text-gray-200">
-                Financial-Grade Accuracy
+                Auditor-Backed Accuracy
               </h3>
               <p className="text-blue-200/65">
-                Guaranteed SLA, trusted for audits. ≥97% recall verified by third-party auditors. Every field clause-linked.
+                ≥97% recall verified by third-party auditors. Every field clause-linked with traceable evidence. Use in financial statements.
               </p>
             </article>
 
@@ -61,10 +61,10 @@ export default function Differentiation() {
                 </svg>
               </div>
               <h3 className="mb-3 font-nacelle text-xl font-semibold text-gray-200">
-                Hybrid Verification Engine
+                4-Layer Verification
               </h3>
               <p className="text-blue-200/65">
-                AI + deterministic rules + human QA. LLM extraction → rule validation → financial reconciliation → human QA.
+                LLM extraction → Rule validation → Financial reconciliation → Human QA pipeline ensures trustable outputs.
               </p>
             </article>
 
@@ -77,10 +77,10 @@ export default function Differentiation() {
                 </svg>
               </div>
               <h3 className="mb-3 font-nacelle text-xl font-semibold text-gray-200">
-                CFO & Auditor-Ready Outputs
+                Built for CRE Finance
               </h3>
               <p className="text-blue-200/65">
-                Structured, verifiable, exportable. Use in financial workflows. Auditor-certified and compliance-ready.
+                50K+ proprietary lease corpus. Deep understanding of rent schedules, escalations, renewals. Asset manager language.
               </p>
             </article>
 
@@ -92,10 +92,10 @@ export default function Differentiation() {
                 </svg>
               </div>
               <h3 className="mb-3 font-nacelle text-xl font-semibold text-gray-200">
-                Purpose-Built for CRE
+                Data Layer, Not Workflow
               </h3>
               <p className="text-blue-200/65">
-                Understands leases, escalations, and rent structures like no generalist AI tool. 50K+ proprietary lease corpus.
+                API-first for ERP/BI integration. No drafting, signatures, or collaboration fluff. Just verified financial data.
               </p>
             </article>
 
@@ -107,10 +107,10 @@ export default function Differentiation() {
                 </svg>
               </div>
               <h3 className="mb-3 font-nacelle text-xl font-semibold text-gray-200">
-                Data Layer for Enterprise Systems
+                Deterministic + AI Hybrid
               </h3>
               <p className="text-blue-200/65">
-                Integrates seamlessly with ERP/BI tools, not a workflow toy. API-first. Just verified financial data.
+                AI for meaning, rules for math. Rent tables verified by formula. Spreadsheet-grade precision at AI scale.
               </p>
             </article>
 

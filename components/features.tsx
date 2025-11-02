@@ -40,10 +40,10 @@ export default function Features() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Manual Reviews Cost You Millions Every Year
+              CRE portfolios lose 1-3% annually from scattered, unverified contract data.
             </h2>
             <p className="text-lg text-blue-200/65">
-              The hidden costs of scattered, unverified contract data add up to massive financial impact across your CRE portfolio.
+              Thousands of leases with zero accuracy assurance cause missed renewals, escalations, and compliance breaches costing millions. No single source of truth for finance teams.
             </p>
           </div>
 
@@ -70,10 +70,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Missed renewals and escalations
+                Unverified contract data
               </h3>
               <p className="text-blue-200/65">
-                1-3% of lease value lost annually from scattered, unverified contract data without accuracy assurance.
+                Manual review costs $150-300/contract, takes weeks, inconsistent quality. No accuracy guarantee or audit trail.
               </p>
             </article>
 
@@ -88,10 +88,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Verified Lease Data
+                Financial-grade verified data
               </h3>
               <p className="text-blue-200/65">
-                ≥97% recall, auditor-verified. Auto-generates renewals, payments, deadlines. Aligns with financial values ±1%.
+                Auditor-certified extraction with ≥97% accuracy. Every field clause-linked, auditable, and financial-statement ready.
               </p>
             </article>
 
@@ -106,10 +106,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Manual review inefficiency
+                No financial data layer
               </h3>
               <p className="text-blue-200/65">
-                $150-300 per contract, takes weeks, inconsistent quality. No accuracy guarantee or auditable trail.
+                Scattered across spreadsheets and systems. No integration with ERP/BI. Cannot use in financial statements or audits.
               </p>
             </article>
 
@@ -124,10 +124,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Measurable ROI
+                Contract data infrastructure
               </h3>
               <p className="text-blue-200/65">
-                Audit trail with clause-level evidence. Export-ready. Processing <3 min/contract with <200ms latency.
+                API-first for Yardi, MRI, NetSuite. Deterministic + AI hybrid engine for spreadsheet-grade precision at AI scale.
               </p>
             </article>
 
@@ -142,10 +142,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Generic AI limitations
+                Generic AI tools
               </h3>
               <p className="text-blue-200/65">
-                "Good enough" for reading, but not CFO-grade accuracy. No verification. Cannot trust for financial workflows.
+                General CLMs and document AI: no CRE expertise, unverified outputs, cannot use in financial workflows.
               </p>
             </article>
 
@@ -160,10 +160,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                The Stayll Advantage
+                Purpose-built CRE platform
               </h3>
               <p className="text-blue-200/65">
-                Financial-grade accuracy with guaranteed SLA. Hybrid verification engine. Purpose-built for CRE lease intelligence.
+                Trained on 50K+ commercial leases. Deep understanding of rent schedules, escalations, renewals. Built for asset managers, not lawyers.
               </p>
             </article>
           </div>
