@@ -26,10 +26,10 @@ export default function Pricing() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Save 99% on Legal Review Costs
+              Eliminate 1-3% Annual Lease Value Leakage
             </h2>
             <p className="text-lg text-blue-200/65">
-              Attorney reviews cost $500-1,500 per lease. STAYLL delivers attorney-level analysis for under $10 per lease. For 1,000 leases, that's $500K+ in savings.
+              Financial-grade contract data with auditor-certified ≥97% accuracy. Proven ROI: mid-size REIT (1,000 leases) saves $500K-$1.5M annually.
             </p>
           </div>
 
@@ -40,55 +40,55 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-200">Institutional Starter</h3>
-                    <p className="text-sm text-gray-400">Land & Expand Wedge</p>
+                    <h3 className="text-lg font-semibold text-gray-200">Pilot</h3>
+                    <p className="text-sm text-gray-400">Proof of ROI</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$25k</span>
-                    <span className="text-sm text-gray-400">/year</span>
+                    <span className="text-3xl font-bold text-gray-200">$10K</span>
+                    <span className="text-sm text-gray-400">-$20K</span>
                   </div>
-                  <p className="text-blue-200/65">For mid-sized operators looking to cut legal review costs fast.</p>
+                  <p className="text-blue-200/65">100 leases, verified outputs, side-by-side audit. Guaranteed 3× ROI or refund.</p>
                 </div>
                 <ul className="mb-8 space-y-3">
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Up to 500 leases/year</span>
+                    <span className="text-blue-200/65">100 commercial leases processed</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Attorney-level legal review (save $250K+/year)</span>
+                    <span className="text-blue-200/65">Auditor-verified lease data extraction (≥97% accuracy)</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">AI extraction of key terms (rent, escalations, renewals)</span>
+                    <span className="text-blue-200/65">Financial impact engine (rent rolls, escalations, cash exposure)</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Risk flags & missing clause detection</span>
+                    <span className="text-blue-200/65">Obligation tracker (renewals, payments, deadlines)</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Automated alerts before escalations/renewals hit</span>
+                    <span className="text-blue-200/65">Audit trail with clause linkage</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Yardi integration (basic sync)</span>
+                    <span className="text-blue-200/65">Side-by-side auditor comparison</span>
                   </li>
                 </ul>
                 <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">Perfect for proving ROI in year one.</p>
+                  <p className="text-sm text-blue-200 font-medium">3× ROI guarantee or full refund.</p>
                 </div>
                 <a
                   href="#cta"
@@ -109,61 +109,55 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-200">Institutional Pro</h3>
-                    <p className="text-sm text-gray-400">The Mainstay Tier</p>
+                    <h3 className="text-lg font-semibold text-gray-200">Annual SaaS</h3>
+                    <p className="text-sm text-gray-400">Per-Contract Billing</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$50k</span>
-                    <span className="text-sm text-gray-400">/year</span>
+                    <span className="text-3xl font-bold text-gray-200">$50K</span>
+                    <span className="text-sm text-gray-400">-$250K</span>
                   </div>
-                  <p className="text-blue-200/65">For large portfolios that need active risk & revenue intelligence.</p>
+                  <p className="text-blue-200/65">For CRE portfolios with 500-2,000 leases needing verified financial data.</p>
                 </div>
                 <ul className="mb-8 space-y-3">
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Up to 2,000 leases/year</span>
+                    <span className="text-blue-200/65">500-2,000 leases/year with per-contract pricing</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Attorney-level legal review (save $1M+/year)</span>
+                    <span className="text-blue-200/65">Everything in Pilot, plus:</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Everything in Starter, plus:</span>
+                    <span className="text-blue-200/65">API integration with Yardi, MRI, NetSuite (&lt;2h setup)</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Predictive ROI models ("You're losing $X on these leases")</span>
+                    <span className="text-blue-200/65">Human QA for top 20% of contracts</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Market benchmarking against peers & standards</span>
+                    <span className="text-blue-200/65">Priority support and dedicated onboarding</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Compliance automation (catch violations early)</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Yardi + RealPage integration (deep workflow)</span>
+                    <span className="text-blue-200/65">SOC2 Type II compliant, field-level encryption</span>
                   </li>
                 </ul>
                 <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">Most customers graduate here within 12 months — average recovery = $75k+ per portfolio.</p>
+                  <p className="text-sm text-blue-200 font-medium">Typical ROI: 10× subscription cost in first year.</p>
                 </div>
                 <a
                   href="#cta"
@@ -184,60 +178,54 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
                 <div className="mb-8">
                   <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-200">Enterprise Platinum</h3>
-                    <p className="text-sm text-gray-400">The Defensible Moat</p>
+                    <h3 className="text-lg font-semibold text-gray-200">Enterprise SLA</h3>
+                    <p className="text-sm text-gray-400">QA-Backed Accuracy</p>
                   </div>
                   <div className="mb-4">
-                    <span className="text-2xl font-bold text-gray-200">Let's talk</span>
+                    <span className="text-2xl font-bold text-gray-200">$250K-$800K</span>
                   </div>
-                  <p className="text-blue-200/65">For REITs and institutional owners with massive portfolios.</p>
+                  <p className="text-blue-200/65">For institutional portfolios with 2,000+ leases and mission-critical accuracy needs.</p>
                 </div>
                 <ul className="mb-8 space-y-3">
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Unlimited leases</span>
+                    <span className="text-blue-200/65">Unlimited commercial leases</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Attorney-level legal review (save millions/year)</span>
+                    <span className="text-blue-200/65">Everything in Annual SaaS, plus:</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Everything in Pro, plus:</span>
+                    <span className="text-blue-200/65">Dedicated account manager + technical support</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Portfolio intelligence dashboard (portfolio-wide risk/revenue view)</span>
+                    <span className="text-blue-200/65">On-premise deployment option available</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Custom compliance & ESG modules</span>
+                    <span className="text-blue-200/65">Quarterly third-party accuracy audits</span>
                   </li>
                   <li className="flex items-center">
                     <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Dedicated account manager + legal validation</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Insurance-backed coverage for AI review (optional)</span>
+                    <span className="text-blue-200/65">SLA-backed uptime (99.9%) and performance</span>
                   </li>
                 </ul>
                 <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">Designed to protect $1B+ portfolios from 7-figure risks.</p>
+                  <p className="text-sm text-blue-200 font-medium">Protects $1B+ portfolios with auditable financial-grade data.</p>
                 </div>
                 <a
                   href="#cta"
@@ -254,32 +242,13 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Positioning Notes */}
-          <div className="mt-12 text-center">
-            <h3 className="mb-6 text-xl font-semibold text-gray-200">Positioning Strategy</h3>
-            <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-3">
-              <div className="rounded-lg bg-gray-800 p-6">
-                <h4 className="mb-3 font-medium text-gray-200">Starter = "prove it works"</h4>
-                <p className="text-sm text-blue-200/65">Land customers with clear ROI demonstration</p>
-              </div>
-              <div className="rounded-lg bg-gray-800 p-6">
-                <h4 className="mb-3 font-medium text-gray-200">Pro = "this is the real product"</h4>
-                <p className="text-sm text-blue-200/65">Expand revenue with comprehensive risk intelligence</p>
-              </div>
-              <div className="rounded-lg bg-gray-800 p-6">
-                <h4 className="mb-3 font-medium text-gray-200">Enterprise = "you can't live without us"</h4>
-                <p className="text-sm text-blue-200/65">Defensible moat with portfolio-wide protection</p>
-              </div>
-            </div>
-          </div>
-
           {/* Bottom Note */}
           <div className="mt-12 text-center">
             <p className="text-sm text-gray-400">
-              Brutal truth: sell "leases processed" and you'll stall at $25k. Sell "hundreds of thousands in attorney savings" and you'll hit $75k+ ACV with ease.
+              Not a CLM—this is financial-grade contract data infrastructure. When auditors and CFOs need trusted lease truth, they use Stayll.
             </p>
             <p className="mt-4 text-sm text-gray-400">
-              Free 90-day pilots available for qualified REITs • Average $500K+ in attorney cost savings per portfolio • 99% reduction in legal review costs
+              Pilot available for CRE portfolios with 500+ leases • Auditor-certified accuracy • Typically 10× ROI in first year
             </p>
           </div>
         </div>

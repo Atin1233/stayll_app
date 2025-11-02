@@ -40,10 +40,10 @@ export default function Features() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Institutional REITs are losing millions in hidden lease revenue.
+              CRE portfolios lose 1-3% annually from scattered, unverified contract data.
             </h2>
             <p className="text-lg text-blue-200/65">
-              Complex lease portfolios with thousands of contracts hide missed escalations, compliance risks, and optimization opportunities that cost REITs millions annually.
+              Thousands of leases with zero accuracy assurance cause missed renewals, escalations, and compliance breaches costing millions. No single source of truth for finance teams.
             </p>
           </div>
 
@@ -70,10 +70,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Missed revenue escalations
+                Unverified contract data
               </h3>
               <p className="text-blue-200/65">
-                Hidden rent increases and CPI adjustments buried in complex lease terms cost REITs $15k+ per lease annually.
+                Manual review costs $150-300/contract, takes weeks, inconsistent quality. No accuracy guarantee or audit trail.
               </p>
             </article>
 
@@ -88,10 +88,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Predictive revenue recovery
+                Financial-grade verified data
               </h3>
               <p className="text-blue-200/65">
-                AI instantly identifies missed escalations and calculates exact revenue recovery potential across your entire portfolio.
+                Auditor-certified extraction with ≥97% accuracy. Every field clause-linked, auditable, and financial-statement ready.
               </p>
             </article>
 
@@ -106,10 +106,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Compliance blind spots
+                No financial data layer
               </h3>
               <p className="text-blue-200/65">
-                Regulatory changes and lease compliance requirements create massive legal and financial risks for institutional portfolios.
+                Scattered across spreadsheets and systems. No integration with ERP/BI. Cannot use in financial statements or audits.
               </p>
             </article>
 
@@ -124,10 +124,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Automated compliance monitoring
+                Contract data infrastructure
               </h3>
               <p className="text-blue-200/65">
-                Real-time monitoring of regulatory changes with automated alerts and risk scoring across your entire lease portfolio.
+                API-first for Yardi, MRI, NetSuite. Deterministic + AI hybrid engine for spreadsheet-grade precision at AI scale.
               </p>
             </article>
 
@@ -142,10 +142,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Expensive attorney reviews
+                Generic AI tools
               </h3>
               <p className="text-blue-200/65">
-                Legal review costs $500-1,500 per lease, taking 2-4 weeks. For 1,000 leases, that's $500K-1.5M in legal fees annually.
+                General CLMs and document AI: no CRE expertise, unverified outputs, cannot use in financial workflows.
               </p>
             </article>
 
@@ -160,10 +160,10 @@ export default function Features() {
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
               <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Attorney-level AI analysis
+                Purpose-built CRE platform
               </h3>
               <p className="text-blue-200/65">
-                Get comprehensive legal reviews in minutes for under $10 per lease. Save 99% on legal costs while getting faster, more consistent results.
+                Trained on 50K+ commercial leases. Deep understanding of rent schedules, escalations, renewals. Built for asset managers, not lawyers.
               </p>
             </article>
           </div>

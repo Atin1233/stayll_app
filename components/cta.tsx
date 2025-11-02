@@ -16,14 +16,14 @@ export default function Cta() {
                   className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-8 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
                   data-aos="fade-up"
                 >
-                  Save Hundreds of Thousands on Legal Review
+                  Financial-Grade Contract Data for Your Portfolio
                 </h2>
                 <p
                   className="mb-8 text-lg text-blue-200/65"
                   data-aos="fade-up"
                   data-aos-delay={200}
                 >
-                  Get attorney-level lease analysis in minutes, not months. Join our private beta and see how much you can save.
+                  Join pilot program for CRE portfolios. Get auditor-verified lease data extraction, eliminate 1-3% value leakage, and secure your financial source of truth.
                 </p>
                 
                 <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
@@ -31,19 +31,19 @@ export default function Cta() {
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">Free attorney-level lease analysis</span>
+                    <span className="text-gray-200">Auditor-certified ≥97% accuracy guarantee</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">See exactly how much you'll save on legal costs</span>
+                    <span className="text-gray-200">3× ROI guarantee or full refund</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">Lock in lifetime discounts</span>
+                    <span className="text-gray-200">API-ready for Yardi, MRI, NetSuite integration</span>
                   </div>
                 </div>
 
@@ -54,7 +54,7 @@ export default function Cta() {
                       href="#0"
                     >
                       <span className="relative inline-flex items-center">
-                        Get free attorney-level analysis
+                        Start Pilot Program
                         <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                           -&gt;
                         </span>
@@ -69,7 +69,7 @@ export default function Cta() {
                 <div className="w-full max-w-md" data-aos="fade-up" data-aos-delay={400}>
                   <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                     <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                      Join the Early Access List
+                      Request Pilot Program
                     </h3>
                     <LeadForm />
                   </div>
