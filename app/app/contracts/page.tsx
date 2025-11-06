@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LeaseStorageService } from '@/lib/v5/leaseStorage'
 import type { Lease } from '@/types/v5.0'
 import UploadDropzone from '@/components/dashboard/UploadDropzone'
 import LeaseList from '@/components/dashboard/LeaseList'
 import LeaseFieldsDisplay from '@/components/dashboard/LeaseFieldsDisplay'
+import type { QATask } from '@/types/v5.0'
 
 export default function ContractsPage() {
   const [uploading, setUploading] = useState(false)
@@ -13,6 +14,8 @@ export default function ContractsPage() {
   const [uploadError, setUploadError] = useState('')
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [selectedContract, setSelectedContract] = useState<Lease | null>(null)
+  const [qaTasks, setQaTasks] = useState<QATask[]>([])
+  const [qaError, setQaError] = useState('')
 
   const handleFileUpload = async (file: File, propertyAddress: string, tenantName: string) => {
     setUploading(true)
@@ -55,6 +58,25 @@ export default function ContractsPage() {
     console.log('Edit contract:', lease)
   }
 
+  useEffect(() => {
+    const loadQaTasks = async () => {
+      try {
+        setQaError('')
+        const response = await fetch('/api/v5/qa/tasks?limit=5')
+        const result = await response.json()
+        if (result.success) {
+          setQaTasks(result.tasks || [])
+        } else {
+          setQaError(result.error || 'Unable to load QA tasks')
+        }
+      } catch (error) {
+        setQaError('Unable to load QA tasks')
+      }
+    }
+
+    loadQaTasks()
+  }, [refreshTrigger])
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
@@ -93,6 +115,49 @@ export default function ContractsPage() {
           />
         </div>
       </div>
+
+      <section id="qa" className="mt-12 bg-white border border-gray-200 rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">QA queue</h2>
+            <p className="text-sm text-gray-500">
+              Fields awaiting human verification after automated checks.
+            </p>
+          </div>
+          <button
+            onClick={() => setRefreshTrigger((prev) => prev + 1)}
+            className="text-sm font-semibold text-blue-600 hover:text-blue-700"
+          >
+            Refresh
+          </button>
+        </div>
+
+        {qaError ? (
+          <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-700">{qaError}</div>
+        ) : qaTasks.length === 0 ? (
+          <div className="rounded-md border border-gray-200 bg-gray-50 p-4 text-sm text-gray-600">
+            No QA tasks at the moment. Upload contracts or refresh as new tasks arrive.
+          </div>
+        ) : (
+          <ul className="divide-y divide-gray-100">
+            {qaTasks.map((task) => (
+              <li key={task.id} className="py-3 flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{task.field_name}</p>
+                  <p className="text-sm text-gray-500">Contract ID: {task.lease_id}</p>
+                  <p className="text-xs text-yellow-600">Confidence {Math.round(task.confidence)}% • {task.validation_state}</p>
+                </div>
+                <a
+                  href={`/app/contracts?contract=${task.lease_id}`}
+                  className="text-sm font-semibold text-blue-600 hover:text-blue-700"
+                >
+                  Open
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {selectedContract && (
         <div className="mt-12 space-y-6">
