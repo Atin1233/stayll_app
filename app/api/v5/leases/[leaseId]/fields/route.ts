@@ -11,7 +11,7 @@ import { OrganizationService } from '@/lib/v5/organization';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { leaseId: string } }
+  { params }: { params: Promise<{ leaseId: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
@@ -32,7 +32,7 @@ export async function GET(
       );
     }
 
-    const leaseId = params.leaseId;
+    const { leaseId } = await params;
 
     // Verify lease belongs to organization
     const { data: lease, error: leaseError } = await supabase

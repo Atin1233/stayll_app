@@ -12,7 +12,7 @@ import { AuditService } from '@/lib/v5/audit';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { leaseId: string } }
+  { params }: { params: Promise<{ leaseId: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
@@ -33,7 +33,7 @@ export async function POST(
       );
     }
 
-    const leaseId = params.leaseId;
+    const { leaseId } = await params;
 
     // Get lease to verify ownership and get file
     const { data: lease, error: leaseError } = await supabase
