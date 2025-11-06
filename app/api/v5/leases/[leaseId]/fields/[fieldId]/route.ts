@@ -55,7 +55,11 @@ export async function PATCH(
       return NextResponse.json({ error: 'Field not found' }, { status: 404 });
     }
 
-    if (field.leases?.org_id && field.leases.org_id !== orgId) {
+    const leaseOrgId = Array.isArray(field.leases)
+      ? field.leases[0]?.org_id
+      : (field.leases as { org_id?: string } | null)?.org_id;
+
+    if (leaseOrgId && leaseOrgId !== orgId) {
       return NextResponse.json({ error: 'Access denied for this organization' }, { status: 403 });
     }
 
