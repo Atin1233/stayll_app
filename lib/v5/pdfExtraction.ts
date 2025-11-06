@@ -53,7 +53,7 @@ export class PDFExtractionService {
         const pageTexts = text.split('\f');
         pages.length = 0; // Clear the single page
         
-        pageTexts.forEach((pageText, index) => {
+        pageTexts.forEach((pageText: string, index: number) => {
           pages.push({
             page_number: index + 1,
             text: pageText.trim(),
