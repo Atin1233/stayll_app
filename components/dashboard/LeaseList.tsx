@@ -51,9 +51,9 @@ export default function LeaseList({ onLeaseSelect, onLeaseEdit, refreshTrigger }
   }
 
   const filteredLeases = leases.filter(lease => 
-    lease.property_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lease.tenant_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    lease.file_name.toLowerCase().includes(searchTerm.toLowerCase())
+    (lease.property_address || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (lease.tenant_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (lease.file_name || '').toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const formatDate = (dateString: string) => {
