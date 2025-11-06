@@ -5,11 +5,9 @@
 
 import type { OCRResult, ClauseSegment } from '@/types/v5.0';
 
-// Dynamic import for CommonJS module
-const getPdfParse = async () => {
-  const pdfParse = await import('pdf-parse');
-  return pdfParse.default || pdfParse;
-};
+// Use require for CommonJS module compatibility
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pdfParse = require('pdf-parse');
 
 export class PDFExtractionService {
   /**
@@ -17,7 +15,6 @@ export class PDFExtractionService {
    */
   static async extractText(buffer: Buffer): Promise<string> {
     try {
-      const pdfParse = await getPdfParse();
       const data = await pdfParse(buffer);
       return data.text;
     } catch (error) {
@@ -31,7 +28,6 @@ export class PDFExtractionService {
    */
   static async extractTextWithPages(buffer: Buffer): Promise<OCRResult> {
     try {
-      const pdfParse = await getPdfParse();
       const data = await pdfParse(buffer);
       
       // Extract text per page
