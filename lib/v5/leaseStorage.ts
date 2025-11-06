@@ -16,14 +16,10 @@ export class LeaseStorageService {
     success: boolean; 
     lease?: Lease; 
     job_id?: string;
+    extraction?: any;
     error?: string 
   }> {
     try {
-      const orgResult = await OrganizationService.getCurrentOrganization();
-      if (!orgResult.success || !orgResult.organization) {
-        return { success: false, error: 'Organization not found' };
-      }
-
       const formData = new FormData();
       formData.append('file', data.file);
       if (data.property_address) {
@@ -50,7 +46,8 @@ export class LeaseStorageService {
       return { 
         success: true, 
         lease: result.lease,
-        job_id: result.job_id
+        job_id: result.job_id,
+        extraction: result.extraction
       };
     } catch (error) {
       console.error('Lease upload error:', error);
@@ -83,8 +80,8 @@ export class LeaseStorageService {
 
       return { 
         success: true, 
-        leases: result.leases,
-        count: result.count
+        leases: result.leases || [],
+        count: result.count || 0
       };
     } catch (error) {
       console.error('Fetch leases error:', error);

@@ -8,26 +8,43 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { AuditService } from '@/lib/v5/audit';
 import { OrganizationService } from '@/lib/v5/organization';
+import { ExtractionService } from '@/lib/v5/extraction';
 
 export async function POST(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      );
+    // For MVP without auth, use a default organization
+    // In production, this would require authentication
+    let orgId = 'default-org';
+    let userId = 'default-user';
+    
+    // Try to get user if authenticated, but don't require it
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      userId = user.id;
+      const orgResult = await OrganizationService.getCurrentOrganization();
+      if (orgResult.success && orgResult.organization) {
+        orgId = orgResult.organization.id;
+      }
     }
-
-    // Get organization
-    const orgResult = await OrganizationService.getCurrentOrganization();
-    if (!orgResult.success || !orgResult.organization) {
-      return NextResponse.json(
-        { error: 'Organization not found. Please set up your organization first.' },
-        { status: 403 }
-      );
+    
+    // Create default org if it doesn't exist (for MVP)
+    if (orgId === 'default-org') {
+      const { data: existingOrg } = await supabase
+        .from('organizations')
+        .select('id')
+        .eq('id', 'default-org')
+        .single();
+      
+      if (!existingOrg) {
+        const { data: newOrg } = await supabase
+          .from('organizations')
+          .insert({ id: 'default-org', name: 'Default Organization', billing_status: 'trial' })
+          .select()
+          .single();
+        if (newOrg) orgId = newOrg.id;
+      }
     }
 
     const formData = await request.formData();
@@ -60,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Generate unique filename
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const fileKey = `${orgResult.organization.id}/${timestamp}-${file.name}`;
+    const fileKey = `${orgId}/${timestamp}-${file.name}`;
 
     // Upload file to Supabase Storage
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -85,8 +102,8 @@ export async function POST(request: NextRequest) {
 
     // Create lease record in database
     const leaseData = {
-      org_id: orgResult.organization.id,
-      uploader_id: user.id,
+      org_id: orgId,
+      uploader_id: userId,
       tenant_name: tenantName || null,
       property_address: propertyAddress || null,
       file_url: publicUrl,
@@ -128,9 +145,9 @@ export async function POST(request: NextRequest) {
 
     // Log audit event
     await AuditService.logEvent({
-      org_id: orgResult.organization.id,
+      org_id: orgId,
       lease_id: leaseRecord.id,
-      user_id: user.id,
+      user_id: userId,
       event_type: 'UPLOAD',
       payload: {
         file_name: file.name,
@@ -140,22 +157,51 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    // TODO: Create ingest job in queue
-    // For now, we'll return a mock job_id
-    // In production, this would enqueue a job to process the lease
-    const jobId = `job-${leaseRecord.id}-${Date.now()}`;
+    // Automatically trigger extraction (using free PDF parsing)
+    let extractionResult = null;
+    try {
+      // Convert file to buffer for extraction
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
 
-    // In a real implementation, you would:
-    // 1. Create an ingest_job record or enqueue to SQS/Redis
-    // 2. Trigger OCR worker
-    // 3. Return job_id for tracking
+      // Trigger extraction
+      extractionResult = await ExtractionService.extractLeaseFields(
+        leaseRecord.id,
+        orgId,
+        buffer
+      );
+
+      // Update lease with extraction results
+      if (extractionResult.success) {
+        await supabase
+          .from('leases')
+          .update({
+            confidence_score: extractionResult.confidence,
+            verification_status: extractionResult.fields.some(f => 
+              f.validation_state === 'flagged' || f.validation_state === 'rule_fail'
+            ) ? 'in_review' : 'unverified',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', leaseRecord.id);
+      }
+    } catch (extractionError) {
+      console.error('Auto-extraction error (non-fatal):', extractionError);
+      // Don't fail the upload if extraction fails
+      // User can manually trigger extraction later
+    }
 
     return NextResponse.json({
       success: true,
       lease: leaseRecord,
-      job_id: jobId,
+      extraction: extractionResult ? {
+        success: extractionResult.success,
+        fields_extracted: extractionResult.fields.length,
+        confidence: extractionResult.confidence
+      } : null,
       fileUrl: publicUrl,
-      message: 'Lease uploaded successfully. Processing will begin shortly.'
+      message: extractionResult?.success 
+        ? 'Lease uploaded and analyzed successfully.'
+        : 'Lease uploaded successfully. Extraction may be available shortly.'
     });
 
   } catch (error) {

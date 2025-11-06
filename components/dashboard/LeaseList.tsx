@@ -1,17 +1,18 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { LeaseStorageService, LeaseRecord } from '@/lib/leaseStorage'
+import { LeaseStorageService } from '@/lib/v5/leaseStorage'
+import type { Lease } from '@/types/v5.0'
 import { TrashIcon, EyeIcon, PencilIcon } from '@heroicons/react/24/outline'
 
 interface LeaseListProps {
-  onLeaseSelect?: (lease: LeaseRecord) => void
-  onLeaseEdit?: (lease: LeaseRecord) => void
+  onLeaseSelect?: (lease: Lease) => void
+  onLeaseEdit?: (lease: Lease) => void
   refreshTrigger?: number
 }
 
 export default function LeaseList({ onLeaseSelect, onLeaseEdit, refreshTrigger }: LeaseListProps) {
-  const [leases, setLeases] = useState<LeaseRecord[]>([])
+  const [leases, setLeases] = useState<Lease[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -143,19 +144,31 @@ export default function LeaseList({ onLeaseSelect, onLeaseEdit, refreshTrigger }
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-medium text-gray-900 truncate">
-                        {lease.property_address || 'No address specified'}
-                      </h3>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <h3 className="text-sm font-medium text-gray-900 truncate">
+                          {lease.property_address || 'No address specified'}
+                        </h3>
+                        {lease.verification_status && (
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            lease.verification_status === 'verified' ? 'bg-green-100 text-green-800' :
+                            lease.verification_status === 'in_review' ? 'bg-yellow-100 text-yellow-800' :
+                            lease.verification_status === 'rejected' ? 'bg-red-100 text-red-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {lease.verification_status.replace('_', ' ')}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-500 truncate">
                         Tenant: {lease.tenant_name || 'Not specified'}
                       </p>
                       <div className="flex items-center space-x-4 mt-1 text-xs text-gray-400">
                         <span>Uploaded: {formatDate(lease.created_at)}</span>
                         <span>File: {lease.file_name}</span>
-                        <span>Size: {formatFileSize(lease.file_size)}</span>
-                        {lease.confidence_score > 0 && (
+                        <span>Size: {formatFileSize(lease.file_size || 0)}</span>
+                        {lease.confidence_score && lease.confidence_score > 0 && (
                           <span className="text-green-600">
-                            Analysis: {lease.confidence_score}% confidence
+                            {Math.round(lease.confidence_score)}% confidence
                           </span>
                         )}
                       </div>

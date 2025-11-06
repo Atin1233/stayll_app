@@ -1,16 +1,18 @@
 "use client"
 
 import { useState } from 'react'
-import { LeaseStorageService, LeaseRecord } from '@/lib/leaseStorage'
+import { LeaseStorageService } from '@/lib/v5/leaseStorage'
+import type { Lease } from '@/types/v5.0'
 import UploadDropzone from '@/components/dashboard/UploadDropzone'
 import LeaseList from '@/components/dashboard/LeaseList'
+import LeaseFieldsDisplay from '@/components/dashboard/LeaseFieldsDisplay'
 
 export default function LeasesPage() {
   const [uploading, setUploading] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [uploadError, setUploadError] = useState('')
   const [refreshTrigger, setRefreshTrigger] = useState(0)
-  const [selectedLease, setSelectedLease] = useState<LeaseRecord | null>(null)
+  const [selectedLease, setSelectedLease] = useState<Lease | null>(null)
 
   const handleFileUpload = async (file: File, propertyAddress: string, tenantName: string) => {
     setUploading(true)
@@ -20,13 +22,19 @@ export default function LeasesPage() {
     try {
       const result = await LeaseStorageService.uploadLease({
         file,
-        propertyAddress,
-        tenantName
+        property_address: propertyAddress,
+        tenant_name: tenantName
       })
 
       if (result.success) {
         setUploadSuccess(true)
         setRefreshTrigger(prev => prev + 1)
+        
+        // Show extraction info if available
+        if (result.extraction?.success) {
+          console.log(`Extracted ${result.extraction.fields_extracted} fields with ${result.extraction.confidence}% confidence`)
+        }
+        
         // Reset form after 3 seconds
         setTimeout(() => setUploadSuccess(false), 3000)
       } else {
@@ -39,11 +47,11 @@ export default function LeasesPage() {
     }
   }
 
-  const handleLeaseSelect = (lease: LeaseRecord) => {
-    setSelectedLease(lease)
+  const handleLeaseSelect = (lease: any) => {
+    setSelectedLease(lease as Lease)
   }
 
-  const handleLeaseEdit = (lease: LeaseRecord) => {
+  const handleLeaseEdit = (lease: any) => {
     // TODO: Implement edit functionality
     console.log('Edit lease:', lease)
   }
@@ -93,85 +101,76 @@ export default function LeasesPage() {
 
       {/* Selected Lease Details */}
       {selectedLease && (
-        <div className="mt-8 bg-white border border-gray-200 rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Lease Details</h3>
+        <div className="mt-8 space-y-6">
+          {/* Basic Lease Info */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Lease Information</h3>
               <button
-              onClick={() => setSelectedLease(null)}
-              className="text-gray-400 hover:text-gray-600"
-            >
-              ✕
+                onClick={() => setSelectedLease(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
               </button>
-      </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-medium text-gray-900 mb-2">Property Information</h4>
-              <dl className="space-y-2 text-sm">
-                <div>
-                  <dt className="text-gray-500">Address:</dt>
-                  <dd className="text-gray-900">{selectedLease.property_address || 'Not specified'}</dd>
-                </div>
-                <div>
-                  <dt className="text-gray-500">Tenant:</dt>
-                  <dd className="text-gray-900">{selectedLease.tenant_name || 'Not specified'}</dd>
-                </div>
-                      <div>
-                  <dt className="text-gray-500">Monthly Rent:</dt>
-                  <dd className="text-gray-900">{selectedLease.monthly_rent || 'Not specified'}</dd>
-                      </div>
-                <div>
-                  <dt className="text-gray-500">Security Deposit:</dt>
-                  <dd className="text-gray-900">{selectedLease.security_deposit || 'Not specified'}</dd>
-                </div>
-              </dl>
-                  </div>
-            
-            <div>
-              <h4 className="font-medium text-gray-900 mb-2">Lease Terms</h4>
-              <dl className="space-y-2 text-sm">
-                <div>
-                  <dt className="text-gray-500">Start Date:</dt>
-                  <dd className="text-gray-900">{selectedLease.lease_start || 'Not specified'}</dd>
-                    </div>
-                <div>
-                  <dt className="text-gray-500">End Date:</dt>
-                  <dd className="text-gray-900">{selectedLease.lease_end || 'Not specified'}</dd>
-                  </div>
-                <div>
-                  <dt className="text-gray-500">Due Date:</dt>
-                  <dd className="text-gray-900">{selectedLease.due_date || 'Not specified'}</dd>
-                  </div>
-                <div>
-                  <dt className="text-gray-500">Late Fee:</dt>
-                  <dd className="text-gray-900">{selectedLease.late_fee || 'Not specified'}</dd>
-                    </div>
-              </dl>
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Property Information</h4>
+                <dl className="space-y-2 text-sm">
+                  <div>
+                    <dt className="text-gray-500">Address:</dt>
+                    <dd className="text-gray-900">{selectedLease.property_address || 'Not specified'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-500">Tenant:</dt>
+                    <dd className="text-gray-900">{selectedLease.tenant_name || 'Not specified'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-500">Status:</dt>
+                    <dd className="text-gray-900 capitalize">{selectedLease.verification_status || 'unverified'}</dd>
+                  </div>
+                </dl>
               </div>
-              
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h4 className="font-medium text-gray-900 mb-2">File Information</h4>
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600">
-                <p>File: {selectedLease.file_name}</p>
-                <p>Uploaded: {new Date(selectedLease.created_at).toLocaleDateString()}</p>
-                {selectedLease.confidence_score > 0 && (
-                  <p className="text-green-600">Analysis Confidence: {selectedLease.confidence_score}%</p>
+            
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">File Information</h4>
+                <dl className="space-y-2 text-sm">
+                  <div>
+                    <dt className="text-gray-500">File Name:</dt>
+                    <dd className="text-gray-900">{selectedLease.file_name || 'Not specified'}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-gray-500">Uploaded:</dt>
+                    <dd className="text-gray-900">{new Date(selectedLease.created_at).toLocaleDateString()}</dd>
+                  </div>
+                  {selectedLease.confidence_score && selectedLease.confidence_score > 0 && (
+                    <div>
+                      <dt className="text-gray-500">Confidence:</dt>
+                      <dd className="text-green-600 font-medium">{selectedLease.confidence_score}%</dd>
+                    </div>
+                  )}
+                </dl>
+                {selectedLease.file_url && (
+                  <a
+                    href={selectedLease.file_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    View File
+                  </a>
                 )}
               </div>
-              <a
-                href={selectedLease.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-              >
-                View File
-              </a>
             </div>
           </div>
+
+          {/* Extracted Fields */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
+            <LeaseFieldsDisplay leaseId={selectedLease.id} />
           </div>
-        )}
+        </div>
+      )}
     </div>
   )
 } 

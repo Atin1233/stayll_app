@@ -12,22 +12,17 @@ import type { VerificationStatus } from '@/types/v5.0';
 export async function GET(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
     
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Authentication required' },
-        { status: 401 }
-      );
-    }
-
-    // Get organization
-    const orgResult = await OrganizationService.getCurrentOrganization();
-    if (!orgResult.success || !orgResult.organization) {
-      return NextResponse.json(
-        { error: 'Organization not found' },
-        { status: 403 }
-      );
+    // For MVP without auth, use default organization
+    let orgId = 'default-org';
+    
+    // Try to get user if authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const orgResult = await OrganizationService.getCurrentOrganization();
+      if (orgResult.success && orgResult.organization) {
+        orgId = orgResult.organization.id;
+      }
     }
 
     // Get query parameters
@@ -41,7 +36,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('leases')
       .select('*', { count: 'exact' })
-      .eq('org_id', orgResult.organization.id)
+      .eq('org_id', orgId)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
