@@ -1,8 +1,7 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { LeaseStorageService, LeaseRecord } from '@/lib/leaseStorage'
-import { useUser } from '@/lib/hooks/useUser'
 import UploadDropzone from '@/components/dashboard/UploadDropzone'
 import LeaseList from '@/components/dashboard/LeaseList'
 
@@ -12,7 +11,6 @@ export default function LeasesPage() {
   const [uploadError, setUploadError] = useState('')
   const [refreshTrigger, setRefreshTrigger] = useState(0)
   const [selectedLease, setSelectedLease] = useState<LeaseRecord | null>(null)
-  const { user, loading: userLoading } = useUser()
 
   const handleFileUpload = async (file: File, propertyAddress: string, tenantName: string) => {
     setUploading(true)
@@ -50,51 +48,12 @@ export default function LeasesPage() {
     console.log('Edit lease:', lease)
   }
 
-  // Show loading state while checking user
-  if (userLoading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-center items-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
-    )
-  }
-
-  // Show login prompt if user is not authenticated
-  if (!user) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center py-12">
-          <div className="mx-auto h-12 w-12 text-gray-400 mb-4">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Authentication Required</h3>
-          <p className="text-gray-500 mb-6">
-            Please sign in to access your lease management dashboard.
-          </p>
-          <a
-            href="/auth/login"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Sign In
-          </a>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Lease Management</h1>
         <p className="mt-2 text-gray-600">
           Upload and manage your lease documents. All files are securely stored and accessible anytime.
-        </p>
-              <p className="mt-1 text-sm text-gray-500">
-          Welcome back, {user.email || 'User'}!
         </p>
       </div>
 

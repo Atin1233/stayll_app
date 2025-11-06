@@ -1,16 +1,12 @@
 'use client';
 
-import { useUser } from '@/lib/hooks/useUser';
-
 export default function DashboardPage() {
-  const { user } = useUser();
-
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
         <p className="mt-2 text-sm text-gray-600">
-          Welcome back, {user?.user_metadata?.full_name || user?.email}! Here's what's happening with your properties.
+          Here's what's happening with your properties.
         </p>
       </div>
 
