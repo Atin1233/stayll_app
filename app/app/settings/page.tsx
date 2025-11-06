@@ -175,7 +175,7 @@ export default function SettingsPage() {
           <div className="px-6 py-4 text-sm text-gray-600 space-y-2">
             <p>• Current schema: CRE Lease v1.3</p>
             <p>• Mandatory fields: base_rent, lease_term, escalation_schedule, insurance_clause</p>
-            <p>• Validation rules: escalation >= 2%, renewal_notice ≥ 90 days</p>
+            <p>• Validation rules: escalation &gt;= 2%, renewal_notice ≥ 90 days</p>
             <p>• Next update: Add CAM reconciliation requirements</p>
           </div>
         </div>
