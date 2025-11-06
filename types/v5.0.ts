@@ -229,7 +229,7 @@ export interface LeaseFieldsResponse {
   lease_id: string;
 }
 
-export interface QA Task {
+export interface QATask {
   id: string;
   lease_id: string;
   field_id: string;
@@ -241,9 +241,9 @@ export interface QA Task {
   created_at: string;
 }
 
-export interface QA TasksResponse {
+export interface QATasksResponse {
   success: boolean;
-  tasks: QA Task[];
+  tasks: QATask[];
   count: number;
 }
 
@@ -353,7 +353,7 @@ export interface ClauseSegment {
 // ============================================================================
 
 export interface ReviewWorkareaProps {
-  task: QA Task;
+  task: QATask;
   lease: Lease;
   field: LeaseField;
   onApprove: (fieldId: string) => void;
