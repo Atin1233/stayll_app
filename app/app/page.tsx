@@ -1,7 +1,6 @@
 'use client'
 
 import {
-  ArrowTrendingUpIcon,
   ShieldCheckIcon,
   ExclamationTriangleIcon,
   CloudArrowUpIcon,
@@ -11,36 +10,62 @@ import {
   SparklesIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const metrics = [
+  {
+    name: 'Active leases',
+    value: '82',
+    change: 'Portfolio total',
+    icon: ShieldCheckIcon,
+    href: '/app/contracts?filter=active',
+  },
+  {
+    name: 'Upcoming renewals',
+    value: '9',
+    change: 'Within next 90 days',
+    icon: ClockIcon,
+    href: '/app/insights?tab=obligations',
+  },
+  {
+    name: 'Contracts needing review',
+    value: '12',
+    change: 'Pending analyst approval',
+    icon: ExclamationTriangleIcon,
+    href: '/app/contracts#qa',
+  },
   {
     name: 'Verified contracts',
     value: '18',
     change: '+3 this week',
     icon: ShieldCheckIcon,
-    href: '/app/contracts',
+    href: '/app/contracts?filter=verified',
   },
-  {
-    name: 'Fields awaiting QA',
-    value: '12',
-    change: '4 flagged for legal',
-    icon: ExclamationTriangleIcon,
-    href: '/app/contracts',
-  },
-  {
-    name: 'Monthly rent exposure',
-    value: '$1.2M',
-    change: 'next 90 days',
-    icon: ArrowTrendingUpIcon,
-    href: '/app/insights',
-  },
-  {
-    name: 'Compliance coverage',
-    value: '84%',
-    change: 'clause inventory complete',
-    icon: ShieldCheckIcon,
-    href: '/app/insights',
-  },
+]
+
+const analyticsSelections = ['Last 6M', 'Last 12M', 'Custom'] as const
+
+const rentDistribution = [
+  { label: 'Retail', value: 45 },
+  { label: 'Office', value: 32 },
+  { label: 'Industrial', value: 18 },
+  { label: 'Other', value: 5 },
+]
+
+const expiryTimeline = [
+  { year: '2024', value: 6 },
+  { year: '2025', value: 12 },
+  { year: '2026', value: 18 },
+  { year: '2027', value: 9 },
+]
+
+const riskTrend = [
+  { month: 'Jul', value: 78 },
+  { month: 'Aug', value: 80 },
+  { month: 'Sep', value: 83 },
+  { month: 'Oct', value: 85 },
+  { month: 'Nov', value: 87 },
+  { month: 'Dec', value: 89 },
 ]
 
 const pipeline = [
@@ -83,7 +108,48 @@ const assistantPrompts = [
   'What rent is due next quarter?',
 ]
 
+const recentContracts = [
+  {
+    id: 'contract-1',
+    name: 'Sunset Plaza Retail LT',
+    property: 'Sunset Plaza',
+    type: 'Lease',
+    status: 'In review',
+    statusTone: 'yellow',
+    updated: 'Nov 5, 2025 • 3:12 PM',
+  },
+  {
+    id: 'contract-2',
+    name: 'Riverside Offices Master Lease',
+    property: 'Riverside Offices',
+    type: 'Lease',
+    status: 'Verified',
+    statusTone: 'green',
+    updated: 'Nov 4, 2025 • 11:02 AM',
+  },
+  {
+    id: 'contract-3',
+    name: 'Alpha Plaza Security Services',
+    property: 'Alpha Plaza',
+    type: 'Vendor',
+    status: 'Extraction error',
+    statusTone: 'red',
+    updated: 'Nov 3, 2025 • 5:48 PM',
+  },
+  {
+    id: 'contract-4',
+    name: 'Market Street Anchor Tenant',
+    property: '125 Market Street',
+    type: 'Lease',
+    status: 'Verified',
+    statusTone: 'green',
+    updated: 'Nov 2, 2025 • 9:30 AM',
+  },
+]
+
 export default function DashboardPage() {
+  const [analyticsRange, setAnalyticsRange] = useState<typeof analyticsSelections[number]>('Last 6M')
+
   return (
     <div className="space-y-8">
       <header className="space-y-2">
@@ -136,6 +202,92 @@ export default function DashboardPage() {
             </div>
           </Link>
         ))}
+      </section>
+
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">Portfolio summary</h2>
+            <p className="text-sm text-gray-500">Financial and risk performance based on verified data.</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {analyticsSelections.map((option) => (
+              <button
+                key={option}
+                onClick={() => setAnalyticsRange(option)}
+                className={`px-3 py-1 rounded-full text-xs font-semibold border transition-colors ${
+                  analyticsRange === option
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'border-gray-200 text-gray-600 hover:border-blue-200 hover:text-blue-600'
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-gray-900">Rent distribution</h3>
+            <div className="space-y-2">
+              {rentDistribution.map((slice) => (
+                <div key={slice.label} className="space-y-1">
+                  <div className="flex items-center justify-between text-sm text-gray-600">
+                    <span>{slice.label}</span>
+                    <span>{slice.value}%</span>
+                  </div>
+                  <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
+                    <div className="h-2 rounded-full bg-blue-500" style={{ width: `${slice.value}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-gray-900">Lease expiration timeline</h3>
+            <div className="flex items-end gap-3 h-32">
+              {expiryTimeline.map((item) => (
+                <div key={item.year} className="flex-1">
+                  <div
+                    className="bg-indigo-400 rounded-t-md"
+                    style={{ height: `${item.value * 6}px` }}
+                    title={`${item.value} expirations`}
+                  />
+                  <p className="mt-1 text-xs text-center text-gray-500">{item.year}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-gray-900">Risk score trend</h3>
+            <div className="relative h-32">
+              <svg viewBox="0 0 160 100" className="w-full h-full">
+                <polyline
+                  fill="none"
+                  stroke="#2563EB"
+                  strokeWidth="2"
+                  points={riskTrend
+                    .map((point, index) => `${(index / (riskTrend.length - 1)) * 160},${100 - (point.value / 100) * 100}`)
+                    .join(' ')}
+                />
+                {riskTrend.map((point, index) => (
+                  <g key={point.month}>
+                    <circle
+                      cx={(index / (riskTrend.length - 1)) * 160}
+                      cy={100 - (point.value / 100) * 100}
+                      r="3"
+                      fill="#2563EB"
+                    />
+                    <text x={(index / (riskTrend.length - 1)) * 160} y="98" textAnchor="middle" fontSize="8" fill="#6B7280">
+                      {point.month}
+                    </text>
+                  </g>
+                ))}
+              </svg>
+              <div className="absolute top-0 right-0 text-xs text-gray-500">Avg score {riskTrend.at(-1)?.value}</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -287,6 +439,67 @@ export default function DashboardPage() {
               View audit log
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">Recent contracts</h2>
+            <p className="text-sm text-gray-500">Latest activity from Stayll ingestion pipeline.</p>
+          </div>
+          <Link href="/app/contracts" className="text-sm font-semibold text-blue-600 hover:text-blue-700">
+            View all
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 text-sm text-left text-gray-600">
+            <thead className="bg-gray-50 text-xs uppercase text-gray-400">
+              <tr>
+                <th className="px-4 py-3">Contract</th>
+                <th className="px-4 py-3">Property</th>
+                <th className="px-4 py-3">Type</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Last updated</th>
+                <th className="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {recentContracts.map((contract) => (
+                <tr key={contract.id}>
+                  <td className="px-4 py-3 font-medium text-gray-900">
+                    <Link href={`/app/contracts?contract=${contract.id}`} className="hover:text-blue-600">
+                      {contract.name}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">{contract.property}</td>
+                  <td className="px-4 py-3 text-gray-600">{contract.type}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                        contract.statusTone === 'green'
+                          ? 'bg-green-100 text-green-700'
+                          : contract.statusTone === 'yellow'
+                          ? 'bg-yellow-100 text-yellow-700'
+                          : 'bg-red-100 text-red-700'
+                      }`}
+                    >
+                      {contract.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-gray-500">{contract.updated}</td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      href={`/app/contracts?contract=${contract.id}`}
+                      className="text-xs font-semibold text-blue-600 hover:text-blue-700"
+                    >
+                      Inspect
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
     </div>

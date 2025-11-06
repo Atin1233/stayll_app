@@ -242,6 +242,11 @@ export default function SettingsPage() {
           </li>
         </ul>
       </section>
+
+      <section className="bg-white border border-dashed border-gray-300 rounded-xl shadow-sm p-6 text-sm text-gray-600">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">Billing</h2>
+        <p>Enterprise billing is handled through the Stripe portal. Contact Stayll support to enable subscription billing and invoice automation.</p>
+      </section>
     </div>
   )
 } 
