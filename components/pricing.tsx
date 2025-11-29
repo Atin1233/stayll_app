@@ -26,234 +26,261 @@ export default function Pricing() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Pricing Designed Around Real ROI
+              Stayll Core: One Plan, Clear Size Bands
             </h2>
             <p className="text-lg text-blue-200/65">
-              Each tier tied to measurable financial impact. Refund if ROI &lt;3× pilot cost.
+              Serious but accessible. If you have 1,000+ leases, missing 1–2% of value is usually hundreds of thousands per year. Stayll costs a fraction of that.
             </p>
           </div>
 
           {/* Pricing Cards */}
-          <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-3 lg:gap-8">
-            {/* Tier 1 - Institutional Starter */}
+          <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            {/* Band 1 - 0-500 leases */}
             <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
-                <div className="mb-8">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-200">Pilot</h3>
-                    <p className="text-sm text-gray-400">Proof of ROI</p>
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
+                <div className="mb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <p className="text-xs text-gray-400">0–500 leases</p>
                   </div>
-                  <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$15K</span>
-                    <span className="text-sm text-gray-400"> avg</span>
+                  <div className="mb-3">
+                    <span className="text-2xl font-bold text-gray-200">$25K</span>
+                    <span className="text-sm text-gray-400">/year</span>
                   </div>
-                  <p className="text-blue-200/65">100 leases, verified outputs, side-by-side audit. Guaranteed 3× ROI or refund.</p>
+                  <p className="text-sm text-blue-200/65">~$50/lease/year</p>
                 </div>
-                <ul className="mb-8 space-y-3">
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                <ul className="mb-6 space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">100 commercial leases processed</span>
+                    <span className="text-blue-200/65">Automated QA only</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Auditor-verified lease data extraction (≥97% accuracy)</span>
+                    <span className="text-blue-200/65">Email support</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Financial impact engine (rent rolls, escalations, cash exposure)</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Obligation tracker (renewals, payments, deadlines)</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Audit trail with clause linkage</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Side-by-side auditor comparison</span>
+                    <span className="text-blue-200/65">All Core features</span>
                   </li>
                 </ul>
-                <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">3× ROI guarantee or full refund.</p>
-                </div>
                 <a
                   href="#cta"
-                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
                 >
-                  <span className="relative inline-flex items-center">
-                    Request Demo
-                    <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      →
-                    </span>
+                  <span className="relative inline-flex items-center justify-center">
+                    Get Started
                   </span>
                 </a>
               </div>
             </div>
 
-            {/* Tier 2 - Institutional Pro */}
+            {/* Band 2 - 500-1,500 leases */}
             <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
-                <div className="mb-8">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-200">Annual SaaS</h3>
-                    <p className="text-sm text-gray-400">Per-Contract Billing</p>
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
+                <div className="mb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <p className="text-xs text-gray-400">500–1,500 leases</p>
                   </div>
-                  <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$150K</span>
-                    <span className="text-sm text-gray-400"> avg</span>
+                  <div className="mb-3">
+                    <span className="text-2xl font-bold text-gray-200">$60K</span>
+                    <span className="text-sm text-gray-400">/year</span>
                   </div>
-                  <p className="text-blue-200/65">For CRE portfolios with 500-2,000 leases needing verified financial data.</p>
+                  <p className="text-sm text-blue-200/65">~$40–$120/lease/year</p>
                 </div>
-                <ul className="mb-8 space-y-3">
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                <ul className="mb-6 space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">500-2,000 leases/year with per-contract pricing</span>
+                    <span className="text-blue-200/65">Human QA for top 20%</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Everything in Pilot, plus:</span>
+                    <span className="text-blue-200/65">One standard integration</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">API integration with Yardi, MRI, NetSuite (&lt;2h setup)</span>
+                    <span className="text-blue-200/65">Priority support</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Human QA for top 20% of contracts</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Priority support and dedicated onboarding</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">SOC2 Type II compliant, field-level encryption</span>
+                    <span className="text-blue-200/65">All Core features</span>
                   </li>
                 </ul>
-                <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">Typical ROI: 10× subscription cost in first year.</p>
-                </div>
                 <a
                   href="#cta"
-                  className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                  className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
                 >
-                  <span className="relative inline-flex items-center">
+                  <span className="relative inline-flex items-center justify-center">
                     Request Demo
-                    <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      →
-                    </span>
                   </span>
                 </a>
               </div>
             </div>
 
-            {/* Tier 3 - Enterprise Platinum */}
+            {/* Band 3 - 1,500-3,000 leases */}
             <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-8">
-                <div className="mb-8">
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-200">Enterprise SLA</h3>
-                    <p className="text-sm text-gray-400">QA-Backed Accuracy</p>
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
+                <div className="mb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <p className="text-xs text-gray-400">1,500–3,000 leases</p>
                   </div>
-                  <div className="mb-4">
-                    <span className="text-3xl font-bold text-gray-200">$500K</span>
-                    <span className="text-sm text-gray-400"> avg</span>
+                  <div className="mb-3">
+                    <span className="text-2xl font-bold text-gray-200">$120K</span>
+                    <span className="text-sm text-gray-400">/year</span>
                   </div>
-                  <p className="text-blue-200/65">For institutional portfolios with 2,000+ leases and mission-critical accuracy needs.</p>
+                  <p className="text-sm text-blue-200/65">~$40–$80/lease/year</p>
                 </div>
-                <ul className="mb-8 space-y-3">
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                <ul className="mb-6 space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Unlimited commercial leases</span>
+                    <span className="text-blue-200/65">Human QA for top 30%</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Everything in Annual SaaS, plus:</span>
+                    <span className="text-blue-200/65">Multiple integrations</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Dedicated account manager + technical support</span>
+                    <span className="text-blue-200/65">Dedicated support</span>
                   </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">On-premise deployment option available</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Quarterly third-party accuracy audits</span>
-                  </li>
-                  <li className="flex items-center">
-                    <svg className="mr-3 h-4 w-4 fill-green-500" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">SLA-backed uptime (99.9%) and performance</span>
+                    <span className="text-blue-200/65">All Core features</span>
                   </li>
                 </ul>
-                <div className="mb-6 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                  <p className="text-sm text-blue-200 font-medium">Protects $1B+ portfolios with auditable financial-grade data.</p>
-                </div>
                 <a
                   href="#cta"
-                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
+                  className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
                 >
-                  <span className="relative inline-flex items-center">
+                  <span className="relative inline-flex items-center justify-center">
+                    Request Demo
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* Band 4 - 3,000+ leases */}
+            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
+                <div className="mb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <p className="text-xs text-gray-400">3,000+ leases</p>
+                  </div>
+                  <div className="mb-3">
+                    <span className="text-2xl font-bold text-gray-200">Custom</span>
+                  </div>
+                  <p className="text-sm text-blue-200/65">Starting ~$180K/year</p>
+                </div>
+                <ul className="mb-6 space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Custom QA coverage</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Unlimited integrations</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Dedicated account manager</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">All Core features</span>
+                  </li>
+                </ul>
+                <a
+                  href="#cta"
+                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
+                >
+                  <span className="relative inline-flex items-center justify-center">
                     Contact Sales
-                    <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                      →
-                    </span>
                   </span>
                 </a>
+              </div>
+            </div>
+          </div>
+
+          {/* What's Included in All Bands */}
+          <div className="mt-12 mx-auto max-w-4xl">
+            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
+              <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
+                What's Included in Every Stayll Core Band
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="flex items-start">
+                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-blue-200/65">Lease ingestion + structured data extraction</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-blue-200/65">Compliance calendar and key dates</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-blue-200/65">Rent roll, escalation, and exposure views</span>
+                </div>
+                <div className="flex items-start">
+                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  <span className="text-blue-200/65">Basic API or scheduled exports (CSV/ERP-ready)</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Bottom Note */}
           <div className="mt-12 text-center">
-            <p className="text-sm text-gray-400">
-              Not a CLM—this is financial-grade contract data infrastructure. When auditors and CFOs need trusted lease truth, they use Stayll.
-            </p>
+            <div className="mb-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20 inline-block">
+              <p className="text-sm text-blue-200 font-medium">
+                Founder Guarantee: If we don't show at least 3× value versus subscription cost in the first 12 months, we work with you on price or you can walk.
+              </p>
+            </div>
             <p className="mt-4 text-sm text-gray-400">
-              Pilot available for CRE portfolios with 500+ leases • Auditor-certified accuracy • Typically 10× ROI in first year
+              Not a CLM—this is financial-grade contract data infrastructure. When auditors and CFOs need trusted lease truth, they use Stayll.
             </p>
           </div>
         </div>
       </div>
     </section>
   );
-} 
+}

@@ -21,7 +21,7 @@ export default function HeroHome() {
                 Eliminate leakage. Automate renewals. Get auditor-certified lease data in minutes.
               </p>
               <p className="mb-8 text-sm text-blue-200/50 italic" data-aos="fade-up" data-aos-delay={300}>
-                Used by portfolio managers and auditors to prevent 1-3% annual financial leakage
+                If you have 1,000+ leases, missing 1–2% of value is usually hundreds of thousands per year. Stayll costs a fraction of that.
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center gap-4">
                 <div data-aos="fade-up" data-aos-delay={400}>

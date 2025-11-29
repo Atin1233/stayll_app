@@ -157,6 +157,35 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // Trigger enrichment asynchronously (non-blocking)
+    if (propertyAddress) {
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const enrichFunctionUrl = `${supabaseUrl}/functions/v1/enrich`;
+        const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+        if (enrichFunctionUrl && serviceRoleKey) {
+          // Fire and forget - don't wait for enrichment
+          fetch(enrichFunctionUrl, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${serviceRoleKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              leaseId: leaseRecord.id,
+              enrichments: ['geocoding', 'currency', 'economic'],
+            }),
+          }).catch((error) => {
+            console.error('Enrichment trigger failed (non-fatal):', error);
+          });
+        }
+      } catch (error) {
+        console.error('Failed to trigger enrichment (non-fatal):', error);
+        // Don't fail the upload if enrichment trigger fails
+      }
+    }
+
     // Automatically trigger extraction (using free PDF parsing)
     let extractionResult = null;
     try {

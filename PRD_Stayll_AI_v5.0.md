@@ -4,9 +4,9 @@
 
 ---
 
-**Owner:** CEO, Stayll AI  
-**Version:** 5.0 (Investor Edition)  
-**Updated:** January 2025  
+**Owner:** CEO, Stayll AI
+**Version:** 5.0 (Investor Edition)
+**Updated:** January 2025
 **Status:** Confidential
 
 ---
@@ -58,13 +58,13 @@ The first player to deliver **verifiable lease data with <0.5% error rate** beco
 
 ### Core Capabilities
 
-| Capability | Description | Success Metric |
-|-----------|-------------|----------------|
-| **Lease Data Extraction** | Identify rent, term, options, escalations, renewals | ≥ 97% recall verified by auditor |
+| Capability                        | Description                                                 | Success Metric                               |
+| --------------------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| **Lease Data Extraction**   | Identify rent, term, options, escalations, renewals         | ≥ 97% recall verified by auditor            |
 | **Financial Impact Engine** | Calculate rent rolls, escalation projections, cash exposure | Matches client-calculated values within ±1% |
-| **Obligation Tracker** | Auto-generate renewals, payments, notice deadlines | 100% tracked event accuracy |
-| **Audit Trail** | Immutable evidence for each field | Full traceability with visual clause linkage |
-| **API Export** | Push verified lease data into ERP/BI tools | <2h integration time (pilot) |
+| **Obligation Tracker**      | Auto-generate renewals, payments, notice deadlines          | 100% tracked event accuracy                  |
+| **Audit Trail**             | Immutable evidence for each field                           | Full traceability with visual clause linkage |
+| **API Export**              | Push verified lease data into ERP/BI tools                  | <2h integration time (pilot)                 |
 
 ### Out of Scope (until $1M ARR)
 
@@ -78,14 +78,14 @@ The first player to deliver **verifiable lease data with <0.5% error rate** beco
 
 ## 4. Technical Architecture
 
-| Component | Function |
-|-----------|----------|
-| **OCR Layer** | AWS Textract + custom post-processor for rent tables |
-| **Extraction Layer** | Hybrid LLM + regex parser trained on 50K+ leases |
-| **Validation Engine** | Deterministic policy checks + financial reconciliation |
-| **QA Layer** | Human verification for top 20% of contracts (enterprise tier) |
-| **Audit Log** | Immutable event tracking |
-| **Security** | SOC2 Type II, field-level encryption, role-based access |
+| Component                   | Function                                                      |
+| --------------------------- | ------------------------------------------------------------- |
+| **OCR Layer**         | AWS Textract + custom post-processor for rent tables          |
+| **Extraction Layer**  | Hybrid LLM + regex parser trained on 50K+ leases              |
+| **Validation Engine** | Deterministic policy checks + financial reconciliation        |
+| **QA Layer**          | Human verification for top 20% of contracts (enterprise tier) |
+| **Audit Log**         | Immutable event tracking                                      |
+| **Security**          | SOC2 Type II, field-level encryption, role-based access       |
 
 ### Performance Targets
 
@@ -131,13 +131,28 @@ Stayll treats **accuracy as a financial SLA**, not a marketing metric.
 
 ## 7. Pricing and Packaging
 
-| Tier | Price | Description |
-|------|-------|-------------|
-| **Pilot (Proof of ROI)** | $10K–$20K | 100 leases, verified outputs, side-by-side audit |
-| **Annual SaaS** | $50K–$250K | API + dashboard, per-contract billing model |
-| **Enterprise SLA** | $250K–$800K | QA-backed accuracy, on-prem option, dedicated support |
+### Simple "Stayll Core" Plan
 
-**Guarantee:** Refund if Stayll fails to deliver ROI >3× pilot cost, not based on raw accuracy percentage.
+Position pricing so it feels serious but accessible, with one plan and clear size bands:
+
+| Portfolio Size | Annual Price | Description |
+|----------------|--------------|-------------|
+| **0–500 leases** | $25K/year | Automated QA only, email support |
+| **500–1,500 leases** | $60K/year | Human QA for top 20%, one standard integration, priority support |
+| **1,500–3,000 leases** | $120K/year | Human QA for top 30%, multiple integrations, dedicated support |
+| **3,000+ leases** | Custom (starting ~$180K/year) | Custom QA coverage, unlimited integrations, dedicated account manager |
+
+All bands include the same "Stayll Core" product:
+- Lease ingestion + structured data extraction
+- Compliance calendar and key dates
+- Rent roll, escalation, and exposure views
+- Basic API or scheduled exports (CSV/ERP-ready)
+
+**What scales:** Max active leases covered, QA coverage percentage, support responsiveness, and integration depth.
+
+These bands roughly imply ~$40–$80 per lease per year in the core ICP range, which is well above cost to serve but far below the value at risk from leakage or missed escalations.
+
+**Guarantee:** If we don't show at least 3× value versus subscription cost in the first 12 months, we work with you on price or you can walk.
 
 ---
 
@@ -165,14 +180,14 @@ Pilot-to-convert target: **60%**, not 90% fantasy
 
 ## 9. Economics
 
-| Metric | Target |
-|--------|--------|
-| **Gross Margin** | 60% → 80% post-automation |
-| **CAC Payback** | 6–9 months |
-| **Churn** | <10% annually |
-| **NRR** | >130% |
-| **LTV:CAC** | ≥5:1 |
-| **Burn Multiple** | <1.2 post-Series A |
+| Metric                  | Target                     |
+| ----------------------- | -------------------------- |
+| **Gross Margin**  | 60% → 80% post-automation |
+| **CAC Payback**   | 6–9 months                |
+| **Churn**         | <10% annually              |
+| **NRR**           | >130%                      |
+| **LTV:CAC**       | ≥5:1                      |
+| **Burn Multiple** | <1.2 post-Series A         |
 
 ---
 
@@ -195,12 +210,12 @@ Pilot-to-convert target: **60%**, not 90% fantasy
 
 ## 11. Risk & Mitigation
 
-| Risk | Mitigation |
-|------|------------|
-| **LLM commoditization** | Proprietary labeled lease corpus + deterministic reconciliation layer |
-| **Slow enterprise sales** | Audit-backed ROI reports and accounting firm partnerships |
-| **Data privacy barriers** | On-prem option, compliance certifications |
-| **Overengineering** | Milestone-based feature freeze per ARR bracket |
+| Risk                            | Mitigation                                                            |
+| ------------------------------- | --------------------------------------------------------------------- |
+| **LLM commoditization**   | Proprietary labeled lease corpus + deterministic reconciliation layer |
+| **Slow enterprise sales** | Audit-backed ROI reports and accounting firm partnerships             |
+| **Data privacy barriers** | On-prem option, compliance certifications                             |
+| **Overengineering**       | Milestone-based feature freeze per ARR bracket                        |
 
 ---
 
@@ -212,11 +227,11 @@ When auditors, CFOs, and asset managers need contract truth—they use Stayll.
 
 ### Why Investors Should Back This Now
 
-✅ **Single-vertical choke point** (CRE leases) with measurable financial ROI  
-✅ **Real wedge** into massive upstream data flows  
-✅ **Quantified accuracy** and payback metrics grounded in audit proof  
-✅ **Rational sequencing:** dominate niche → expand laterally  
-✅ **Enterprise defensibility** via trust and data ownership  
+✅ **Single-vertical choke point** (CRE leases) with measurable financial ROI
+✅ **Real wedge** into massive upstream data flows
+✅ **Quantified accuracy** and payback metrics grounded in audit proof
+✅ **Rational sequencing:** dominate niche → expand laterally
+✅ **Enterprise defensibility** via trust and data ownership
 
 **Verdict:** This is a real business solving an expensive, measurable problem with verifiable data, not dreams.
 
@@ -232,29 +247,28 @@ When auditors, CFOs, and asset managers need contract truth—they use Stayll.
 
 ### Stayll vs. Traditional CLM Platforms
 
-| Feature | Traditional CLM | Stayll AI |
-|---------|----------------|-----------|
-| **Focus** | Document management & workflows | Financial-grade data extraction |
-| **Accuracy** | "Good enough" | Auditor-certified ≥97% |
-| **Target User** | Legal teams | Finance & operations |
-| **Output** | Contract repository | Structured, queryable datasets |
-| **Integration** | Workflow tools | ERP, BI, financial systems |
-| **Verification** | No formal QA | Multi-layer validation + human QA |
-| **ROI** | Process efficiency | Direct financial impact |
+| Feature                | Traditional CLM                 | Stayll AI                         |
+| ---------------------- | ------------------------------- | --------------------------------- |
+| **Focus**        | Document management & workflows | Financial-grade data extraction   |
+| **Accuracy**     | "Good enough"                   | Auditor-certified ≥97%           |
+| **Target User**  | Legal teams                     | Finance & operations              |
+| **Output**       | Contract repository             | Structured, queryable datasets    |
+| **Integration**  | Workflow tools                  | ERP, BI, financial systems        |
+| **Verification** | No formal QA                    | Multi-layer validation + human QA |
+| **ROI**          | Process efficiency              | Direct financial impact           |
 
 ### Stayll vs. Generic Document AI
 
-| Feature | Generic AI | Stayll AI |
-|---------|-----------|-----------|
-| **Domain Expertise** | General purpose | CRE lease-specialized |
-| **Labeled Training Data** | Public datasets | 50K+ proprietary leases |
-| **Financial Validation** | None | Deterministic reconciliation |
-| **Audit Trail** | Basic | Immutable with clause linkage |
-| **Accuracy SLA** | Best effort | Financial guarantee |
+| Feature                         | Generic AI      | Stayll AI                     |
+| ------------------------------- | --------------- | ----------------------------- |
+| **Domain Expertise**      | General purpose | CRE lease-specialized         |
+| **Labeled Training Data** | Public datasets | 50K+ proprietary leases       |
+| **Financial Validation**  | None            | Deterministic reconciliation  |
+| **Audit Trail**           | Basic           | Immutable with clause linkage |
+| **Accuracy SLA**          | Best effort     | Financial guarantee           |
 
 ---
 
 **This PRD is the operating manual for building Stayll AI.**
 
 *Updated as market feedback and technical learnings accumulate.*
-

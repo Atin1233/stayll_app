@@ -91,3 +91,17 @@
     border-color: var(--color-gray-200, currentColor);
   }
 }
+
+@layer utilities {
+  .type-title-enterprise {
+    @apply text-[18px] font-semibold tracking-tight text-slate-900;
+  }
+
+  .type-subheading-enterprise {
+    @apply text-[13px] font-medium text-slate-600;
+  }
+
+  .type-caption-enterprise {
+    @apply text-[12px] font-normal leading-5 text-slate-500;
+  }
+}
