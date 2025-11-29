@@ -19,6 +19,10 @@ export async function enrichLease(options: EnrichLeaseOptions): Promise<{
   error?: string
 }> {
   try {
+    if (!supabase) {
+      return { success: false, error: 'Supabase client not configured' }
+    }
+
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) {
       return { success: false, error: 'Authentication required' }
