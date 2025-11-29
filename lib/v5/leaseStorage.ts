@@ -37,9 +37,33 @@ export class LeaseStorageService {
         body: formData,
       });
 
-      const result = await response.json();
-
+      // Check if response is ok before trying to parse JSON
       if (!response.ok) {
+        let errorMessage = 'Upload failed';
+        try {
+          const errorResult = await response.json();
+          errorMessage = errorResult.error || errorMessage;
+        } catch (parseError) {
+          // If JSON parsing fails, use status text
+          errorMessage = response.statusText || `HTTP ${response.status}`;
+        }
+        return { success: false, error: errorMessage };
+      }
+
+      // Parse JSON response
+      let result;
+      try {
+        const text = await response.text();
+        if (!text) {
+          return { success: false, error: 'Empty response from server' };
+        }
+        result = JSON.parse(text);
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        return { success: false, error: 'Invalid response from server' };
+      }
+
+      if (!result.success) {
         return { success: false, error: result.error || 'Upload failed' };
       }
 
@@ -51,7 +75,8 @@ export class LeaseStorageService {
       };
     } catch (error) {
       console.error('Lease upload error:', error);
-      return { success: false, error: 'Upload failed' };
+      const errorMessage = error instanceof Error ? error.message : 'Upload failed';
+      return { success: false, error: errorMessage };
     }
   }
 

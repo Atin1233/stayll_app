@@ -187,26 +187,34 @@ export async function POST(request: NextRequest) {
     }
 
     // Automatically trigger extraction (using free PDF parsing)
+    // Do this asynchronously to avoid blocking the response
     let extractionResult = null;
     try {
       // Convert file to buffer for extraction
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      // Trigger extraction
-      extractionResult = await ExtractionService.extractLeaseFields(
+      // Trigger extraction (with timeout to avoid hanging)
+      const extractionPromise = ExtractionService.extractLeaseFields(
         leaseRecord.id,
         orgId,
         buffer
       );
+      
+      // Wait up to 30 seconds for extraction
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Extraction timeout')), 30000)
+      );
+
+      extractionResult = await Promise.race([extractionPromise, timeoutPromise]) as any;
 
       // Update lease with extraction results
-      if (extractionResult.success) {
+      if (extractionResult?.success) {
         await supabase
           .from('leases')
           .update({
             confidence_score: extractionResult.confidence,
-            verification_status: extractionResult.fields.some(f => 
+            verification_status: extractionResult.fields?.some((f: any) => 
               f.validation_state === 'flagged' || f.validation_state === 'rule_fail'
             ) ? 'in_review' : 'unverified',
             updated_at: new Date().toISOString()
@@ -217,6 +225,7 @@ export async function POST(request: NextRequest) {
       console.error('Auto-extraction error (non-fatal):', extractionError);
       // Don't fail the upload if extraction fails
       // User can manually trigger extraction later
+      extractionResult = null;
     }
 
     return NextResponse.json({
@@ -235,8 +244,13 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Upload lease error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        success: false,
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? String(error) : undefined
+      },
       { status: 500 }
     );
   }
