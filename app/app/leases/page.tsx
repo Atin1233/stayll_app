@@ -110,7 +110,7 @@ export default function LeasesPage() {
                 onClick={() => setSelectedLease(null)}
                 className="text-gray-400 hover:text-gray-600"
               >
-                ✕
+                Close
               </button>
             </div>
 
