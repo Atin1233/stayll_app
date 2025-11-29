@@ -43,9 +43,7 @@ export async function POST(request: NextRequest) {
         success: true,
         message: 'Leases bucket already exists',
         bucket: {
-          name: leasesBucket.name,
-          public: leasesBucket.public,
-          created_at: leasesBucket.created_at
+          name: leasesBucket.name
         }
       });
     }
@@ -94,8 +92,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Leases bucket created successfully',
       bucket: {
-        name: newBucket.name,
-        public: newBucket.public
+        name: newBucket.name || 'leases'
       }
     });
 
@@ -138,9 +135,7 @@ export async function GET(request: NextRequest) {
       success: true,
       exists: !!leasesBucket,
       bucket: leasesBucket ? {
-        name: leasesBucket.name,
-        public: leasesBucket.public,
-        created_at: leasesBucket.created_at
+        name: leasesBucket.name
       } : null
     });
 
