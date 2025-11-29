@@ -91,7 +91,26 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('QA tasks query error:', error);
-      return NextResponse.json({ error: 'Failed to fetch QA tasks' }, { status: 500 });
+      // Check if it's a table not found error
+      if (error.message?.includes('relation') && error.message?.includes('does not exist')) {
+        return NextResponse.json({
+          success: true,
+          tasks: [],
+          count: 0,
+          meta: {
+            limit,
+            offset,
+            org_id: orgId,
+            user_id: userId,
+          },
+          message: 'Database tables not set up. Please run the database setup script.'
+        });
+      }
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to fetch QA tasks',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      }, { status: 500 });
     }
 
     const tasks: QATask[] = (rows || []).map((field) => ({

@@ -23,9 +23,14 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       userId = user.id;
-      const orgResult = await OrganizationService.getCurrentOrganization();
-      if (orgResult.success && orgResult.organization) {
-        orgId = orgResult.organization.id;
+      try {
+        const orgResult = await OrganizationService.getCurrentOrganization();
+        if (orgResult.success && orgResult.organization) {
+          orgId = orgResult.organization.id;
+        }
+      } catch (orgError) {
+        console.error('Error getting organization (non-fatal):', orgError);
+        // Fall back to default-org
       }
     }
     

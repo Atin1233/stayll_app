@@ -19,9 +19,14 @@ export async function GET(request: NextRequest) {
     // Try to get user if authenticated
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const orgResult = await OrganizationService.getCurrentOrganization();
-      if (orgResult.success && orgResult.organization) {
-        orgId = orgResult.organization.id;
+      try {
+        const orgResult = await OrganizationService.getCurrentOrganization();
+        if (orgResult.success && orgResult.organization) {
+          orgId = orgResult.organization.id;
+        }
+      } catch (orgError) {
+        console.error('Error getting organization (non-fatal):', orgError);
+        // Fall back to default-org
       }
     }
 
@@ -53,8 +58,26 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error('Database query error:', error);
+      // Check if it's a table not found error
+      if (error.message?.includes('relation') && error.message?.includes('does not exist')) {
+        return NextResponse.json({
+          success: true,
+          leases: [],
+          count: 0,
+          pagination: {
+            limit,
+            offset,
+            hasMore: false
+          },
+          message: 'Database tables not set up. Please run the database setup script.'
+        });
+      }
       return NextResponse.json(
-        { error: 'Failed to fetch leases' },
+        { 
+          success: false,
+          error: 'Failed to fetch leases',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        },
         { status: 500 }
       );
     }
