@@ -72,13 +72,13 @@ export default function LeasesPage() {
           
           {uploadSuccess && (
             <div className="mb-4 bg-green-50 border border-green-200 rounded-md p-4">
-              <p className="text-green-800">✅ Lease uploaded successfully!</p>
+              <p className="text-green-800">Lease uploaded successfully!</p>
             </div>
           )}
           
           {uploadError && (
             <div className="mb-4 bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-red-800">❌ {uploadError}</p>
+              <p className="text-red-800">{uploadError}</p>
             </div>
           )}
 

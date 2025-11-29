@@ -93,13 +93,13 @@ export default function ContractsPage() {
 
           {uploadSuccess && (
             <div className="mb-4 bg-green-50 border border-green-200 rounded-md p-4">
-              <p className="text-green-800">✅ Contract uploaded successfully!</p>
+              <p className="text-green-800">Contract uploaded successfully!</p>
             </div>
           )}
 
           {uploadError && (
             <div className="mb-4 bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-red-800">❌ {uploadError}</p>
+              <p className="text-red-800">{uploadError}</p>
             </div>
           )}
 
@@ -173,7 +173,7 @@ export default function ContractsPage() {
                 onClick={() => setSelectedContract(null)}
                 className="text-gray-400 hover:text-gray-600"
               >
-                ✕
+                Close
               </button>
             </div>
 
