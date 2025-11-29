@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
         message: 'Leases bucket already exists',
         bucket: {
           name: leasesBucket.name,
-          id: leasesBucket.id,
           public: leasesBucket.public,
           created_at: leasesBucket.created_at
         }
@@ -96,7 +95,6 @@ export async function POST(request: NextRequest) {
       message: 'Leases bucket created successfully',
       bucket: {
         name: newBucket.name,
-        id: newBucket.id,
         public: newBucket.public
       }
     });
@@ -141,7 +139,6 @@ export async function GET(request: NextRequest) {
       exists: !!leasesBucket,
       bucket: leasesBucket ? {
         name: leasesBucket.name,
-        id: leasesBucket.id,
         public: leasesBucket.public,
         created_at: leasesBucket.created_at
       } : null
