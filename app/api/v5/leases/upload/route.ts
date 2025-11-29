@@ -12,7 +12,21 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    // Create Supabase client
+    let supabase;
+    try {
+      supabase = createRouteHandlerClient({ cookies });
+    } catch (supabaseError) {
+      console.error('Failed to create Supabase client:', supabaseError);
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Failed to initialize database connection',
+          details: process.env.NODE_ENV === 'development' ? String(supabaseError) : undefined
+        },
+        { status: 500 }
+      );
+    }
     
     if (!supabase) {
       return NextResponse.json(
@@ -25,22 +39,36 @@ export async function POST(request: NextRequest) {
     let orgId = 'default-org';
     let userId = 'default-user';
     
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      userId = user.id;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        userId = user.id;
+      }
+    } catch (authError) {
+      console.error('Auth check error (non-fatal):', authError);
+      // Continue with default user
     }
     
-    // Ensure default org exists
-    const { data: existingOrg } = await supabase
-      .from('organizations')
-      .select('id')
-      .eq('id', 'default-org')
-      .single();
-    
-    if (!existingOrg) {
-      await supabase
+    // Ensure default org exists (don't fail if table doesn't exist)
+    try {
+      const { data: existingOrg } = await supabase
         .from('organizations')
-        .insert({ id: 'default-org', name: 'Default Organization', billing_status: 'trial' });
+        .select('id')
+        .eq('id', 'default-org')
+        .single();
+      
+      if (!existingOrg) {
+        const { error: insertError } = await supabase
+          .from('organizations')
+          .insert({ id: 'default-org', name: 'Default Organization', billing_status: 'trial' });
+        
+        if (insertError && !insertError.message?.includes('does not exist')) {
+          console.error('Failed to create default org:', insertError);
+        }
+      }
+    } catch (orgError) {
+      console.error('Org check error (non-fatal):', orgError);
+      // Continue - org might not exist yet
     }
 
     // Parse form data
@@ -75,25 +103,54 @@ export async function POST(request: NextRequest) {
     const fileKey = `${orgId}/${timestamp}-${file.name}`;
 
     // Upload file to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('leases')
-      .upload(fileKey, file, {
-        cacheControl: '3600',
-        upsert: false
-      });
+    let publicUrl: string;
+    try {
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('leases')
+        .upload(fileKey, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-    if (uploadError) {
-      console.error('Storage upload error:', uploadError);
+      if (uploadError) {
+        console.error('Storage upload error:', uploadError);
+        // Check if bucket doesn't exist
+        if (uploadError.message?.includes('Bucket not found') || uploadError.message?.includes('does not exist')) {
+          return NextResponse.json(
+            { 
+              success: false, 
+              error: 'Storage bucket not configured. Please create a "leases" bucket in Supabase Storage.'
+            },
+            { status: 500 }
+          );
+        }
+        return NextResponse.json(
+          { 
+            success: false, 
+            error: 'Failed to upload file to storage',
+            details: process.env.NODE_ENV === 'development' ? uploadError.message : undefined
+          },
+          { status: 500 }
+        );
+      }
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('leases')
+        .getPublicUrl(fileKey);
+      
+      publicUrl = urlData.publicUrl;
+    } catch (storageError) {
+      console.error('Storage error:', storageError);
       return NextResponse.json(
-        { success: false, error: 'Failed to upload file to storage' },
+        { 
+          success: false, 
+          error: 'Storage service error',
+          details: process.env.NODE_ENV === 'development' ? String(storageError) : undefined
+        },
         { status: 500 }
       );
     }
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('leases')
-      .getPublicUrl(fileKey);
 
     // Create lease record in database
     const leaseData = {
@@ -110,30 +167,61 @@ export async function POST(request: NextRequest) {
       updated_at: new Date().toISOString()
     };
 
-    const { data: leaseRecord, error: dbError } = await supabase
-      .from('leases')
-      .insert(leaseData)
-      .select()
-      .single();
+    let leaseRecord;
+    try {
+      const { data, error: dbError } = await supabase
+        .from('leases')
+        .insert(leaseData)
+        .select()
+        .single();
 
-    if (dbError) {
-      console.error('Database insert error:', dbError);
-      // Try to delete uploaded file
-      await supabase.storage.from('leases').remove([fileKey]);
-      
-      // Check if it's a table not found error
-      if (dbError.message?.includes('relation') && dbError.message?.includes('does not exist')) {
+      if (dbError) {
+        console.error('Database insert error:', dbError);
+        // Try to delete uploaded file
+        try {
+          await supabase.storage.from('leases').remove([fileKey]);
+        } catch (deleteError) {
+          console.error('Failed to delete uploaded file:', deleteError);
+        }
+        
+        // Check if it's a table not found error
+        if (dbError.message?.includes('relation') && dbError.message?.includes('does not exist')) {
+          return NextResponse.json(
+            { 
+              success: false,
+              error: 'Database tables not set up. Please run the database setup script in Supabase SQL Editor.',
+              details: process.env.NODE_ENV === 'development' ? dbError.message : undefined
+            },
+            { status: 500 }
+          );
+        }
+        
         return NextResponse.json(
           { 
-            success: false,
-            error: 'Database tables not set up. Please run the database setup script in Supabase.'
+            success: false, 
+            error: 'Failed to save lease record',
+            details: process.env.NODE_ENV === 'development' ? dbError.message : undefined
           },
           { status: 500 }
         );
       }
       
+      leaseRecord = data;
+    } catch (dbException) {
+      console.error('Database exception:', dbException);
+      // Try to delete uploaded file
+      try {
+        await supabase.storage.from('leases').remove([fileKey]);
+      } catch (deleteError) {
+        console.error('Failed to delete uploaded file:', deleteError);
+      }
+      
       return NextResponse.json(
-        { success: false, error: 'Failed to save lease record' },
+        { 
+          success: false,
+          error: 'Database error occurred',
+          details: process.env.NODE_ENV === 'development' ? String(dbException) : undefined
+        },
         { status: 500 }
       );
     }
