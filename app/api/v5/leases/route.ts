@@ -9,9 +9,27 @@ import { cookies } from 'next/headers';
 import { OrganizationService } from '@/lib/v5/organization';
 import type { VerificationStatus } from '@/types/v5.0';
 
+// Export route config
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
+    
+    if (!supabase) {
+      return NextResponse.json({
+        success: false,
+        error: 'Supabase client not configured',
+        leases: [],
+        count: 0,
+        pagination: {
+          limit: 50,
+          offset: 0,
+          hasMore: false
+        }
+      });
+    }
     
     // For MVP without auth, use default organization
     let orgId = 'default-org';

@@ -10,9 +10,23 @@ import { AuditService } from '@/lib/v5/audit';
 import { OrganizationService } from '@/lib/v5/organization';
 import { ExtractionService } from '@/lib/v5/extraction';
 
+// Export route config to ensure Next.js recognizes this as an API route
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
+    
+    if (!supabase) {
+      return NextResponse.json(
+        { 
+          success: false,
+          error: 'Supabase client not configured' 
+        },
+        { status: 500 }
+      );
+    }
     
     // For MVP without auth, use a default organization
     // In production, this would require authentication

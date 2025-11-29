@@ -13,9 +13,28 @@ const DEFAULT_USER_ID = 'default-user';
 
 const QA_STATES = ['flagged', 'rule_fail', 'candidate'];
 
+// Export route config
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
+    
+    if (!supabase) {
+      return NextResponse.json({
+        success: true,
+        tasks: [],
+        count: 0,
+        meta: {
+          limit: 50,
+          offset: 0,
+          org_id: DEFAULT_ORG_ID,
+          user_id: DEFAULT_USER_ID,
+        },
+        message: 'Supabase client not configured'
+      });
+    }
 
     // Determine user/org context (auth optional for MVP)
     let orgId = DEFAULT_ORG_ID;
