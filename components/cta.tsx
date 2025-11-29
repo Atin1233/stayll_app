@@ -23,7 +23,7 @@ export default function Cta() {
                   data-aos="fade-up"
                   data-aos-delay={200}
                 >
-                  Get Stayll Core deployed in days, not months. Same product, clear size bands—serious but accessible.
+                  Get Stayll deployed in days, not months. Choose the tier that fits your portfolio size—serious but accessible.
                 </p>
                 
                 <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
@@ -54,7 +54,7 @@ export default function Cta() {
                       href="#0"
                     >
                       <span className="relative inline-flex items-center">
-                        Get Started with Stayll Core
+                        Get Started
                         <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                           -&gt;
                         </span>

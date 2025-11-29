@@ -19,33 +19,33 @@ Here’s the same Investor Metrics Summary with your new pricing model and messa
 
 ## Pricing & Deal Sizes
 
-## Simple “Stayll Core” Plan
+## Pricing Tiers
 
-Position pricing so it feels serious but accessible, with one plan and clear size bands:
+Simple pricing that feels serious but accessible, with one platform and clear size bands:
 
-* 0–500 leases: $25K/year.
-* 500–1,500 leases: $60K/year.
-* 1,500–3,000 leases: $120K/year.
-* 3,000+ leases: custom, starting at ~$180K/year.
+* **Essential** (0–500 leases): $25K/year.
+* **Professional** (500–1,500 leases): $60K/year.
+* **Enterprise** (1,500–3,000 leases): $120K/year.
+* **Enterprise Plus** (3,000+ leases): custom, starting at ~$180K/year.
 
 These bands roughly imply ~$40–$80 per lease per year in the core ICP range, which is well above cost to serve but far below the value at risk from leakage or missed escalations.[ibisworld**+1**](https://www.ibisworld.com/global/industry/global-commercial-real-estate/1866/)
 
 ## What Every Band Includes
 
-All bands are the same “Stayll Core” product:
+All tiers include the same Stayll platform:
 
 * Lease ingestion + structured data extraction.
 * Compliance calendar and key dates.
 * Rent roll, escalation, and exposure views.
 * Basic API or scheduled exports (CSV/ERP-ready).
 
-What scales with higher bands:
+What scales with higher tiers:
 
 * Max active leases covered.
 * Percentage of QA coverage and responsiveness of support.
-* Integration depth (for example, from 500+ leases, include one standard integration such as Yardi/MRI/NetSuite/BI connector).
+* Integration depth (for example, Professional tier includes one standard integration such as Yardi/MRI/NetSuite/BI connector).
 
-This keeps the narrative: “Same product, more scale and support as you grow.”
+This keeps the narrative: "Same platform, more scale and support as you grow."
 
 ## Deal Size Summary
 

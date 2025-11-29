@@ -26,7 +26,7 @@ export default function Pricing() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Stayll Core: One Plan, Clear Size Bands
+              Simple Pricing: One Platform, Clear Tiers
             </h2>
             <p className="text-lg text-blue-200/65">
               Serious but accessible. If you have 1,000+ leases, missing 1–2% of value is usually hundreds of thousands per year. Stayll costs a fraction of that.
@@ -40,7 +40,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
                 <div className="mb-6">
                   <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <h3 className="text-lg font-semibold text-gray-200">Essential</h3>
                     <p className="text-xs text-gray-400">0–500 leases</p>
                   </div>
                   <div className="mb-3">
@@ -66,7 +66,7 @@ export default function Pricing() {
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">All Core features</span>
+                    <span className="text-blue-200/65">All platform features</span>
                   </li>
                 </ul>
                 <a
@@ -85,7 +85,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
                 <div className="mb-6">
                   <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <h3 className="text-lg font-semibold text-gray-200">Professional</h3>
                     <p className="text-xs text-gray-400">500–1,500 leases</p>
                   </div>
                   <div className="mb-3">
@@ -117,7 +117,7 @@ export default function Pricing() {
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">All Core features</span>
+                    <span className="text-blue-200/65">All platform features</span>
                   </li>
                 </ul>
                 <a
@@ -136,7 +136,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
                 <div className="mb-6">
                   <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <h3 className="text-lg font-semibold text-gray-200">Enterprise</h3>
                     <p className="text-xs text-gray-400">1,500–3,000 leases</p>
                   </div>
                   <div className="mb-3">
@@ -168,7 +168,7 @@ export default function Pricing() {
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">All Core features</span>
+                    <span className="text-blue-200/65">All platform features</span>
                   </li>
                 </ul>
                 <a
@@ -187,7 +187,7 @@ export default function Pricing() {
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
                 <div className="mb-6">
                   <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Stayll Core</h3>
+                    <h3 className="text-lg font-semibold text-gray-200">Enterprise Plus</h3>
                     <p className="text-xs text-gray-400">3,000+ leases</p>
                   </div>
                   <div className="mb-3">
@@ -218,7 +218,7 @@ export default function Pricing() {
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">All Core features</span>
+                    <span className="text-blue-200/65">All platform features</span>
                   </li>
                 </ul>
                 <a
@@ -237,7 +237,7 @@ export default function Pricing() {
           <div className="mt-12 mx-auto max-w-4xl">
             <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
               <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                What's Included in Every Stayll Core Band
+                What's Included in Every Tier
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="flex items-start">

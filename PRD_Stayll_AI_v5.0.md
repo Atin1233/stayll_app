@@ -131,18 +131,18 @@ Stayll treats **accuracy as a financial SLA**, not a marketing metric.
 
 ## 7. Pricing and Packaging
 
-### Simple "Stayll Core" Plan
+### Simple Pricing Tiers
 
-Position pricing so it feels serious but accessible, with one plan and clear size bands:
+Position pricing so it feels serious but accessible, with one platform and clear size bands:
 
-| Portfolio Size | Annual Price | Description |
-|----------------|--------------|-------------|
-| **0–500 leases** | $25K/year | Automated QA only, email support |
-| **500–1,500 leases** | $60K/year | Human QA for top 20%, one standard integration, priority support |
-| **1,500–3,000 leases** | $120K/year | Human QA for top 30%, multiple integrations, dedicated support |
-| **3,000+ leases** | Custom (starting ~$180K/year) | Custom QA coverage, unlimited integrations, dedicated account manager |
+| Tier | Portfolio Size | Annual Price | Description |
+|------|----------------|--------------|-------------|
+| **Essential** | 0–500 leases | $25K/year | Automated QA only, email support |
+| **Professional** | 500–1,500 leases | $60K/year | Human QA for top 20%, one standard integration, priority support |
+| **Enterprise** | 1,500–3,000 leases | $120K/year | Human QA for top 30%, multiple integrations, dedicated support |
+| **Enterprise Plus** | 3,000+ leases | Custom (starting ~$180K/year) | Custom QA coverage, unlimited integrations, dedicated account manager |
 
-All bands include the same "Stayll Core" product:
+All tiers include the same Stayll platform:
 - Lease ingestion + structured data extraction
 - Compliance calendar and key dates
 - Rent roll, escalation, and exposure views
