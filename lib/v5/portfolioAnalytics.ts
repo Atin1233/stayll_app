@@ -181,8 +181,8 @@ export class PortfolioAnalyticsService {
       tenant_name: lease.tenant_name || undefined,
       property_address: lease.property_address || undefined,
       year,
-      annual_rent,
-      monthly_rent,
+      annual_rent: annualRent,
+      monthly_rent: monthlyRent,
       escalations,
       cam: cam * 12, // Annual CAM
       taxes: taxes * 12, // Annual taxes

@@ -88,8 +88,17 @@ export class QAService {
       // Filter by financial value if threshold provided
       let filteredTasks = tasks;
       if (filter.financial_value_threshold) {
+        // Get lease data for tasks
+        const leaseIds = Array.from(new Set(tasks.map(t => t.lease_id)));
+        const { data: leases } = await supabase
+          .from('leases')
+          .select('id, base_rent')
+          .in('id', leaseIds);
+
+        const leaseMap = new Map((leases || []).map(l => [l.id, l]));
+        
         filteredTasks = tasks.filter(task => {
-          const lease = (field as any)?.leases;
+          const lease = leaseMap.get(task.lease_id);
           const baseRent = lease?.base_rent || 0;
           return baseRent >= filter.financial_value_threshold!;
         });

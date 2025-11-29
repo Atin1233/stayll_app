@@ -10,8 +10,9 @@ import { PostProcessingService } from './postProcessing';
 import { FinancialReconciliationService } from './financialReconciliation';
 import { LeaseFieldsService } from './leaseFields';
 import { AuditService } from './audit';
-import type { LeaseSchema, OCRResult, ClauseSegment } from '@/types/leaseSchema';
+import type { LeaseSchema, OCRResult, ClauseSegment, DocumentIndex, PageData } from '@/types/leaseSchema';
 import type { LeaseField } from '@/types/v5.0';
+import type { OCRResult as V5OCRResult } from '@/types/v5.0';
 
 export interface EnhancedExtractionResult {
   success: boolean;
@@ -37,18 +38,21 @@ export class EnhancedExtractionService {
   ): Promise<EnhancedExtractionResult> {
     try {
       // Step 1: OCR - Extract text and structure from PDF
-      const ocrResult = await PDFExtractionService.extractTextWithPages(pdfBuffer);
-      ocrResult.lease_id = leaseId;
+      const v5OCRResult = await PDFExtractionService.extractTextWithPages(pdfBuffer);
+      v5OCRResult.lease_id = leaseId;
 
-      // Step 2: Clause Chunking - Segment into structured clauses
-      const { clauses, documentIndex } = ClauseChunkingService.segmentClauses(ocrResult);
+      // Step 2: Clause Chunking - Segment into structured clauses (converts v5.0 OCRResult internally)
+      const { clauses, documentIndex } = ClauseChunkingService.segmentClauses(v5OCRResult);
+
+      // Convert v5.0 OCRResult to leaseSchema OCRResult for LLM extraction
+      const leaseSchemaOCRResult = this.convertOCRResult(v5OCRResult, documentIndex);
 
       // Step 3: LLM Extraction - Extract fields by domain
-      const termResult = await LLMExtractionService.extractTerm(clauses, ocrResult);
-      const rentResult = await LLMExtractionService.extractBaseRent(clauses, ocrResult.tables || [], ocrResult);
-      const escalationResult = await LLMExtractionService.extractEscalations(clauses, ocrResult);
-      const renewalResult = await LLMExtractionService.extractRenewalOptions(clauses, ocrResult);
-      const camResult = await LLMExtractionService.extractAdditionalRent(clauses, ocrResult);
+      const termResult = await LLMExtractionService.extractTerm(clauses, leaseSchemaOCRResult);
+      const rentResult = await LLMExtractionService.extractBaseRent(clauses, leaseSchemaOCRResult.rent_tables, leaseSchemaOCRResult);
+      const escalationResult = await LLMExtractionService.extractEscalations(clauses, leaseSchemaOCRResult);
+      const renewalResult = await LLMExtractionService.extractRenewalOptions(clauses, leaseSchemaOCRResult);
+      const camResult = await LLMExtractionService.extractAdditionalRent(clauses, leaseSchemaOCRResult);
 
       // Step 4: Merge all extracted fields
       const allFields = [
@@ -168,9 +172,9 @@ export class EnhancedExtractionService {
     if (baseRentField || rentScheduleFields.length > 0) {
       schema.economics = {
         base_rent_schedule: this.buildRentSchedule(fields, baseRentField),
-        escalations: escalationResult.fields.length > 0 ? [] : undefined, // TODO: Parse escalations
+        escalations: escalationResult.fields.length > 0 ? [] : [], // TODO: Parse escalations
         additional_rent: {
-          cam: camResult.fields.length > 0 ? undefined : undefined // TODO: Parse CAM
+          // TODO: Parse CAM, taxes, insurance from camResult
         }
       };
     }
@@ -261,6 +265,57 @@ export class EnhancedExtractionService {
     
     const total = fields.reduce((sum, f) => sum + (f.extraction_confidence || 0), 0);
     return Math.round(total / fields.length);
+  }
+
+  /**
+   * Convert v5.0 OCRResult to leaseSchema OCRResult
+   */
+  private static convertOCRResult(
+    v5Result: V5OCRResult,
+    documentIndex: DocumentIndex
+  ): OCRResult {
+    const lease_pages: PageData[] = v5Result.pages.map(page => ({
+      page_number: page.page_number,
+      text: page.text,
+      layout_info: {
+        blocks: page.blocks.map(block => ({
+          text: block.text,
+          coordinates: block.bounding_box,
+          block_type: block.block_type === 'TABLE' ? 'table' as const :
+                     block.block_type === 'LINE' ? 'paragraph' as const :
+                     'paragraph' as const
+        }))
+      }
+    }));
+
+    const lease_raw_text = v5Result.pages.map(p => p.text).join('\n\n');
+    
+    const rent_tables = (v5Result.tables || []).map(table => {
+      // Convert v5.0 table format to leaseSchema format
+      // v5.0 tables have rows as Array<Array<string>>, but we need to extract from the structure
+      const cells: string[][] = [];
+      if (table.rows && Array.isArray(table.rows)) {
+        // If rows is already a 2D array, use it directly
+        if (table.rows.length > 0 && Array.isArray(table.rows[0])) {
+          cells.push(...(table.rows as string[][]));
+        }
+      }
+      
+      return {
+        page_number: table.page_number,
+        cells: cells.length > 0 ? cells : [],
+        coordinates: table.bounding_box,
+        detected_structure: undefined
+      };
+    });
+
+    return {
+      lease_id: v5Result.lease_id,
+      lease_raw_text,
+      lease_pages,
+      rent_tables,
+      document_index: documentIndex
+    };
   }
 }
 

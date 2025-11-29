@@ -3,16 +3,20 @@
  * Structure detection and clause segmentation
  */
 
-import type { ClauseSegment, OCRResult, DocumentIndex } from '@/types/leaseSchema';
+import type { ClauseSegment, OCRResult, DocumentIndex, PageData } from '@/types/leaseSchema';
+import type { OCRResult as V5OCRResult } from '@/types/v5.0';
 
 export class ClauseChunkingService {
   /**
    * Detect structure and segment document into clauses
+   * Accepts both v5.0 OCRResult and leaseSchema OCRResult
    */
-  static segmentClauses(ocrResult: OCRResult): {
+  static segmentClauses(ocrResult: OCRResult | V5OCRResult): {
     clauses: ClauseSegment[];
     documentIndex: DocumentIndex;
   } {
+    // Convert v5.0 OCRResult to leaseSchema OCRResult if needed
+    const normalizedResult = this.normalizeOCRResult(ocrResult);
     const clauses: ClauseSegment[] = [];
     const clauseHeadings: DocumentIndex['clause_headings'] = [];
     
@@ -43,7 +47,7 @@ export class ClauseChunkingService {
       misc_section: []
     };
 
-    for (const page of ocrResult.lease_pages) {
+    for (const page of normalizedResult.lease_pages) {
       currentPage = page.page_number;
       const lines = page.text.split('\n');
 
@@ -135,6 +139,51 @@ export class ClauseChunkingService {
       clauses,
       documentIndex: {
         clause_headings: clauseHeadings
+      }
+    };
+  }
+
+  /**
+   * Normalize OCRResult from v5.0 format to leaseSchema format
+   */
+  private static normalizeOCRResult(ocrResult: OCRResult | V5OCRResult): OCRResult {
+    // Check if it's already in leaseSchema format
+    if ('lease_pages' in ocrResult) {
+      return ocrResult as OCRResult;
+    }
+
+    // Convert from v5.0 format
+    const v5Result = ocrResult as V5OCRResult;
+    const lease_pages: PageData[] = v5Result.pages.map(page => ({
+      page_number: page.page_number,
+      text: page.text,
+      layout_info: {
+        blocks: page.blocks.map(block => ({
+          text: block.text,
+          coordinates: block.bounding_box,
+          block_type: block.block_type === 'TABLE' ? 'table' as const :
+                     block.block_type === 'LINE' ? 'paragraph' as const :
+                     'paragraph' as const
+        }))
+      }
+    }));
+
+    const lease_raw_text = v5Result.pages.map(p => p.text).join('\n\n');
+    
+    const rent_tables = (v5Result.tables || []).map(table => ({
+      page_number: table.page_number,
+      cells: table.rows || [],
+      coordinates: table.bounding_box,
+      detected_structure: undefined
+    }));
+
+    return {
+      lease_id: v5Result.lease_id,
+      lease_raw_text,
+      lease_pages,
+      rent_tables,
+      document_index: {
+        clause_headings: []
       }
     };
   }
