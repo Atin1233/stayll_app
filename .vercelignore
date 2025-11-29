@@ -1,0 +1,4 @@
+# Exclude Supabase Edge Functions from Vercel build
+# These files use Deno imports and should only be built/deployed via Supabase CLI
+supabase/functions/
+
