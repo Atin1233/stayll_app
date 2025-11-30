@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Stayll AI - Financial-Grade Contract Data for Commercial Real Estate",
-  description: "Auditor-certified lease data extraction with ≥97% accuracy. Eliminate 1-3% lease value leakage. Trusted contract intelligence for REITs, asset managers, and portfolio accountants.",
+  title: "Stayll AI - AI-Assisted Lease Abstraction for CRE Portfolios",
+  description: "Get 500 leases abstracted in 30 days for $25K. Fixed price, guaranteed delivery. CSV rent roll + audit log included. Accuracy guaranteed.",
 };
 
 import PageIllustration from "@/components/page-illustration";

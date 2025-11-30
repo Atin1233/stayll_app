@@ -16,14 +16,14 @@ export default function Cta() {
                   className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
                   data-aos="fade-up"
                 >
-                  Prevent Hundreds of Thousands in Leakage
+                  Get 500 Leases Abstracted in 30 Days
                 </h2>
                 <p
                   className="mb-8 text-lg text-blue-200/65"
                   data-aos="fade-up"
                   data-aos-delay={200}
                 >
-                  Get Stayll deployed in days, not months. Choose the tier that fits your portfolio size—serious but accessible.
+                  Fixed price. Guaranteed delivery. Accuracy guaranteed. No subscriptions, just results.
                 </p>
                 
                 <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
@@ -31,19 +31,19 @@ export default function Cta() {
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">3× ROI guarantee or we work on price</span>
+                    <span className="text-gray-200">$25K for 500 leases - fixed price</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">Auditor-certified ≥97% accuracy</span>
+                    <span className="text-gray-200">30 days delivery guaranteed</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
                       <span className="text-green-400 text-sm">✓</span>
                     </div>
-                    <span className="text-gray-200">Financial-grade lease data infrastructure</span>
+                    <span className="text-gray-200">CSV rent roll + audit log included</span>
                   </div>
                 </div>
 
@@ -69,7 +69,7 @@ export default function Cta() {
                 <div className="w-full max-w-md" data-aos="fade-up" data-aos-delay={400}>
                   <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                     <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                      Request Demo / Get Started
+                      Request a Pilot Project
                     </h3>
                     <LeadForm />
                   </div>

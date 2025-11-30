@@ -26,98 +26,52 @@ export default function Pricing() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Simple Pricing: One Platform, Clear Tiers
+              Project-Based Pricing: Fixed Price, Guaranteed Delivery
             </h2>
             <p className="text-lg text-blue-200/65">
-              Serious but accessible. If you have 1,000+ leases, missing 1–2% of value is usually hundreds of thousands per year. Stayll costs a fraction of that.
+              No subscriptions. Pay per project. Get your lease abstracts delivered in 30-90 days with accuracy guaranteed.
             </p>
           </div>
 
           {/* Pricing Cards */}
-          <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-            {/* Band 1 - 0-500 leases */}
+          <div className="mx-auto grid max-w-sm gap-8 sm:max-w-none sm:grid-cols-3 lg:gap-6">
+            {/* Pilot - 500 leases */}
             <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
                 <div className="mb-6">
                   <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Essential</h3>
-                    <p className="text-xs text-gray-400">0–500 leases</p>
+                    <h3 className="text-lg font-semibold text-gray-200">Pilot</h3>
+                    <p className="text-xs text-gray-400">500 leases</p>
                   </div>
                   <div className="mb-3">
                     <span className="text-2xl font-bold text-gray-200">$25K</span>
-                    <span className="text-sm text-gray-400">/year</span>
                   </div>
-                  <p className="text-sm text-blue-200/65">~$50/lease/year</p>
+                  <p className="text-sm text-blue-200/65">30 days delivery</p>
                 </div>
                 <ul className="mb-6 space-y-2 text-sm">
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Automated QA only</span>
+                    <span className="text-blue-200/65">500 lease abstracts</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Email support</span>
+                    <span className="text-blue-200/65">CSV rent roll</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">All platform features</span>
-                  </li>
-                </ul>
-                <a
-                  href="#cta"
-                  className="btn group w-full bg-linear-to-t from-gray-700 to-gray-600 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
-                >
-                  <span className="relative inline-flex items-center justify-center">
-                    Get Started
-                  </span>
-                </a>
-              </div>
-            </div>
-
-            {/* Band 2 - 500-1,500 leases */}
-            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
-                <div className="mb-6">
-                  <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Professional</h3>
-                    <p className="text-xs text-gray-400">500–1,500 leases</p>
-                  </div>
-                  <div className="mb-3">
-                    <span className="text-2xl font-bold text-gray-200">$60K</span>
-                    <span className="text-sm text-gray-400">/year</span>
-                  </div>
-                  <p className="text-sm text-blue-200/65">~$40–$120/lease/year</p>
-                </div>
-                <ul className="mb-6 space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Human QA for top 20%</span>
+                    <span className="text-blue-200/65">Audit log</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">One standard integration</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Priority support</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">All platform features</span>
+                    <span className="text-blue-200/65">Accuracy guaranteed</span>
                   </li>
                 </ul>
                 <a
@@ -125,38 +79,87 @@ export default function Pricing() {
                   className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
                 >
                   <span className="relative inline-flex items-center justify-center">
-                    Request Demo
+                    Request Pilot
                   </span>
                 </a>
               </div>
             </div>
 
-            {/* Band 3 - 1,500-3,000 leases */}
+            {/* Portfolio - 1,500 leases */}
             <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
               <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
                 <div className="mb-6">
                   <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Enterprise</h3>
-                    <p className="text-xs text-gray-400">1,500–3,000 leases</p>
+                    <h3 className="text-lg font-semibold text-gray-200">Portfolio</h3>
+                    <p className="text-xs text-gray-400">1,500 leases</p>
                   </div>
                   <div className="mb-3">
-                    <span className="text-2xl font-bold text-gray-200">$120K</span>
-                    <span className="text-sm text-gray-400">/year</span>
+                    <span className="text-2xl font-bold text-gray-200">$50K</span>
                   </div>
-                  <p className="text-sm text-blue-200/65">~$40–$80/lease/year</p>
+                  <p className="text-sm text-blue-200/65">60 days delivery</p>
                 </div>
                 <ul className="mb-6 space-y-2 text-sm">
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Human QA for top 30%</span>
+                    <span className="text-blue-200/65">1,500 lease abstracts</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">Multiple integrations</span>
+                    <span className="text-blue-200/65">CSV rent roll + quarterly updates</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Full audit log</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">Priority support</span>
+                  </li>
+                </ul>
+                <a
+                  href="#cta"
+                  className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
+                >
+                  <span className="relative inline-flex items-center justify-center">
+                    Request Quote
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            {/* Custom - 5,000+ leases */}
+            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
+              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
+                <div className="mb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold text-gray-200">Custom</h3>
+                    <p className="text-xs text-gray-400">5,000+ leases</p>
+                  </div>
+                  <div className="mb-3">
+                    <span className="text-2xl font-bold text-gray-200">$100K+</span>
+                  </div>
+                  <p className="text-sm text-blue-200/65">90 days delivery</p>
+                </div>
+                <ul className="mb-6 space-y-2 text-sm">
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">5,000+ lease abstracts</span>
+                  </li>
+                  <li className="flex items-start">
+                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-blue-200/65">API access</span>
                   </li>
                   <li className="flex items-start">
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
@@ -168,57 +171,7 @@ export default function Pricing() {
                     <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
-                    <span className="text-blue-200/65">All platform features</span>
-                  </li>
-                </ul>
-                <a
-                  href="#cta"
-                  className="btn group w-full bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] text-sm"
-                >
-                  <span className="relative inline-flex items-center justify-center">
-                    Request Demo
-                  </span>
-                </a>
-              </div>
-            </div>
-
-            {/* Band 4 - 3,000+ leases */}
-            <div className="relative rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-blue-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 hover:before:opacity-100">
-              <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 p-6">
-                <div className="mb-6">
-                  <div className="mb-3">
-                    <h3 className="text-lg font-semibold text-gray-200">Enterprise Plus</h3>
-                    <p className="text-xs text-gray-400">3,000+ leases</p>
-                  </div>
-                  <div className="mb-3">
-                    <span className="text-2xl font-bold text-gray-200">Custom</span>
-                  </div>
-                  <p className="text-sm text-blue-200/65">Starting ~$180K/year</p>
-                </div>
-                <ul className="mb-6 space-y-2 text-sm">
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Custom QA coverage</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Unlimited integrations</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">Dedicated account manager</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="mr-2 h-4 w-4 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-blue-200/65">All platform features</span>
+                    <span className="text-blue-200/65">Custom deliverables</span>
                   </li>
                 </ul>
                 <a
@@ -233,50 +186,15 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* What's Included in All Bands */}
-          <div className="mt-12 mx-auto max-w-4xl">
-            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
-              <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                What's Included in Every Tier
-              </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="flex items-start">
-                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-blue-200/65">Lease ingestion + structured data extraction</span>
-                </div>
-                <div className="flex items-start">
-                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-blue-200/65">Compliance calendar and key dates</span>
-                </div>
-                <div className="flex items-start">
-                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-blue-200/65">Rent roll, escalation, and exposure views</span>
-                </div>
-                <div className="flex items-start">
-                  <svg className="mr-3 h-5 w-5 fill-green-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-blue-200/65">Basic API or scheduled exports (CSV/ERP-ready)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Bottom Note */}
           <div className="mt-12 text-center">
             <div className="mb-4 p-4 bg-blue-500/10 rounded-lg border border-blue-500/20 inline-block">
               <p className="text-sm text-blue-200 font-medium">
-                Founder Guarantee: If we don't show at least 3× value versus subscription cost in the first 12 months, we work with you on price or you can walk.
+                This is a managed service, not SaaS. We abstract your leases and deliver structured data. Accuracy guaranteed.
               </p>
             </div>
             <p className="mt-4 text-sm text-gray-400">
-              Not a CLM—this is financial-grade contract data infrastructure. When auditors and CFOs need trusted lease truth, they use Stayll.
+              Stop paying $200/lease to offshore abstractors. Get faster, auditable results with AI-assisted quality control.
             </p>
           </div>
         </div>

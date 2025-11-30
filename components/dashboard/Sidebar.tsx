@@ -5,17 +5,11 @@ import { usePathname } from 'next/navigation'
 import {
   HomeIcon,
   DocumentMagnifyingGlassIcon,
-  LightBulbIcon,
-  ChartBarIcon,
-  Cog6ToothIcon,
 } from '@heroicons/react/24/outline'
 
 const navigation = [
   { name: 'Dashboard', href: '/app', icon: HomeIcon },
   { name: 'Contracts', href: '/app/contracts', icon: DocumentMagnifyingGlassIcon },
-  { name: 'Insights', href: '/app/insights', icon: LightBulbIcon },
-  { name: 'Reports', href: '/app/reports', icon: ChartBarIcon },
-  { name: 'Settings', href: '/app/settings', icon: Cog6ToothIcon },
 ]
 
 export default function Sidebar() {
