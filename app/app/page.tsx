@@ -153,6 +153,8 @@ export default function DashboardPage() {
                               ? 'bg-green-100 text-green-800'
                               : lease.verification_status === 'in_review'
                               ? 'bg-yellow-100 text-yellow-800'
+                              : lease.verification_status === 'rejected'
+                              ? 'bg-red-100 text-red-800'
                               : 'bg-blue-100 text-blue-800'
                           }`}
                         >
@@ -160,6 +162,8 @@ export default function DashboardPage() {
                             ? 'Complete'
                             : lease.verification_status === 'in_review'
                             ? 'Review Ready'
+                            : lease.verification_status === 'rejected'
+                            ? 'Rejected'
                             : 'In Progress'}
                         </span>
                       </td>
