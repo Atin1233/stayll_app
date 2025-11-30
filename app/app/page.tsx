@@ -32,7 +32,7 @@ export default function DashboardPage() {
   }, [])
 
   const statusCounts = {
-    inProgress: leases.filter(l => l.verification_status === 'unverified' || l.verification_status === 'pending').length,
+    inProgress: leases.filter(l => l.verification_status !== 'verified' && l.verification_status !== 'in_review').length,
     reviewReady: leases.filter(l => l.verification_status === 'in_review').length,
     complete: leases.filter(l => l.verification_status === 'verified').length,
   }
