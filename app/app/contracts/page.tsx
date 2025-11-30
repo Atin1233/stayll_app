@@ -25,8 +25,8 @@ export default function ContractsPage() {
     try {
       const result = await LeaseStorageService.uploadLease({
         file,
-        property_address: propertyAddress,
-        tenant_name: tenantName,
+        property_address: propertyAddress || undefined, // Make optional
+        tenant_name: tenantName || undefined, // Make optional
       })
 
       if (result.success) {
