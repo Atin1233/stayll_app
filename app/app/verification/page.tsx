@@ -239,9 +239,9 @@ export default function VerificationPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium text-gray-700">Extracted Value</h3>
+                  <h3 className="text-sm font-medium text-gray-700">Current Value</h3>
                   <div className={`mt-1 p-3 rounded border ${getConfidenceBgColor(selectedTask.confidence)}`}>
-                    <p className="text-base text-gray-900">{selectedTask.extracted_value || 'N/A'}</p>
+                    <p className="text-base text-gray-900">{selectedTask.current_value || 'N/A'}</p>
                   </div>
                 </div>
 
@@ -268,13 +268,13 @@ export default function VerificationPage() {
 
                 <div>
                   <h3 className="text-sm font-medium text-gray-700">Validation State</h3>
-                  <p className="mt-1 text-base text-gray-900 capitalize">{selectedTask.validation_state}</p>
+                  <p className="mt-1 text-base text-gray-900 capitalize">{selectedTask.validation_state.replace('_', ' ')}</p>
                 </div>
 
-                {selectedTask.reason && (
+                {selectedTask.source_clause?.clause_text && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-700">Flagging Reason</h3>
-                    <p className="mt-1 text-sm text-gray-600">{selectedTask.reason}</p>
+                    <h3 className="text-sm font-medium text-gray-700">Source Clause</h3>
+                    <p className="mt-1 text-sm text-gray-600">{selectedTask.source_clause.clause_text}</p>
                   </div>
                 )}
 
