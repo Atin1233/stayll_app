@@ -40,14 +40,14 @@ export default function Features() {
               </span>
             </div>
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-              Manual Reviews Cost You Millions Every Year
+              You're Losing 1–3% of Your Portfolio Value to Contract Errors
             </h2>
             <p className="text-lg text-blue-200/65">
-              The hidden costs of scattered, unverified contract data add up to massive financial impact across your CRE portfolio.
+              Missed renewals. Botched CPI math. Unpaid escalations. Offshore abstractors charge $200/lease, take 90 days, and guarantee nothing. Their "accuracy" is a prayer. Your auditors won't sign off.
             </p>
           </div>
 
-          <div className="flex justify-center pb-4 md:pb-12" data-aos="fade-up">
+          <div className="flex justify-center pb-8 md:pb-12" data-aos="fade-up">
             <Image
               className="max-w-none"
               src={FeaturesImage}
@@ -57,115 +57,29 @@ export default function Features() {
             />
           </div>
 
-          {/* Pain Points vs Solutions */}
-          <div className="mx-auto grid max-w-sm gap-12 sm:max-w-none sm:grid-cols-2 md:gap-x-14 md:gap-y-16 lg:grid-cols-3">
-            {/* Pain Point 1 */}
-            <article className="border-l-4 border-red-500/50 pl-6">
-              <svg
-                className="mb-3 fill-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Missed renewals and escalations
-              </h3>
-              <p className="text-blue-200/65">
-                1-3% of lease value lost annually from scattered, unverified contract data without accuracy assurance.
-              </p>
-            </article>
-
-            {/* Solution 1 */}
-            <article className="border-l-4 border-green-500/50 pl-6">
-              <svg
-                className="mb-3 fill-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Verified Lease Data
-              </h3>
-              <p className="text-blue-200/65">
-                ≥97% recall, auditor-verified. Auto-generates renewals, payments, deadlines. Aligns with financial values ±1%.
-              </p>
-            </article>
-
-            {/* Pain Point 2 */}
-            <article className="border-l-4 border-red-500/50 pl-6">
-              <svg
-                className="mb-3 fill-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Manual review inefficiency
-              </h3>
-              <p className="text-blue-200/65">
-                $150-300 per contract, takes weeks, inconsistent quality. No accuracy guarantee or auditable trail.
-              </p>
-            </article>
-
-            {/* Solution 2 */}
-            <article className="border-l-4 border-green-500/50 pl-6">
-              <svg
-                className="mb-3 fill-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                Measurable ROI
-              </h3>
-              <p className="text-blue-200/65">
-                Audit trail with clause-level evidence. Export-ready. Processing &lt;3 min/contract with &lt;200ms latency.
-              </p>
-            </article>
-
-            {/* Pain Point 3 */}
-            <article className="border-l-4 border-red-500/50 pl-6">
-              <svg
-                className="mb-3 fill-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-red-300">
-                Generic AI limitations
-              </h3>
-              <p className="text-blue-200/65">
-                &quot;Good enough&quot; for reading, but not CFO-grade accuracy. No verification. Cannot trust for financial workflows.
-              </p>
-            </article>
-
-            {/* Solution 3 */}
-            <article className="border-l-4 border-green-500/50 pl-6">
-              <svg
-                className="mb-3 fill-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-              <h3 className="mb-1 font-nacelle text-[1rem] font-semibold text-green-300">
-                The Stayll Advantage
-              </h3>
-              <p className="text-blue-200/65">
-                Financial-grade accuracy with guaranteed SLA. Hybrid verification engine. Purpose-built for CRE lease intelligence.
-              </p>
-            </article>
+          {/* The Status Quo Is Broken */}
+          <div className="mx-auto max-w-4xl">
+            <h3 className="text-2xl font-semibold text-gray-200 mb-6 text-center">
+              The Status Quo Is Broken
+            </h3>
+            <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+              <article className="border-l-4 border-red-500/50 pl-6">
+                <h4 className="mb-1 font-semibold text-red-300">60 days</h4>
+                <p className="text-sm text-blue-200/65">to get lease data back</p>
+              </article>
+              <article className="border-l-4 border-red-500/50 pl-6">
+                <h4 className="mb-1 font-semibold text-red-300">Zero audit trail</h4>
+                <p className="text-sm text-blue-200/65">to prove it's right</p>
+              </article>
+              <article className="border-l-4 border-red-500/50 pl-6">
+                <h4 className="mb-1 font-semibold text-red-300">No financial validation</h4>
+                <p className="text-sm text-blue-200/65">rent schedules don't add up</p>
+              </article>
+              <article className="border-l-4 border-red-500/50 pl-6">
+                <h4 className="mb-1 font-semibold text-red-300">Weeks of cleanup</h4>
+                <p className="text-sm text-blue-200/65">your CFO still spends weeks cleaning spreadsheets</p>
+              </article>
+            </div>
           </div>
         </div>
       </div>

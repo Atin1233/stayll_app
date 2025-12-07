@@ -7,10 +7,22 @@
 // CORE ENTITIES
 // ============================================================================
 
+export type SubscriptionTier = 'trial' | 'essential' | 'professional' | 'enterprise' | 'enterprise_plus';
+export type SubscriptionStatus = 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid';
+export type BillingInterval = 'month' | 'year';
+
 export interface Organization {
   id: string;
   name: string;
   billing_status: 'active' | 'suspended' | 'trial';
+  subscription_tier?: SubscriptionTier;
+  stripe_customer_id?: string;
+  stripe_subscription_id?: string;
+  subscription_status?: SubscriptionStatus;
+  subscription_billing_interval?: BillingInterval;
+  subscription_current_period_start?: string;
+  subscription_current_period_end?: string;
+  max_leases?: number; // 0 = unlimited
   created_at: string;
   updated_at: string;
 }

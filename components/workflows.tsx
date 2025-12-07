@@ -16,11 +16,8 @@ export default function Workflows() {
             </span>
           </div>
           <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
-            From lease to insights in under 2 minutes
+            Three Steps to Financial Truth
           </h2>
-          <p className="text-lg text-blue-200/65">
-            Upload any lease document and get instant AI-powered analysis with risk flags and actionable insights.
-          </p>
         </div>
 
         {/* Spotlight items */}
@@ -38,7 +35,7 @@ export default function Workflows() {
                 src={WorflowImg01}
                 width={350}
                 height={288}
-                alt="Upload Your Lease"
+                alt="Upload Every Lease"
               />
               {/* Content */}
               <div className="p-6">
@@ -50,10 +47,10 @@ export default function Workflows() {
                   </span>
                 </div>
                 <h3 className="mb-2 font-nacelle text-lg font-semibold text-gray-200">
-                  Upload Your Lease
+                  Upload Every Lease
                 </h3>
                 <p className="text-blue-200/65">
-                  Upload any lease document - PDF, scanned, or digital. Our AI handles all formats.
+                  Upload 500–2,000 PDFs—scanned, digital, or a 10-year mess. Our engine handles it.
                 </p>
               </div>
             </div>
@@ -72,7 +69,7 @@ export default function Workflows() {
                 src={WorflowImg02}
                 width={350}
                 height={288}
-                alt="AI Analysis"
+                alt="AI Extracts, We Verify"
               />
               {/* Content */}
               <div className="p-6">
@@ -84,10 +81,10 @@ export default function Workflows() {
                   </span>
                 </div>
                 <h3 className="mb-2 font-nacelle text-lg font-semibold text-gray-200">
-                  AI Parses & Analyzes
+                  AI Extracts, We Verify
                 </h3>
                 <p className="text-blue-200/65">
-                  Stayll extracts critical terms, flags hidden risks, and scores tenant risk using AI trained on thousands of leases.
+                  Hybrid AI (deterministic rules + GPT-4) extracts 20 financial fields. Every lease is human-verified. Every field is clause-linked. Every number reconciles to ±$1.
                 </p>
               </div>
             </div>
@@ -106,7 +103,7 @@ export default function Workflows() {
                 src={WorflowImg03}
                 width={350}
                 height={288}
-                alt="Get Your Report"
+                alt="Export to Yardi"
               />
               {/* Content */}
               <div className="p-6">
@@ -118,10 +115,10 @@ export default function Workflows() {
                   </span>
                 </div>
                 <h3 className="mb-2 font-nacelle text-lg font-semibold text-gray-200">
-                  Get Your Report
+                  Export to Yardi (or CSV)
                 </h3>
                 <p className="text-blue-200/65">
-                  Receive a clear summary in plain English with risk flags, key terms, and actionable insights for your team.
+                  Push clean rent rolls directly to Yardi/MRI. Your auditors get a PDF audit package. Your CFO gets the truth.
                 </p>
               </div>
             </div>

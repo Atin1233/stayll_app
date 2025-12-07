@@ -10,7 +10,7 @@ export default function HeroHome() {
               className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-5 font-nacelle text-4xl font-semibold text-transparent md:text-5xl"
               data-aos="fade-up"
             >
-              AI-Assisted Lease Abstraction for CRE Portfolios
+              The End of Lease Guesswork
             </h1>
             <div className="mx-auto max-w-3xl">
               <p
@@ -18,10 +18,10 @@ export default function HeroHome() {
                 data-aos="fade-up"
                 data-aos-delay={200}
               >
-                Get 500 leases abstracted in 30 days for $25K. Accuracy guaranteed. Delivered with CSV rent roll and audit log.
+                Audit-Grade Financial Data from CRE Contracts in 30 Days
               </p>
-              <p className="mb-8 text-sm text-blue-200/50 italic" data-aos="fade-up" data-aos-delay={300}>
-                Stop paying $200/lease to offshore abstractors. We deliver faster, auditable results with AI-assisted quality control.
+              <p className="mb-4 text-lg text-blue-200/80" data-aos="fade-up" data-aos-delay={300}>
+                We extract rent, escalations, and obligations from 500 leases with ≥95% accuracy—clause-linked, reconciled, and ready for your CFO. No more spreadsheets. No more surprises.
               </p>
               <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center gap-4">
                 <div data-aos="fade-up" data-aos-delay={400}>
@@ -30,14 +30,14 @@ export default function HeroHome() {
                     href="#cta"
                   >
                     <span className="relative inline-flex items-center">
-                      Request a Pilot – $25K for 500 Leases
-                      <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                        -&gt;
-                      </span>
+                      Request a Pilot →
                     </span>
                   </a>
                 </div>
               </div>
+              <p className="mt-4 text-sm text-blue-200/60" data-aos="fade-up" data-aos-delay={500}>
+                $25K for 500 leases. Accuracy guaranteed. 5 spots left in Q1.
+              </p>
             </div>
           </div>
         </div>

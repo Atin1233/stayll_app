@@ -26,8 +26,8 @@ export default function Header() {
   };
 
   const navigation = [
+    { name: 'Product', href: 'problem-solution' },
     { name: 'How It Works', href: 'how-it-works' },
-    { name: 'Problem & Solution', href: 'problem-solution' },
     { name: 'Pricing', href: 'pricing' },
     { name: 'FAQ', href: 'faq' },
   ];
@@ -102,7 +102,7 @@ export default function Header() {
               }}
               className="relative inline-flex items-center px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-full transition-all duration-200 shadow-lg hover:shadow-xl"
             >
-              Join Early Access
+              Request a Pilot
               <div className="ml-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
             </a>
           </div>
@@ -161,7 +161,7 @@ export default function Header() {
                     }}
                     className="flex items-center justify-center px-6 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-all duration-200"
                   >
-                    Join Early Access
+                    Request a Pilot
                     <div className="ml-2 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                   </a>
                 </div>

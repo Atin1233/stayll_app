@@ -9,6 +9,8 @@ import {
   ServerStackIcon,
   AdjustmentsVerticalIcon,
 } from '@heroicons/react/24/outline'
+import SubscriptionStatus from '@/components/subscription/SubscriptionStatus'
+import SubscriptionTierSelector from '@/components/subscription/SubscriptionTierSelector'
 
 const sampleUsers = [
   { id: 1, name: 'Alex Morgan', role: 'Analyst', scope: 'Contracts' },
@@ -243,9 +245,24 @@ export default function SettingsPage() {
         </ul>
       </section>
 
-      <section className="bg-white border border-dashed border-gray-300 rounded-xl shadow-sm p-6 text-sm text-gray-600">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">Billing</h2>
-        <p>Enterprise billing is handled through the Stripe portal. Contact Stayll support to enable subscription billing and invoice automation.</p>
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-900">Billing & Subscription</h2>
+          <p className="text-sm text-gray-500 mt-1">Manage your subscription, view usage, and update payment methods.</p>
+        </div>
+        <div className="p-6">
+          <SubscriptionStatus />
+        </div>
+      </section>
+
+      <section className="bg-white border border-gray-200 rounded-xl shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-900">Upgrade Plan</h2>
+          <p className="text-sm text-gray-500 mt-1">Choose a plan that fits your portfolio size.</p>
+        </div>
+        <div className="p-6">
+          <SubscriptionTierSelector />
+        </div>
       </section>
     </div>
   )

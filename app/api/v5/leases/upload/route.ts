@@ -43,27 +43,80 @@ export async function POST(request: NextRequest) {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         userId = user.id;
+        
+        // Get user's organization
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('organization_id')
+          .eq('id', user.id)
+          .single();
+        
+        if (profile?.organization_id) {
+          orgId = profile.organization_id;
+        }
       }
     } catch (authError) {
       console.error('Auth check error (non-fatal):', authError);
       // Continue with default user
     }
     
-    // Ensure default org exists (don't fail if table doesn't exist)
+    // Get organization and check subscription limits
+    let organization;
     try {
-      const { data: existingOrg } = await supabase
+      const { data: orgData } = await supabase
         .from('organizations')
-        .select('id')
-        .eq('id', 'default-org')
+        .select('id, name, max_leases, subscription_tier, subscription_status')
+        .eq('id', orgId)
         .single();
       
-      if (!existingOrg) {
-        const { error: insertError } = await supabase
+      if (!orgData) {
+        // Create default org if it doesn't exist
+        const { data: newOrg } = await supabase
           .from('organizations')
-          .insert({ id: 'default-org', name: 'Default Organization', billing_status: 'trial' });
+          .insert({ 
+            id: orgId, 
+            name: 'Default Organization', 
+            billing_status: 'trial',
+            subscription_tier: 'trial',
+            max_leases: 0,
+          })
+          .select()
+          .single();
         
-        if (insertError && !insertError.message?.includes('does not exist')) {
-          console.error('Failed to create default org:', insertError);
+        organization = newOrg;
+      } else {
+        organization = orgData;
+      }
+
+      // Check lease count if not unlimited
+      if (organization && (organization.max_leases || 0) > 0) {
+        const { count: leaseCount } = await supabase
+          .from('leases')
+          .select('*', { count: 'exact', head: true })
+          .eq('org_id', orgId);
+
+        if ((leaseCount || 0) >= (organization.max_leases || 0)) {
+          return NextResponse.json(
+            { 
+              success: false,
+              error: `You've reached your plan limit of ${organization.max_leases} leases. Please upgrade your plan to upload more leases.`,
+            },
+            { status: 403 }
+          );
+        }
+      }
+
+      // Check if subscription is active (for non-trial orgs)
+      if (organization && organization.subscription_tier !== 'trial') {
+        const status = organization.subscription_status;
+        if (status && !['active', 'trialing'].includes(status)) {
+          return NextResponse.json(
+            { 
+              success: false,
+              error: 'Your subscription is not active. Please update your payment method to continue uploading leases.',
+            },
+            { status: 403 }
+          );
         }
       }
     } catch (orgError) {

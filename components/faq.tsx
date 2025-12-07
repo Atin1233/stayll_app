@@ -7,44 +7,44 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: "What types of leases does Stayll support?",
-      answer: "We currently support residential and commercial leases in PDF or scanned format. Our AI can handle complex lease terms, amendments, and addendums across various property types."
+      question: "What lease types?",
+      answer: "Commercial only: office, retail, industrial, multifamily. No residential. We specialize in complex rent schedules, CPI escalations, and renewal options."
     },
     {
-      question: "How accurate is the AI analysis?",
-      answer: "Our models are trained on thousands of legal documents and reviewed by our team of property managers and legal experts. You can always request a human-polished summary for critical documents."
+      question: "How accurate?",
+      answer: "≥95% recall on 20 financial fields. Every lease is human-verified. Every field is clause-linked. <2% error rate or we re‑abstract for free."
     },
     {
-      question: "Can I use Stayll with my PM software?",
-      answer: "Yes — integrations with AppFolio, Buildium, and Yardi are in the works. We're also building API access for custom integrations with your existing systems."
+      question: "Yardi integration?",
+      answer: "Native API push available for Portfolio and Enterprise plans (launches Q2 2026). CSV works with all systems today."
     },
     {
-      question: "Is tenant data required?",
-      answer: "No, but uploading it unlocks predictive risk scoring. You can analyze leases independently or include tenant information for comprehensive risk assessment."
+      question: "Security?",
+      answer: "AES‑256 encryption, single‑tenant schemas, SOC 2 Type II in progress (target Q4 2026). You own your data; we delete on request."
     },
     {
-      question: "What happens to my uploaded documents?",
-      answer: "Your documents are processed securely and deleted after analysis. We never store or share your lease documents. All analysis is done in real-time with bank-level encryption."
+      question: "Processing time?",
+      answer: "Automated extraction: <3 min/lease. Full pilot delivery: 30 days (includes 100% human QA)."
     },
     {
-      question: "How long does analysis take?",
-      answer: "Most leases are analyzed in under 2 minutes. Complex commercial leases with multiple amendments may take up to 5 minutes. You'll receive real-time progress updates."
+      question: "Export formats?",
+      answer: "CSV rent roll, iCal compliance calendar, PDF audit package. API for direct Yardi/MRI push (Enterprise)."
     },
     {
-      question: "Can I export my analysis reports?",
-      answer: "Yes, you can export reports in PDF, Word, or Excel formats. Reports include risk flags, key terms summary, and actionable recommendations for your team."
+      question: "Who is this for?",
+      answer: "CFOs, asset managers, and portfolio accountants at CRE firms managing 500–5,000 leases. If you rely on offshore abstractors or manual Excel, Stayll is for you."
     },
     {
-      question: "Who built this?",
-      answer: "A team of property managers, lawyers, and AI engineers fed up with broken lease workflows. We've experienced the pain of missing critical lease terms and built Stayll to solve it."
+      question: "CLM vs. Stayll?",
+      answer: "CLMs (Ironclad, Evisort) manage legal workflows. Stayll extracts financial data with audit‑grade accuracy. We don't do redlines—we give you numbers your CFO can trust."
     },
     {
-      question: "What if I manage more than 500 leases?",
-      answer: "Our Enterprise plan is designed for large portfolios. We offer custom pricing, dedicated support, and white-label options for property management companies and investment firms."
+      question: "Scanned leases?",
+      answer: "Yes. Google Document AI handles OCR. Scanned leases have 5% lower automated accuracy, but our human QA team verifies every field. We flag low‑quality scans before processing."
     },
     {
-      question: "Is my data secure?",
-      answer: "Yes! We use bank-level encryption and never store sensitive information. All data is encrypted in transit and at rest. We're SOC 2 compliant and you can export or delete your data anytime."
+      question: "ROI guarantee?",
+      answer: "3× value in Year 1—if we don't save you 1–3% of lease value, we refund 50% of your pilot fee (written in contract)."
     }
   ];
 
@@ -66,9 +66,6 @@ export default function FAQ() {
             <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-blue-200),var(--color-gray-50),var(--color-blue-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
               Frequently Asked Questions
             </h2>
-            <p className="text-lg text-blue-200/65">
-              Everything you need to know about Stayll's AI-powered lease analysis
-            </p>
           </div>
 
           {/* FAQ items */}
@@ -87,15 +84,12 @@ export default function FAQ() {
 
           {/* CTA section */}
           <div className="text-center mt-12 md:mt-16">
-            <p className="text-blue-200/65 mb-6">
-              Still have questions? We're here to help!
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="#cta"
                 className="btn bg-blue-600 hover:bg-blue-500 text-white"
               >
-                Join Early Access
+                Request a Pilot
               </a>
               <a
                 href="mailto:hello@stayll.com"
@@ -109,4 +103,4 @@ export default function FAQ() {
       </div>
     </section>
   );
-} 
+}

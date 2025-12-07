@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Stayll AI - AI-Assisted Lease Abstraction for CRE Portfolios",
-  description: "Get 500 leases abstracted in 30 days for $25K. Fixed price, guaranteed delivery. CSV rent roll + audit log included. Accuracy guaranteed.",
+  title: "Stayll AI - The End of Lease Guesswork",
+  description: "Audit-Grade Financial Data from CRE Contracts in 30 Days. Extract rent, escalations, and obligations from 500 leases with ≥95% accuracy—clause-linked, reconciled, and ready for your CFO.",
 };
 
 import PageIllustration from "@/components/page-illustration";

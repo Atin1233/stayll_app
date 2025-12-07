@@ -23,45 +23,8 @@ export default function Cta() {
                   data-aos="fade-up"
                   data-aos-delay={200}
                 >
-                  Fixed price. Guaranteed delivery. Accuracy guaranteed. No subscriptions, just results.
+                  $25K fixed price. Accuracy guaranteed. 5 pilot spots left in Q1 2026.
                 </p>
-                
-                <div className="space-y-4 mb-8" data-aos="fade-up" data-aos-delay={400}>
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
-                      <span className="text-green-400 text-sm">✓</span>
-                    </div>
-                    <span className="text-gray-200">$25K for 500 leases - fixed price</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
-                      <span className="text-green-400 text-sm">✓</span>
-                    </div>
-                    <span className="text-gray-200">30 days delivery guaranteed</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center">
-                      <span className="text-green-400 text-sm">✓</span>
-                    </div>
-                    <span className="text-gray-200">CSV rent roll + audit log included</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                  <div data-aos="fade-up" data-aos-delay={600}>
-                    <a
-                      className="btn group bg-linear-to-t from-blue-600 to-blue-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%]"
-                      href="#0"
-                    >
-                      <span className="relative inline-flex items-center">
-                        Get Started
-                        <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
-                          -&gt;
-                        </span>
-                      </span>
-                    </a>
-                  </div>
-                </div>
               </div>
 
               {/* Right side - Lead form */}
@@ -69,7 +32,7 @@ export default function Cta() {
                 <div className="w-full max-w-md" data-aos="fade-up" data-aos-delay={400}>
                   <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                     <h3 className="text-xl font-semibold text-gray-200 mb-6 text-center">
-                      Request a Pilot Project
+                      Request a Pilot
                     </h3>
                     <LeadForm />
                   </div>
