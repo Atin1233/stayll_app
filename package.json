@@ -19,7 +19,7 @@
     "@types/pdf-parse": "^1.1.5",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
-    "next": "^15.1.9",
+    "next": "15.1.10",
     "pdf-parse": "^2.4.5",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
