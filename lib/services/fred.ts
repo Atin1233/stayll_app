@@ -84,7 +84,7 @@ export async function getFREDSeries(
     const seriesData = await seriesResponse.json()
 
     return {
-      series: seriesData.seriess || [],
+      series: seriesData.series || [],
       observations: data.observations || [],
     }
   } catch (error) {
