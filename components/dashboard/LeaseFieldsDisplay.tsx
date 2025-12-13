@@ -51,11 +51,11 @@ function convertLeaseToFields(lease: SessionLease): {
           ? { numeric: parseFloat(String(value).replace(/[^0-9.]/g, '')) || 0 }
           : mapping.name.includes('date') || mapping.name.includes('start') || mapping.name.includes('end')
           ? { date: value }
-          : null,
+          : undefined,
         extraction_confidence: lease.confidence_score || 0,
         validation_state: 'auto_pass',
-        validation_notes: null,
-        source_clause_location: null,
+        validation_notes: undefined,
+        source_clause_location: undefined,
         created_at: lease.created_at,
         updated_at: lease.updated_at
       });
