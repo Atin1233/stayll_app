@@ -12,6 +12,65 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
+    // TEST MODE: Redirect to test endpoint when Supabase is not configured
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.log('Test mode: Redirecting to test upload endpoint');
+      
+      // Get form data
+      const formData = await request.formData();
+      const file = formData.get('file') as File;
+      const propertyAddress = formData.get('property_address') as string;
+      const tenantName = formData.get('tenant_name') as string;
+
+      // Validate
+      if (!file) {
+        return NextResponse.json(
+          { success: false, error: 'No file provided' },
+          { status: 400 }
+        );
+      }
+
+      if (file.type !== 'application/pdf') {
+        return NextResponse.json(
+          { success: false, error: 'Only PDF files are supported' },
+          { status: 400 }
+        );
+      }
+
+      // Convert to base64 for session storage
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const base64 = buffer.toString('base64');
+      const fileData = `data:${file.type};base64,${base64}`;
+
+      // Return lease data for client-side storage
+      const testLease = {
+        id: `lease-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        org_id: 'test-org',
+        uploader_id: 'test-user',
+        tenant_name: tenantName || null,
+        property_address: propertyAddress || null,
+        file_name: file.name,
+        file_size: file.size,
+        file_data: fileData,
+        file_url: '',
+        file_key: '',
+        verification_status: 'unverified',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      return NextResponse.json({
+        success: true,
+        lease: testLease,
+        testMode: true,
+        message: 'Lease ready for client-side storage'
+      });
+    }
+
     // Create Supabase client
     let supabase;
     try {

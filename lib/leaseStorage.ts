@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { SessionStorageService } from './sessionStorage';
 
 export interface LeaseUploadData {
   file: File;
@@ -53,8 +54,8 @@ export class LeaseStorageService {
         formData.append('tenantName', data.tenantName);
       }
 
-      // Use test endpoint if Supabase is not configured
-      const endpoint = supabase ? '/api/upload-lease' : '/api/test-upload';
+      // Use test endpoint for session-based storage
+      const endpoint = '/api/test-upload';
       
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -67,7 +68,11 @@ export class LeaseStorageService {
         return { success: false, error: result.error || 'Upload failed' };
       }
 
-      return { success: true, lease: result.lease };
+      // Store in session storage
+      const lease = result.lease;
+      SessionStorageService.addLease(lease);
+
+      return { success: true, lease };
     } catch (error) {
       console.error('Lease upload error:', error);
       return { success: false, error: 'Upload failed' };
@@ -110,26 +115,13 @@ export class LeaseStorageService {
     offset?: number;
   }): Promise<{ success: boolean; leases?: LeaseRecord[]; count?: number; error?: string }> {
     try {
-      const params = new URLSearchParams();
-      if (options?.propertyAddress) params.append('propertyAddress', options.propertyAddress);
-      if (options?.tenantName) params.append('tenantName', options.tenantName);
-      if (options?.limit) params.append('limit', options.limit.toString());
-      if (options?.offset) params.append('offset', options.offset.toString());
-
-      // Use test endpoint if Supabase is not configured
-      const endpoint = supabase ? `/api/leases?${params.toString()}` : '/api/test-leases';
-      
-      const response = await fetch(endpoint);
-      const result = await response.json();
-
-      if (!response.ok) {
-        return { success: false, error: result.error || 'Fetch failed' };
-      }
+      // Fetch from session storage
+      const { leases, count } = SessionStorageService.searchLeases(options);
 
       return { 
         success: true, 
-        leases: result.leases,
-        count: result.count
+        leases,
+        count
       };
     } catch (error) {
       console.error('Fetch leases error:', error);
@@ -142,24 +134,11 @@ export class LeaseStorageService {
    */
   static async deleteLease(leaseId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      // Skip delete operation if using test endpoints
-      if (!supabase) {
-        console.log('Test mode: Skipping delete operation');
-        return { success: true };
-      }
-
-      const response = await fetch('/api/leases', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ leaseId }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        return { success: false, error: result.error || 'Delete failed' };
+      // Delete from session storage
+      const deleted = SessionStorageService.deleteLease(leaseId);
+      
+      if (!deleted) {
+        return { success: false, error: 'Lease not found' };
       }
 
       return { success: true };
@@ -174,23 +153,10 @@ export class LeaseStorageService {
    */
   static async getLease(leaseId: string): Promise<{ success: boolean; lease?: LeaseRecord; error?: string }> {
     try {
-      if (!supabase) {
-        return { success: false, error: 'Supabase not configured' };
-      }
-
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError || !user) {
-        return { success: false, error: 'Authentication required' };
-      }
-
-      const { data: lease, error } = await supabase
-        .from('leases')
-        .select('*')
-        .eq('id', leaseId)
-        .eq('user_id', user.id)
-        .single();
-
-      if (error || !lease) {
+      // Get from session storage
+      const lease = SessionStorageService.getLease(leaseId);
+      
+      if (!lease) {
         return { success: false, error: 'Lease not found' };
       }
 
@@ -206,28 +172,11 @@ export class LeaseStorageService {
    */
   static async updateLease(leaseId: string, updates: Partial<LeaseRecord>): Promise<{ success: boolean; lease?: LeaseRecord; error?: string }> {
     try {
-      if (!supabase) {
-        return { success: false, error: 'Supabase not configured' };
-      }
-
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
-      if (authError || !user) {
-        return { success: false, error: 'Authentication required' };
-      }
-
-      const { data: lease, error } = await supabase
-        .from('leases')
-        .update({
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', leaseId)
-        .eq('user_id', user.id)
-        .select()
-        .single();
-
-      if (error || !lease) {
-        return { success: false, error: 'Update failed' };
+      // Update in session storage
+      const lease = SessionStorageService.updateLease(leaseId, updates);
+      
+      if (!lease) {
+        return { success: false, error: 'Lease not found' };
       }
 
       return { success: true, lease };

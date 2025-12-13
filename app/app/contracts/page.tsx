@@ -6,6 +6,8 @@ import type { Lease } from '@/types/v5.0'
 import UploadDropzone from '@/components/dashboard/UploadDropzone'
 import LeaseList from '@/components/dashboard/LeaseList'
 import LeaseFieldsDisplay from '@/components/dashboard/LeaseFieldsDisplay'
+import SessionDataManager from '@/components/dashboard/SessionDataManager'
+import PDFViewer from '@/components/dashboard/PDFViewer'
 import type { QATask } from '@/types/v5.0'
 
 export default function ContractsPage() {
@@ -31,15 +33,11 @@ export default function ContractsPage() {
 
       if (result.success) {
         setUploadSuccess(true)
+        
+        // Force refresh the lease list
         setRefreshTrigger((prev) => prev + 1)
 
-        if (result.extraction?.success) {
-          console.log(
-            `Extracted ${result.extraction.fields_extracted} fields with ${result.extraction.confidence}% confidence`,
-          )
-        }
-
-        setTimeout(() => setUploadSuccess(false), 3000)
+        setTimeout(() => setUploadSuccess(false), 5000)
       } else {
         setUploadError(result.error || 'Upload failed')
       }
@@ -52,10 +50,50 @@ export default function ContractsPage() {
 
   const handleContractSelect = (lease: any) => {
     setSelectedContract(lease as Lease)
+    // Scroll to the contract details
+    setTimeout(() => {
+      const element = document.getElementById('contract-details')
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 100)
   }
 
   const handleContractEdit = (lease: any) => {
-    console.log('Edit contract:', lease)
+    // For now, just select it for viewing
+    // In the future, this could open an edit modal
+    handleContractSelect(lease)
+  }
+
+  const handleViewPDF = () => {
+    if (!selectedContract) return
+    
+    // Check if we have a file URL (Supabase mode)
+    if (selectedContract.file_url) {
+      window.open(selectedContract.file_url, '_blank')
+      return
+    }
+    
+    // Otherwise, use file_data (test mode)
+    if ((selectedContract as any).file_data) {
+      const blob = dataURLToBlob((selectedContract as any).file_data)
+      const url = URL.createObjectURL(blob)
+      window.open(url, '_blank')
+      // Clean up after a delay
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
+    }
+  }
+
+  const dataURLToBlob = (dataURL: string): Blob => {
+    const parts = dataURL.split(',')
+    const mime = parts[0].match(/:(.*?);/)?.[1] || 'application/pdf'
+    const bstr = atob(parts[1])
+    const n = bstr.length
+    const u8arr = new Uint8Array(n)
+    for (let i = 0; i < n; i++) {
+      u8arr[i] = bstr.charCodeAt(i)
+    }
+    return new Blob([u8arr], { type: mime })
   }
 
   useEffect(() => {
@@ -87,13 +125,28 @@ export default function ContractsPage() {
         </p>
       </div>
 
+      {/* Session Storage Manager */}
+      <div className="mb-6">
+        <SessionDataManager />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Upload Contract</h2>
 
+          {uploading && (
+            <div className="mb-4 bg-blue-50 border border-blue-200 rounded-md p-4">
+              <p className="text-blue-800">Uploading and extracting data from contract...</p>
+              <div className="mt-2 w-full bg-blue-200 rounded-full h-2">
+                <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
+              </div>
+            </div>
+          )}
+
           {uploadSuccess && (
             <div className="mb-4 bg-green-50 border border-green-200 rounded-md p-4">
-              <p className="text-green-800">Contract uploaded successfully!</p>
+              <p className="text-green-800 font-medium">✓ Contract uploaded and analyzed!</p>
+              <p className="text-green-700 text-sm mt-1">Data extracted successfully. Check the contract list to view details.</p>
             </div>
           )}
 
@@ -160,7 +213,7 @@ export default function ContractsPage() {
       </section>
 
       {selectedContract && (
-        <div className="mt-12 space-y-6">
+        <div id="contract-details" className="mt-12 space-y-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
               <div>
@@ -171,9 +224,12 @@ export default function ContractsPage() {
               </div>
               <button
                 onClick={() => setSelectedContract(null)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Close contract details"
               >
-                Close
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               </button>
             </div>
 
@@ -187,33 +243,48 @@ export default function ContractsPage() {
                   <div>
                     <dt className="text-gray-500">Analysis Confidence</dt>
                     <dd className="text-gray-900">
-                      {selectedContract.confidence_score ? `${selectedContract.confidence_score}%` : 'Pending'}
+                      {selectedContract.confidence_score ? `${Math.round(selectedContract.confidence_score)}%` : 'Pending'}
                     </dd>
                   </div>
                   <div>
                     <dt className="text-gray-500">Uploaded</dt>
                     <dd className="text-gray-900">{new Date(selectedContract.created_at).toLocaleDateString()}</dd>
                   </div>
+                  <div>
+                    <dt className="text-gray-500">File Name</dt>
+                    <dd className="text-gray-900">{selectedContract.file_name}</dd>
+                  </div>
                 </dl>
               </div>
 
-              <div>
-                {selectedContract.file_url && (
-                  <a
-                    href={selectedContract.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              <div className="space-y-3">
+                {(selectedContract.file_url || (selectedContract as any).file_data) && (
+                  <button
+                    onClick={handleViewPDF}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
                   >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
                     View Source Document
-                  </a>
+                  </button>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <LeaseFieldsDisplay leaseId={selectedContract.id} />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* PDF Viewer */}
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Source Document</h3>
+              <PDFViewer leaseId={selectedContract.id} fileName={selectedContract.file_name} />
+            </div>
+
+            {/* Extracted Fields */}
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Extracted Data</h3>
+              <LeaseFieldsDisplay leaseId={selectedContract.id} />
+            </div>
           </div>
         </div>
       )}

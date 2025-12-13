@@ -34,6 +34,25 @@ export default function LeaseList({ onLeaseSelect, onLeaseEdit, refreshTrigger }
 
   useEffect(() => {
     fetchLeases()
+    
+    // Listen for session storage changes
+    const handleLeaseAdded = () => {
+      console.log('[LeaseList] Lease added, refreshing...')
+      fetchLeases()
+    }
+    
+    const handleLeaseUpdated = () => {
+      console.log('[LeaseList] Lease updated, refreshing...')
+      fetchLeases()
+    }
+    
+    window.addEventListener('sessionLeaseAdded', handleLeaseAdded)
+    window.addEventListener('sessionLeaseUpdated', handleLeaseUpdated)
+    
+    return () => {
+      window.removeEventListener('sessionLeaseAdded', handleLeaseAdded)
+      window.removeEventListener('sessionLeaseUpdated', handleLeaseUpdated)
+    }
   }, [refreshTrigger])
 
   const handleDelete = async (leaseId: string) => {
@@ -58,6 +77,18 @@ export default function LeaseList({ onLeaseSelect, onLeaseEdit, refreshTrigger }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString()
+  }
+
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
   }
 
   const formatFileSize = (bytes: number) => {
@@ -162,15 +193,22 @@ export default function LeaseList({ onLeaseSelect, onLeaseEdit, refreshTrigger }
                       <p className="text-sm text-gray-500 truncate">
                         Tenant: {lease.tenant_name || 'Not specified'}
                       </p>
-                      <div className="flex items-center space-x-4 mt-1 text-xs text-gray-400">
-                        <span>Uploaded: {formatDate(lease.created_at)}</span>
-                        <span>File: {lease.file_name}</span>
-                        <span>Size: {formatFileSize(lease.file_size || 0)}</span>
-                        {lease.confidence_score && lease.confidence_score > 0 && (
-                          <span className="text-green-600">
-                            {Math.round(lease.confidence_score)}% confidence
-                          </span>
-                        )}
+                      <div className="flex flex-col space-y-1 mt-1">
+                        <div className="flex items-center space-x-2 text-xs">
+                          <svg className="h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-gray-500 font-medium">Uploaded: {formatDateTime(lease.created_at)}</span>
+                        </div>
+                        <div className="flex items-center space-x-4 text-xs text-gray-400">
+                          <span>File: {lease.file_name}</span>
+                          <span>Size: {formatFileSize(lease.file_size || 0)}</span>
+                          {lease.confidence_score && lease.confidence_score > 0 && (
+                            <span className="text-green-600 font-semibold">
+                              {Math.round(lease.confidence_score)}% confidence
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

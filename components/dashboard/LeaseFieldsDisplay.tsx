@@ -8,13 +8,111 @@
 import { useState, useEffect } from 'react'
 import type { LeaseField } from '@/types/v5.0'
 import { CheckCircleIcon, ExclamationTriangleIcon, ClockIcon, XCircleIcon } from '@heroicons/react/24/outline'
+import { SessionStorageService, type SessionLease } from '@/lib/sessionStorage'
 
 interface LeaseFieldsDisplayProps {
   leaseId: string
 }
 
+// All expected lease fields
+const ALL_EXPECTED_FIELDS = [
+  { name: 'property_address', label: 'Property Address', key: 'property_address', critical: true },
+  { name: 'tenant_name', label: 'Tenant Name', key: 'tenant_name', critical: true },
+  { name: 'monthly_rent', label: 'Monthly Rent', key: 'monthly_rent', critical: true },
+  { name: 'lease_start', label: 'Lease Start Date', key: 'lease_start', critical: true },
+  { name: 'lease_end', label: 'Lease End Date', key: 'lease_end', critical: true },
+  { name: 'security_deposit', label: 'Security Deposit', key: 'security_deposit', critical: false },
+  { name: 'late_fee', label: 'Late Fee', key: 'late_fee', critical: false },
+];
+
+interface MissingField {
+  name: string
+  label: string
+  critical: boolean
+}
+
+// Convert lease data to fields format on the client side
+function convertLeaseToFields(lease: SessionLease): { 
+  fields: LeaseField[], 
+  missing: MissingField[] 
+} {
+  const fields: LeaseField[] = [];
+  const missing: MissingField[] = [];
+  
+  ALL_EXPECTED_FIELDS.forEach((mapping) => {
+    const value = (lease as any)[mapping.key];
+    if (value) {
+      fields.push({
+        id: `field-${lease.id}-${mapping.name}`,
+        lease_id: lease.id,
+        field_name: mapping.name,
+        value_text: String(value),
+        value_normalized: mapping.name.includes('rent') || mapping.name.includes('deposit') || mapping.name.includes('fee')
+          ? { numeric: parseFloat(String(value).replace(/[^0-9.]/g, '')) || 0 }
+          : mapping.name.includes('date') || mapping.name.includes('start') || mapping.name.includes('end')
+          ? { date: value }
+          : null,
+        extraction_confidence: lease.confidence_score || 0,
+        validation_state: 'auto_pass',
+        validation_notes: null,
+        source_clause_location: null,
+        created_at: lease.created_at,
+        updated_at: lease.updated_at
+      });
+    } else {
+      missing.push({
+        name: mapping.name,
+        label: mapping.label,
+        critical: mapping.critical
+      });
+    }
+  });
+  
+  return { fields, missing };
+}
+
+// Generate confidence explanation
+function getConfidenceExplanation(confidence: number, extractedCount: number, totalCount: number) {
+  const missingCount = totalCount - extractedCount;
+  const percentage = confidence;
+  
+  let quality = '';
+  let icon = '';
+  let color = '';
+  
+  if (percentage >= 80) {
+    quality = 'Excellent';
+    icon = '✅';
+    color = 'text-green-600';
+  } else if (percentage >= 60) {
+    quality = 'Good';
+    icon = '✓';
+    color = 'text-blue-600';
+  } else if (percentage >= 40) {
+    quality = 'Fair';
+    icon = '⚠️';
+    color = 'text-yellow-600';
+  } else {
+    quality = 'Poor';
+    icon = '⚠️';
+    color = 'text-red-600';
+  }
+  
+  return {
+    quality,
+    icon,
+    color,
+    message: `${icon} ${quality} extraction quality - ${extractedCount} of ${totalCount} fields extracted successfully.`,
+    details: missingCount > 0 
+      ? `${missingCount} field${missingCount !== 1 ? 's' : ''} could not be found in the PDF. This may be due to non-standard formatting, scanned images, or missing clauses.`
+      : 'All expected fields were successfully extracted from the document.'
+  };
+}
+
 export default function LeaseFieldsDisplay({ leaseId }: LeaseFieldsDisplayProps) {
   const [fields, setFields] = useState<LeaseField[]>([])
+  const [missingFields, setMissingFields] = useState<MissingField[]>([])
+  const [lease, setLease] = useState<SessionLease | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -27,16 +125,29 @@ export default function LeaseFieldsDisplay({ leaseId }: LeaseFieldsDisplayProps)
     setError('')
     
     try {
-      const response = await fetch(`/api/v5/leases/${leaseId}/fields`)
-      const result = await response.json()
-
-      if (result.success) {
-        setFields(result.fields || [])
-      } else {
-        setError(result.error || 'Failed to fetch fields')
+      // Get lease data from session storage
+      const leaseData = SessionStorageService.getLease(leaseId);
+      console.log('[LeaseFieldsDisplay] Fetching fields for lease:', leaseId);
+      console.log('[LeaseFieldsDisplay] Lease data from session:', leaseData);
+      
+      if (!leaseData) {
+        setError('Lease not found in session storage');
+        setLoading(false);
+        return;
       }
+      
+      setLease(leaseData);
+      
+      // Convert lease data to fields format directly on the client
+      const { fields: convertedFields, missing } = convertLeaseToFields(leaseData);
+      console.log('[LeaseFieldsDisplay] Converted fields:', convertedFields);
+      console.log('[LeaseFieldsDisplay] Missing fields:', missing);
+      
+      setFields(convertedFields);
+      setMissingFields(missing);
     } catch (err) {
-      setError('Failed to fetch fields')
+      console.error('[LeaseFieldsDisplay] Error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch fields')
     } finally {
       setLoading(false)
     }
@@ -107,20 +218,80 @@ export default function LeaseFieldsDisplay({ leaseId }: LeaseFieldsDisplayProps)
     )
   }
 
-  if (fields.length === 0) {
+  if (fields.length === 0 && missingFields.length === 0) {
     return (
       <div className="bg-gray-50 border border-gray-200 rounded-md p-6 text-center">
-        <p className="text-gray-600">No fields extracted yet. Upload a lease to begin extraction.</p>
+        <p className="text-gray-600">No data available. The extraction may still be processing.</p>
       </div>
     )
   }
 
+  const confidence = lease?.confidence_score || 0;
+  const totalExpected = ALL_EXPECTED_FIELDS.length;
+  const extracted = fields.length;
+  const confidenceInfo = getConfidenceExplanation(confidence, extracted, totalExpected);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Extracted Fields</h3>
-        <span className="text-sm text-gray-500">{fields.length} fields</span>
-      </div>
+    <div className="space-y-6">
+      {/* Confidence Score Section */}
+      {lease && (
+        <div className={`border rounded-lg p-4 ${
+          confidence >= 80 ? 'bg-green-50 border-green-200' :
+          confidence >= 60 ? 'bg-blue-50 border-blue-200' :
+          confidence >= 40 ? 'bg-yellow-50 border-yellow-200' :
+          'bg-red-50 border-red-200'
+        }`}>
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex-1">
+              <h3 className={`text-lg font-semibold ${confidenceInfo.color}`}>
+                Extraction Confidence: {Math.round(confidence)}%
+              </h3>
+              <p className="text-sm text-gray-700 mt-1">{confidenceInfo.message}</p>
+            </div>
+            <div className={`text-3xl font-bold ${confidenceInfo.color}`}>
+              {Math.round(confidence)}%
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 border-t border-current border-opacity-20 pt-3 mt-3">
+            {confidenceInfo.details}
+          </p>
+        </div>
+      )}
+
+      {/* Missing Fields Alert */}
+      {missingFields.length > 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="flex items-start space-x-3">
+            <ExclamationTriangleIcon className="h-6 w-6 text-yellow-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold text-yellow-900 mb-2">
+                Missing Fields ({missingFields.length})
+              </h4>
+              <div className="space-y-2">
+                {missingFields.map((field) => (
+                  <div key={field.name} className="flex items-center justify-between">
+                    <span className="text-sm text-yellow-800">
+                      {field.label}
+                      {field.critical && <span className="ml-2 text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded">Critical</span>}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-yellow-700 mt-3">
+                💡 These fields were not found in the PDF. You may need to add them manually or re-upload a clearer document.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Extracted Fields Section */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-gray-900">
+            Successfully Extracted ({fields.length}/{totalExpected})
+          </h3>
+        </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {fields.map((field) => (
@@ -167,31 +338,32 @@ export default function LeaseFieldsDisplay({ leaseId }: LeaseFieldsDisplayProps)
         ))}
       </div>
 
-      {/* Summary Stats */}
-      <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-green-600">
-            {fields.filter(f => f.validation_state === 'auto_pass' || f.validation_state === 'human_pass').length}
+        {/* Summary Stats */}
+        <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-green-600">
+              {fields.length}
+            </div>
+            <div className="text-xs text-gray-600">Extracted</div>
           </div>
-          <div className="text-xs text-gray-600">Verified</div>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-yellow-600">
-            {fields.filter(f => f.validation_state === 'flagged').length}
+          <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-yellow-600">
+              {missingFields.length}
+            </div>
+            <div className="text-xs text-gray-600">Missing</div>
           </div>
-          <div className="text-xs text-gray-600">Flagged</div>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-red-600">
-            {fields.filter(f => f.validation_state === 'rule_fail').length}
+          <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-red-600">
+              {missingFields.filter(f => f.critical).length}
+            </div>
+            <div className="text-xs text-gray-600">Critical Missing</div>
           </div>
-          <div className="text-xs text-gray-600">Failed</div>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-gray-600">
-            {Math.round(fields.reduce((sum, f) => sum + (f.extraction_confidence || 0), 0) / fields.length)}%
+          <div className="bg-white border border-gray-200 rounded-lg p-3 text-center">
+            <div className="text-2xl font-bold text-gray-600">
+              {Math.round(confidence)}%
+            </div>
+            <div className="text-xs text-gray-600">Confidence</div>
           </div>
-          <div className="text-xs text-gray-600">Avg Confidence</div>
         </div>
       </div>
     </div>

@@ -36,10 +36,11 @@ export default function AnalyticsPage() {
     try {
       const result = await LeaseStorageService.fetchLeases()
       if (result.success && result.leases) {
-        const verifiedLeases = result.leases.filter(l => l.verification_status === 'verified')
-        setLeases(verifiedLeases)
-        calculateMetrics(verifiedLeases)
-        calculateRentDistribution(verifiedLeases)
+        // Use ALL leases, not just verified ones (since we're in test mode)
+        const allLeases = result.leases || []
+        setLeases(allLeases)
+        calculateMetrics(allLeases)
+        calculateRentDistribution(allLeases)
       }
     } catch (error) {
       console.error('Failed to load analytics data:', error)
@@ -71,15 +72,21 @@ export default function AnalyticsPage() {
       }
     }
 
+    // Calculate actual occupancy based on leases with vs without end dates
+    const leasesWithData = leaseList.filter(l => l.lease_start || l.lease_end).length
+    const occupancyRate = leaseList.length > 0 
+      ? Math.round((leasesWithData / leaseList.length) * 100)
+      : 0
+
     setMetrics({
       totalProperties: leaseList.length,
       totalAnnualRent: totalAnnual,
       avgRentPerProperty: leaseList.length > 0 ? totalAnnual / leaseList.length : 0,
-      totalSquareFeet: 0, // Would come from extracted data
-      occupancyRate: 95, // Would be calculated from actual data
+      totalSquareFeet: 0, // Not extracted from PDFs yet
+      occupancyRate: occupancyRate,
       expiringNext12Months: expiringNext12,
       expiringNext24Months: expiringNext24,
-      escalationsPending: 0, // Would come from escalation analysis
+      escalationsPending: 0, // Not extracted from PDFs yet
     })
   }
 
@@ -133,17 +140,35 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Portfolio Analytics</h1>
         <p className="mt-2 text-gray-600">
-          Track portfolio exposure, rent escalations, and compliance coverage. Real-time metrics from verified lease data.
+          Real-time metrics calculated from your {leases.length} uploaded contract{leases.length !== 1 ? 's' : ''}. 
+          {leases.length === 0 && ' Upload contracts to see analytics.'}
         </p>
       </div>
 
+      {/* Empty State */}
+      {leases.length === 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
+          <ChartBarIcon className="h-12 w-12 text-blue-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-blue-900 mb-2">No Data Yet</h3>
+          <p className="text-blue-700 mb-4">
+            Upload lease contracts to start seeing portfolio analytics and insights.
+          </p>
+          <a
+            href="/app/contracts"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+          >
+            Go to Contracts
+          </a>
+        </div>
+      )}
+
       {/* Key Metrics */}
-      {metrics && (
+      {leases.length > 0 && metrics && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between">
@@ -187,9 +212,9 @@ export default function AnalyticsPage() {
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Portfolio Occupancy</p>
+                <p className="text-sm font-medium text-gray-600">Data Completeness</p>
                 <p className="mt-2 text-2xl font-bold text-gray-900">{metrics.occupancyRate}%</p>
-                <p className="mt-1 text-xs text-green-600">+2.3% vs last quarter</p>
+                <p className="mt-1 text-xs text-gray-500">Contracts with dates</p>
               </div>
               <div className="rounded-full bg-purple-100 p-3">
                 <ArrowTrendingUpIcon className="h-6 w-6 text-purple-600" />
@@ -200,6 +225,7 @@ export default function AnalyticsPage() {
       )}
 
       {/* Rent Distribution */}
+      {leases.length > 0 && (
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -233,8 +259,10 @@ export default function AnalyticsPage() {
           })}
         </div>
       </div>
+      )}
 
       {/* Portfolio Composition */}
+      {leases.length > 0 && (
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Rent Roll Exposure */}
         <div className="bg-white border border-gray-200 rounded-lg p-6">
@@ -259,7 +287,7 @@ export default function AnalyticsPage() {
               </span>
             </div>
             <div className="flex items-center justify-between py-3">
-              <span className="text-sm text-gray-600">5-Year Projection</span>
+              <span className="text-sm text-gray-600">5-Year Total (3% annual growth)</span>
               <span className="text-sm font-semibold text-blue-600">
                 {formatCurrency((metrics?.totalAnnualRent || 0) * 5 * 1.03)}
               </span>
@@ -267,44 +295,92 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        {/* Risk Factors */}
+        {/* Data Quality Metrics */}
         <div className="bg-white border border-gray-200 rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Portfolio Risks</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Data Quality</h2>
           <div className="space-y-4">
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-red-900">High</span>
-                <span className="text-xs text-red-700">2 items</span>
-              </div>
-              <p className="text-sm text-red-700">
-                Missing insurance clauses • Escalation reconciliation pending
-              </p>
-            </div>
+            {/* Missing Rent Data */}
+            {(() => {
+              const missingRent = leases.filter(l => !l.monthly_rent && !l.base_rent).length
+              return missingRent > 0 ? (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-red-900">Missing Rent Data</span>
+                    <span className="text-xs text-red-700">{missingRent} contract{missingRent !== 1 ? 's' : ''}</span>
+                  </div>
+                  <p className="text-sm text-red-700">
+                    These contracts need rent amounts for accurate portfolio calculations
+                  </p>
+                </div>
+              ) : null
+            })()}
 
-            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-yellow-900">Medium</span>
-                <span className="text-xs text-yellow-700">5 items</span>
-              </div>
-              <p className="text-sm text-yellow-700">
-                Renewal notice deadlines approaching • CAM reconciliation needed
-              </p>
-            </div>
+            {/* Low Confidence Extractions */}
+            {(() => {
+              const lowConfidence = leases.filter(l => l.confidence_score && l.confidence_score < 60).length
+              return lowConfidence > 0 ? (
+                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-yellow-900">Low Confidence</span>
+                    <span className="text-xs text-yellow-700">{lowConfidence} contract{lowConfidence !== 1 ? 's' : ''}</span>
+                  </div>
+                  <p className="text-sm text-yellow-700">
+                    Manual review recommended for improved accuracy
+                  </p>
+                </div>
+              ) : null
+            })()}
 
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-green-900">Low</span>
-                <span className="text-xs text-green-700">{leases.length - 7} items</span>
+            {/* Missing Date Information */}
+            {(() => {
+              const missingDates = leases.filter(l => !l.lease_start || !l.lease_end).length
+              return missingDates > 0 ? (
+                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-yellow-900">Missing Lease Dates</span>
+                    <span className="text-xs text-yellow-700">{missingDates} contract{missingDates !== 1 ? 's' : ''}</span>
+                  </div>
+                  <p className="text-sm text-yellow-700">
+                    Start or end dates needed for expiration tracking
+                  </p>
+                </div>
+              ) : null
+            })()}
+
+            {/* All Good */}
+            {(() => {
+              const missingRent = leases.filter(l => !l.monthly_rent && !l.base_rent).length
+              const lowConfidence = leases.filter(l => l.confidence_score && l.confidence_score < 60).length
+              const missingDates = leases.filter(l => !l.lease_start || !l.lease_end).length
+              
+              return missingRent === 0 && lowConfidence === 0 && missingDates === 0 ? (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-green-900">All Data Complete</span>
+                    <span className="text-xs text-green-700">{leases.length} contract{leases.length !== 1 ? 's' : ''}</span>
+                  </div>
+                  <p className="text-sm text-green-700">
+                    All contracts have complete data with good extraction quality
+                  </p>
+                </div>
+              ) : null
+            })()}
+
+            {/* Empty State */}
+            {leases.length === 0 && (
+              <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-center">
+                <p className="text-sm text-gray-600">
+                  Upload contracts to see data quality metrics
+                </p>
               </div>
-              <p className="text-sm text-green-700">
-                All clauses verified • Rent schedules reconciled
-              </p>
-            </div>
+            )}
           </div>
         </div>
       </div>
+      )}
 
       {/* Escalation Timeline */}
+      {leases.length > 0 && (
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Escalations (Next 12 Months)</h2>
         <div className="text-center py-8">
@@ -317,6 +393,7 @@ export default function AnalyticsPage() {
           </p>
         </div>
       </div>
+      )}
     </div>
   )
 }

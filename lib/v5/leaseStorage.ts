@@ -4,6 +4,7 @@
  */
 
 import { supabase } from '@/lib/supabase';
+import { SessionStorageService } from '@/lib/sessionStorage';
 import { OrganizationService } from './organization';
 import { AuditService } from './audit';
 import type { Lease, LeaseUploadRequest, VerificationStatus } from '@/types/v5.0';
@@ -20,6 +21,7 @@ export class LeaseStorageService {
     error?: string 
   }> {
     try {
+      // Use v5 endpoint (will handle test mode automatically)
       const formData = new FormData();
       formData.append('file', data.file);
       if (data.property_address) {
@@ -67,11 +69,69 @@ export class LeaseStorageService {
         return { success: false, error: result.error || 'Upload failed' };
       }
 
+      // Store in session storage
+      const lease = result.lease;
+      console.log('[v5/leaseStorage] Storing lease in session storage:', lease.id);
+      SessionStorageService.addLease(lease);
+
+      // Extract data from PDF if we have file_data
+      if (lease.file_data) {
+        console.log('[v5/leaseStorage] Lease has file_data, starting extraction...');
+        try {
+          const extractFormData = new FormData();
+          extractFormData.append('fileData', lease.file_data);
+          
+          console.log('[v5/leaseStorage] Calling /api/extract-lease...');
+          const extractResponse = await fetch('/api/extract-lease', {
+            method: 'POST',
+            body: extractFormData,
+          });
+          
+          const extractResult = await extractResponse.json();
+          console.log('[v5/leaseStorage] Extraction result:', extractResult);
+          
+          if (extractResult.success && extractResult.extracted) {
+            console.log('[v5/leaseStorage] Extraction successful! Extracted data:', extractResult.extracted);
+            
+            // Update lease with extracted data
+            const updatedLease = {
+              ...lease,
+              property_address: extractResult.extracted.property_address || lease.property_address,
+              tenant_name: extractResult.extracted.tenant_name || lease.tenant_name,
+              monthly_rent: extractResult.extracted.monthly_rent,
+              lease_start: extractResult.extracted.lease_start,
+              lease_end: extractResult.extracted.lease_end,
+              security_deposit: extractResult.extracted.security_deposit,
+              late_fee: extractResult.extracted.late_fee,
+              confidence_score: extractResult.extracted.confidence_score,
+            };
+            
+            console.log('[v5/leaseStorage] Updating lease with extracted data:', updatedLease);
+            // Update in session storage
+            SessionStorageService.updateLease(lease.id, updatedLease as any);
+            
+            return { 
+              success: true, 
+              lease: updatedLease as any,
+              job_id: `job-${Date.now()}`,
+              extraction: extractResult
+            };
+          } else {
+            console.warn('[v5/leaseStorage] Extraction failed or no data extracted:', extractResult);
+          }
+        } catch (extractError) {
+          console.error('[v5/leaseStorage] Extraction error:', extractError);
+          // Continue without extraction
+        }
+      } else {
+        console.log('[v5/leaseStorage] No file_data available, skipping extraction');
+      }
+
       return { 
         success: true, 
-        lease: result.lease,
-        job_id: result.job_id,
-        extraction: result.extraction
+        lease: result.lease as any,
+        job_id: `job-${Date.now()}`,
+        extraction: {}
       };
     } catch (error) {
       console.error('Lease upload error:', error);
@@ -89,6 +149,55 @@ export class LeaseStorageService {
     offset?: number;
     search?: string;
   }): Promise<{ success: boolean; leases?: Lease[]; count?: number; error?: string }> {
+    try {
+      // First try session storage (client-side)
+      const sessionLeases = SessionStorageService.searchLeases({
+        limit: options?.limit,
+        offset: options?.offset
+      });
+
+      // If we have session data, return it
+      if (sessionLeases.leases.length > 0) {
+        return { 
+          success: true, 
+          leases: sessionLeases.leases as any[],
+          count: sessionLeases.count
+        };
+      }
+
+      // Otherwise try API (will return empty in test mode)
+      const params = new URLSearchParams();
+      if (options?.status) params.append('status', options.status);
+      if (options?.limit) params.append('limit', options.limit.toString());
+      if (options?.offset) params.append('offset', options.offset.toString());
+      if (options?.search) params.append('search', options.search);
+
+      const response = await fetch(`/api/v5/leases?${params.toString()}`);
+      const result = await response.json();
+
+      if (!response.ok) {
+        return { success: false, error: result.error || 'Fetch failed' };
+      }
+
+      return { 
+        success: true, 
+        leases: result.leases || [],
+        count: result.count || 0
+      };
+    } catch (error) {
+      console.error('Fetch leases error:', error);
+      return { success: false, error: 'Fetch failed' };
+    }
+  }
+
+  /**
+   * Get a single lease by ID
+   */
+  static async getLease_OLD(leaseId: string): Promise<{ 
+    success: boolean; 
+    lease?: Lease; 
+    error?: string 
+  }> {
     try {
       const params = new URLSearchParams();
       if (options?.status) params.append('status', options.status);
@@ -118,6 +227,26 @@ export class LeaseStorageService {
    * Get a single lease by ID
    */
   static async getLease(leaseId: string): Promise<{ 
+    success: boolean; 
+    lease?: Lease; 
+    error?: string 
+  }> {
+    try {
+      // Get from session storage
+      const lease = SessionStorageService.getLease(leaseId);
+      
+      if (!lease) {
+        return { success: false, error: 'Lease not found' };
+      }
+
+      return { success: true, lease: lease as any };
+    } catch (error) {
+      console.error('Get lease error:', error);
+      return { success: false, error: 'Fetch failed' };
+    }
+  }
+
+  static async getLease_BACKUP(leaseId: string): Promise<{ 
     success: boolean; 
     lease?: Lease; 
     error?: string 
@@ -159,6 +288,22 @@ export class LeaseStorageService {
    * Delete a lease and its associated file
    */
   static async deleteLease(leaseId: string): Promise<{ success: boolean; error?: string }> {
+    try {
+      // Delete from session storage
+      const deleted = SessionStorageService.deleteLease(leaseId);
+      
+      if (!deleted) {
+        return { success: false, error: 'Lease not found' };
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Delete lease error:', error);
+      return { success: false, error: 'Delete failed' };
+    }
+  }
+
+  static async deleteLease_BACKUP(leaseId: string): Promise<{ success: boolean; error?: string }> {
     try {
       if (!supabase) {
         return { success: false, error: 'Supabase not configured' };
@@ -227,6 +372,25 @@ export class LeaseStorageService {
    * Update lease information
    */
   static async updateLease(
+    leaseId: string, 
+    updates: Partial<Lease>
+  ): Promise<{ success: boolean; lease?: Lease; error?: string }> {
+    try {
+      // Update in session storage
+      const lease = SessionStorageService.updateLease(leaseId, updates as any);
+      
+      if (!lease) {
+        return { success: false, error: 'Lease not found' };
+      }
+
+      return { success: true, lease: lease as any };
+    } catch (error) {
+      console.error('Update lease error:', error);
+      return { success: false, error: 'Update failed' };
+    }
+  }
+
+  static async updateLease_BACKUP(
     leaseId: string, 
     updates: Partial<Lease>
   ): Promise<{ success: boolean; lease?: Lease; error?: string }> {

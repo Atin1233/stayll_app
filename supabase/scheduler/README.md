@@ -5,7 +5,7 @@ Supabase supports HTTP cron jobs that invoke Edge Functions. Use the following s
 ## Nightly obligation refresh (recommended)
 
 - **Function**: `scorecard`
-- **Endpoint**: `https://aytforkoygjgyxwwlpby.supabase.co/functions/v1/scorecard`
+- **Endpoint**: `https://ktmgqbgrntgkzencxqhs.supabase.co/functions/v1/scorecard`
 - **Schedule**: `0 7 * * *` (07:00 UTC)
 - **Payload**: `{ "leaseId": "<uuid>", "force": true }`
 - **Auth header**: `Bearer <service role key>`

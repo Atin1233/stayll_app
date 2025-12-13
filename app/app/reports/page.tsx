@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CloudArrowDownIcon, ClockIcon, DocumentChartBarIcon, CalendarIcon } from '@heroicons/react/24/outline'
+import { SessionStorageService, type SessionLease } from '@/lib/sessionStorage'
 
 const reportTemplates = [
   {
@@ -15,9 +16,9 @@ const reportTemplates = [
     description: 'Renewals, expirations, and notice dates for calendar integration.',
   },
   {
-    id: 'risk',
-    name: 'Risk Summary',
-    description: 'Contract risk scores, flagged obligations, audit readiness checklist.',
+    id: 'contract-list',
+    name: 'Contract List',
+    description: 'Full list of contracts with key metadata and extraction details.',
   },
 ]
 
@@ -26,23 +27,62 @@ export default function ReportsPage() {
   const [year, setYear] = useState(new Date().getFullYear())
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [leases, setLeases] = useState<SessionLease[]>([])
+
+  useEffect(() => {
+    loadLeases()
+
+    // Listen for lease updates
+    const handleLeaseAdded = () => loadLeases()
+    const handleLeaseUpdated = () => loadLeases()
+    
+    window.addEventListener('sessionLeaseAdded', handleLeaseAdded)
+    window.addEventListener('sessionLeaseUpdated', handleLeaseUpdated)
+    
+    return () => {
+      window.removeEventListener('sessionLeaseAdded', handleLeaseAdded)
+      window.removeEventListener('sessionLeaseUpdated', handleLeaseUpdated)
+    }
+  }, [])
+
+  const loadLeases = () => {
+    const allLeases = SessionStorageService.getLeases()
+    setLeases(allLeases)
+  }
 
   const handleExportRentRoll = async () => {
     setLoading(true)
     setError('')
     
     try {
-      const response = await fetch(`/api/v5/analytics/rent-roll?year=${year}&format=csv`)
-      
-      if (!response.ok) {
-        throw new Error('Failed to generate rent roll')
+      if (leases.length === 0) {
+        setError('No leases available to export. Upload contracts first.')
+        return
       }
 
-      const blob = await response.blob()
+      // Generate CSV content
+      const headers = ['Property Address', 'Tenant Name', 'Monthly Rent', 'Security Deposit', 'Lease Start', 'Lease End', 'Uploaded Date']
+      const rows = leases.map(lease => [
+        lease.property_address || 'N/A',
+        lease.tenant_name || 'N/A',
+        lease.monthly_rent || 'N/A',
+        lease.security_deposit || 'N/A',
+        lease.lease_start || 'N/A',
+        lease.lease_end || 'N/A',
+        new Date(lease.created_at).toLocaleDateString()
+      ])
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n')
+
+      // Download CSV
+      const blob = new Blob([csvContent], { type: 'text/csv' })
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `rent-roll-${year}.csv`
+      a.download = `rent-roll-${new Date().toISOString().split('T')[0]}.csv`
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -59,17 +99,60 @@ export default function ReportsPage() {
     setError('')
     
     try {
-      const response = await fetch(`/api/v5/compliance/calendar?format=ics`)
-      
-      if (!response.ok) {
-        throw new Error('Failed to generate compliance calendar')
+      if (leases.length === 0) {
+        setError('No leases available to export. Upload contracts first.')
+        return
       }
 
-      const blob = await response.blob()
+      // Generate iCal content
+      const events = leases
+        .filter(lease => lease.lease_start || lease.lease_end)
+        .flatMap(lease => {
+          const events = []
+          const property = lease.property_address || 'Unknown Property'
+          
+          if (lease.lease_start) {
+            events.push({
+              summary: `Lease Start: ${property}`,
+              description: `Tenant: ${lease.tenant_name || 'N/A'}`,
+              date: lease.lease_start
+            })
+          }
+          
+          if (lease.lease_end) {
+            events.push({
+              summary: `Lease End: ${property}`,
+              description: `Tenant: ${lease.tenant_name || 'N/A'}\\nAction: Review renewal options`,
+              date: lease.lease_end
+            })
+          }
+          
+          return events
+        })
+
+      const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//STAYLL//Lease Calendar//EN',
+        'CALSCALE:GREGORIAN',
+        ...events.map((event, i) => [
+          'BEGIN:VEVENT',
+          `UID:${Date.now()}-${i}@stayll.app`,
+          `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+          `DTSTART:${event.date.replace(/[-]/g, '')}`,
+          `SUMMARY:${event.summary}`,
+          `DESCRIPTION:${event.description}`,
+          'END:VEVENT'
+        ].join('\n')),
+        'END:VCALENDAR'
+      ].join('\n')
+
+      // Download iCal
+      const blob = new Blob([icsContent], { type: 'text/calendar' })
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `compliance-calendar-${new Date().getFullYear()}.ics`
+      a.download = `lease-calendar-${new Date().toISOString().split('T')[0]}.ics`
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -81,13 +164,64 @@ export default function ReportsPage() {
     }
   }
 
+  const handleExportContractList = async () => {
+    setLoading(true)
+    setError('')
+    
+    try {
+      if (leases.length === 0) {
+        setError('No contracts available to export. Upload contracts first.')
+        return
+      }
+
+      // Generate CSV content
+      const headers = ['ID', 'Property Address', 'Tenant Name', 'Monthly Rent', 'Lease Start', 'Lease End', 'Security Deposit', 'Late Fee', 'File Name', 'Confidence Score', 'Verification Status', 'Uploaded']
+      const rows = leases.map(lease => [
+        lease.id,
+        lease.property_address || 'N/A',
+        lease.tenant_name || 'N/A',
+        lease.monthly_rent || 'N/A',
+        lease.lease_start || 'N/A',
+        lease.lease_end || 'N/A',
+        lease.security_deposit || 'N/A',
+        lease.late_fee || 'N/A',
+        lease.file_name,
+        lease.confidence_score ? `${Math.round(lease.confidence_score)}%` : 'N/A',
+        lease.verification_status || 'unverified',
+        new Date(lease.created_at).toLocaleString()
+      ])
+
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n')
+
+      // Download CSV
+      const blob = new Blob([csvContent], { type: 'text/csv' })
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `contracts-${new Date().toISOString().split('T')[0]}.csv`
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to export contract list')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleGenerateReport = () => {
     if (selectedTemplate === 'rent-roll') {
       handleExportRentRoll()
     } else if (selectedTemplate === 'compliance') {
       handleExportComplianceCalendar()
+    } else if (selectedTemplate === 'contract-list') {
+      handleExportContractList()
     } else {
-      alert('Risk Summary report coming soon!')
+      alert('Report type not yet implemented!')
     }
   }
 
@@ -96,13 +230,27 @@ export default function ReportsPage() {
       <header className="space-y-2">
         <h1 className="text-3xl font-bold text-gray-900">Reports</h1>
         <p className="text-gray-600 max-w-3xl">
-          Generate investor-ready rent rolls, compliance calendars, and risk dashboards. Export to CSV, iCal, or PDF.
+          Export your {leases.length} uploaded contract{leases.length !== 1 ? 's' : ''} as rent rolls, compliance calendars, or detailed lists. Download as CSV or iCal.
         </p>
       </header>
+
+      {leases.length === 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-blue-800 text-sm">
+            Upload contracts to generate reports. Go to <a href="/app/contracts" className="font-semibold underline">Contracts</a> to get started.
+          </p>
+        </div>
+      )}
 
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <p className="text-red-800 text-sm">{error}</p>
+          <button 
+            onClick={() => setError('')}
+            className="mt-2 text-sm text-red-600 hover:text-red-700 underline"
+          >
+            Dismiss
+          </button>
         </div>
       )}
 
@@ -229,23 +377,32 @@ export default function ReportsPage() {
 
           <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Scheduled Reports</h3>
-              <button className="inline-flex items-center text-sm text-blue-600 hover:text-blue-700">
-                <ClockIcon className="h-4 w-4 mr-1" />
-                Add schedule
-              </button>
+              <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Portfolio Summary</h3>
             </div>
 
-            <ul className="divide-y divide-gray-100 text-sm text-gray-600">
-              <li className="py-2 flex items-center justify-between">
-                <span>Monthly Rent Roll → Finance Team</span>
-                <span className="text-gray-400">Next: {new Date(new Date().setMonth(new Date().getMonth() + 1)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-              </li>
-              <li className="py-2 flex items-center justify-between">
-                <span>Quarterly Compliance Brief → Legal Ops</span>
-                <span className="text-gray-400">Next: {new Date(new Date().setMonth(new Date().getMonth() + 3)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-              </li>
-            </ul>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-600">Total Contracts</span>
+                <span className="font-semibold text-gray-900">{leases.length}</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-600">With Rent Data</span>
+                <span className="font-semibold text-gray-900">{leases.filter(l => l.monthly_rent).length}</span>
+              </div>
+              <div className="flex items-center justify-between py-2 border-b border-gray-100">
+                <span className="text-gray-600">With Lease Dates</span>
+                <span className="font-semibold text-gray-900">{leases.filter(l => l.lease_start && l.lease_end).length}</span>
+              </div>
+              <div className="flex items-center justify-between py-2">
+                <span className="text-gray-600">Last Upload</span>
+                <span className="font-semibold text-gray-900">
+                  {leases.length > 0 
+                    ? new Date(Math.max(...leases.map(l => new Date(l.created_at).getTime()))).toLocaleDateString()
+                    : 'N/A'
+                  }
+                </span>
+              </div>
+            </div>
           </div>
         </section>
       </div>

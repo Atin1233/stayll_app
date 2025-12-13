@@ -1,0 +1,284 @@
+STAYLL AI — The Bootstrap Build Manual
+Phase 0: $0 to $35K Pre-Sales System (70 Founder Hours)
+The Philosophy: You Think, Cursor Types
+Your job: Design the system, write prompts, configure APIs, test outputs, manage contractors.
+Cursor's job: Generate boilerplate, integrate APIs, scaffold UIs, write regex, deploy.
+Rule: Cursor cannot make architectural decisions. You must tell it exactly what to build.
+Component 1: The Client Portal (9 Founder Hours)
+Your Job (6 hours):
+Design the user flow (1 hour):
+Draw on paper: Upload → Processing → Review → Download
+List needed pages: /upload, /dashboard, /download
+List tables in Supabase: leases, jobs, extracted_fields
+Set up infrastructure (2 hours):
+Create Supabase project (free tier)
+Create Vercel account (Hobby plan)
+Run supabase init locally
+Get Vercel CLI: npm i -g vercel
+Connect GitHub repo to Vercel
+Write the Retool prompt (1 hour):
+Sketch contractor UI: left = PDF viewer, right = form fields
+List fields: Lease ID, Base Rent, CPI Formula, etc.
+Map each field to a data type (string, number, date)
+Test the contractor workflow (2 hours):
+Upload 5 sample leases yourself
+Walk through: upload → Retool → edit → approve
+Time how long it takes to QA one lease (target: 15 min)
+Cursor's Job (3 hours of generated code):
+Command:
+"Scaffold a Next.js 14 app with Supabase auth, file upload to Supabase Storage, and a dashboard page showing upload status. Use TypeScript. Deploy to Vercel."
+Files Cursor generates:
+app/layout.tsx (RootLayout with Supabase provider)
+app/page.tsx (Hero + CTA)
+app/upload/page.tsx (Drag-and-drop uploader using react-dropzone)
+app/dashboard/page.tsx (Table of jobs: pending, processing, complete)
+lib/supabase.ts (Client config)
+lib/storage.ts (Upload function)
+components/UploadZone.tsx (Reusable dropzone)
+components/JobTable.tsx (Shows status)
+Dependencies Cursor adds:
+npm install @supabase/supabase-js react-dropzone @supabase/auth-helpers-nextjs
+Testing: You manually upload a PDF. Check Supabase Storage bucket. Verify file appears.
+Component 2: OCR Layer (1 Founder Hour)
+Your Job (1 hour):
+Create Google Cloud account (20 min):
+Enable Document AI API
+Create service account, download JSON key
+Set environment variable: GOOGLE_APPLICATION_CREDENTIALS=./key.json
+Test OCR on 5 leases (40 min):
+Upload lease to Document AI console
+Inspect output: does it extract rent tables? CPI clauses?
+If tables fail, enable form_parser processor (better for structured data)
+Cursor's Job (10 minutes):
+Command:
+"Write a Node.js function that takes a PDF buffer and calls Google Document AI's processDocument endpoint. Return the extracted text and table data."
+File generated:
+lib/ocr.ts (async function processPDF(pdfBuffer: Buffer): Promise<DocAIResponse>)
+Dependencies:
+npm install @google-cloud/documentai
+Testing: You run node test-ocr.js on a sample lease. Check if rent table is extracted as JSON array.
+Component 3: Deterministic Rule Engine (30 Founder Hours)
+Your Job (30 hours—this is your moat):
+Create rules.json (10 hours):
+For each of 20 core fields, write 3–5 regex patterns
+Example for Base Rent:
+JSON
+Copy
+{
+  "base_rent": {
+    "patterns": [
+      "Base Rent.{0,50}\\$?([\\d,]+\\.\\d{2})",
+      "Monthly Rent.{0,30}\\$?([\\d,]+\\.\\d{2})",
+      "Minimum Rent.{0,30}\\$?([\\d,]+\\.\\d{2})"
+    ],
+    "validator": "is_positive_number"
+  }
+}
+Test each pattern on 10 leases manually. Iterate.
+Write validators in Python (10 hours):
+validators/rent_schedule.py: Sums monthly rent, compares to stated total
+validators/cpi_formula.py: Parses "CPI-U 2024 + 2%" as evaluable expression
+validators/date_math.py: Lease end date = start + term length
+Key: Each validator returns True/False + error_message
+Create confidence_scorer.js (5 hours):
+If regex finds match → confidence = 0.9
+If LLM finds match → confidence = 0.7
+If both agree → confidence = 0.99
+If conflict → confidence = 0.3 (flag for human)
+Manual testing (5 hours):
+Run rules on 50 leases. Log every failure.
+Add patterns for failure cases. Repeat.
+Cursor's Job (0 hours):
+You write the rules manually. Cursor cannot design validation logic. This is your IP.
+File structure you create:
+Copy
+/rules
+  /fields
+    base_rent.json
+    cpi_escalation.json
+    renewal_notice.json
+  /validators
+    rent_schedule.py
+    cpi_formula.py
+    date_math.py
+/confidence_scorer.js
+Testing: Run node test-rules.js on 10 leases. Check if confidence scores make sense (high confidence = auto-approve, low = human).
+Component 4: LLM Fallback (5 Founder Hours)
+Your Job (5 hours):
+Write the prompt (2 hours):
+Copy
+You are a lease abstraction expert. Extract these 20 fields from the lease text:
+1. base_rent: Monthly rent amount without escalation (number)
+2. cpi_formula: CPI escalation clause if present (string)
+...
+Return ONLY JSON. If uncertain, return null for that field.
+Create 10-shot examples (2 hours):
+Manually extract 10 perfect leases
+Format as [{"input": "lease_text...", "output": {...}}, ...]
+Append to prompt
+Test on 20 edge cases (1 hour):
+Scanned leases, handwritten amendments, tables blended with text
+Note when GPT-4 hallucinates (e.g., invents CPI clause)
+Cursor's Job (10 minutes):
+Command:
+"Write a Node.js function that takes lease text and sends it to GPT-4 with the prompt in prompt.txt. Return parsed JSON."
+File generated:
+lib/gpt_extractor.ts (async function extractFields(text: string): Promise<ExtractedFields>)
+Dependencies:
+npm install openai
+Testing: Feed it a lease that rules engine failed on. See if GPT-4 fills gaps. If it invents data, lower temperature to 0.1.
+Component 5: Reconciliation Engine (15 Founder Hours)
+Your Job (15 hours—critical moat):
+Write reconcile.py (10 hours):
+Python
+Copy
+def reconcile_lease(extracted_data):
+    errors = []
+    # Check 1: Rent schedule sums to total rent
+    if abs(sum(extracted_data.rent_schedule) - extracted_data.total_rent) > 1:
+        errors.append("Rent schedule sum mismatch")
+    # Check 2: CPI formula is evaluable
+    if not validate_cpi_formula(extracted_data.cpi_clause):
+        errors.append("Invalid CPI formula")
+    # Check 3: Dates are logical (end > start)
+    if extracted_data.end_date <= extracted_data.start_date:
+        errors.append("Invalid date range")
+    return errors
+Create error taxonomy (3 hours):
+FINANCIAL_MISMATCH: Rent doesn't sum
+INVALID_FORMULA: CPI can't be parsed
+LOGICAL_ERROR: End date before start
+MISSING_FIELD: Critical field is null
+Map each error → Human QA queue
+Test on 30 leases (2 hours):
+Intentionally break rules (e.g., alter rent table)
+Verify script flags it
+Cursor's Job (0 hours):
+You write the Python logic. Cursor can't invent financial validation rules.
+File generated:
+Copy
+/lib/reconciliation
+  reconcile.py
+  /errors
+    financial_mismatch.py
+    invalid_formula.py
+    logical_error.py
+Testing: Run python test_reconcile.py on 10 leases. Ensure script catches all errors.
+Component 6: Human QA UI (5 Founder Hours)
+Your Job (5 hours—no code):
+Sign up for Retool (free tier) (30 min):
+Create account at retool.com
+Connect to Supabase (native integration)
+Build contractor workflow (4 hours):
+Left panel: PDF viewer (embed URL from Supabase)
+Right panel: Form with 20 fields (pre-filled from Supabase)
+Buttons: "Approve All," "Edit Field," "Flag Error"
+Logic: "Approve All" only enabled if confidence >0.85
+Audit log: Every action writes to Supabase audit_log table
+Train contractors (30 min):
+Record Loom: "How to use Retool"
+Share sample lease with correct answers
+Cursor's Job (0 hours):
+Retool is drag-and-drop. You don't code. You click.
+File created:
+None. It's a Retool app URL you share with contractors.
+Testing: You act as contractor. Process 1 lease end-to-end. Time yourself (target: 15 min/lease).
+Component 7: Audit Log (5 Founder Hours)
+Your Job (5 hours):
+Design Supabase schema (2 hours):
+sql
+Copy
+CREATE TABLE extracted_fields (
+  id UUID PRIMARY KEY,
+  lease_id UUID,
+  field_name VARCHAR(50),
+  value TEXT,
+  confidence DECIMAL(3,2),
+  source_clause TEXT,
+  verifier_id UUID,
+  verified_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+CREATE TABLE audit_log (
+  id UUID PRIMARY KEY,
+  lease_id UUID,
+  action VARCHAR(20), -- 'extracted', 'edited', 'approved'
+  user_id UUID,
+  old_value TEXT,
+  new_value TEXT,
+  timestamp TIMESTAMP DEFAULT NOW()
+);
+Create PostgreSQL function (1 hour):
+sql
+Copy
+CREATE FUNCTION log_extraction() RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO audit_log (lease_id, action, user_id, old_value, new_value)
+  VALUES (NEW.lease_id, 'extracted', auth.uid(), NULL, NEW.value);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+CREATE TRIGGER extraction_audit AFTER INSERT ON extracted_fields FOR EACH ROW EXECUTE FUNCTION log_extraction();
+Test immutability (2 hours):
+Try to delete a row → should fail (RLS policy)
+Update a row → verify old value logged in audit_log
+Cursor's Job (0 hours):
+You write SQL in Supabase dashboard. Cursor can't design audit schemas.
+Testing: Use Supabase's SQL editor. Run INSERT, UPDATE, DELETE queries. Check that audit trail is append-only.
+Component 8: Client Portal (9 Founder Hours)
+Your Job (6 hours):
+Design user roles (1 hour):
+Admin: See all leases, edit, download CSV
+Viewer: Download only (CFO, auditor)
+Map to Supabase auth.users with metadata.role
+Write download logic (2 hours):
+CSV must include: lease_id, field_name, value, source_clause, confidence, verifier_name
+Use papaparse library to convert JSON to CSV
+Build urgency UI (1 hour):
+"5 pilot spots remaining"
+Countdown timer to end of Q1 2026
+Test security (2 hours):
+Log in as viewer → try to edit field → should fail (RLS policy)
+Log in as admin → try to delete row → should fail (RLS policy)
+Cursor's Job (3 hours):
+Command:
+"Add a CSV download button to the dashboard page. Use papaparse. Only show button to admin role."
+Files generated:
+components/DownloadCSV.tsx
+lib/csv_export.ts
+Dependencies:
+npm install papaparse
+Testing: Log in as admin. Click download. Verify CSV includes clause links and verifier info.
+The Build Checklist: Daily Log
+Week 1 (Dec 2–6): Foundation
+Day 1: You create Supabase, Vercel, Retool. Cursor scaffolds Next.js.
+Day 2: You set up Google Document AI. Cursor writes OCR function.
+Day 3: You write rules.json for 5 fields. Cursor generates boilerplate.
+Day 4: You test rules on 10 leases. Iterate patterns.
+Day 5: You write GPT-4 prompt with 3 examples. Cursor writes fetcher.
+Week 2 (Dec 9–13): Integration
+Day 6: You write reconcile.py for rent sum validation. Cursor helps with Python syntax.
+Day 7: You build Retool UI. No code.
+Day 8: You connect Retool to Supabase. Test contractor workflow.
+Day 9: You write Supabase audit log schema. Cursor generates TypeScript types.
+Day 10: You test end-to-end: upload → OCR → extraction → QA → download.
+Week 3 (Dec 16–20): Polish & Launch
+Day 11: You add urgency copy ("5 spots left"). Cursor updates hero.
+Day 12: You test security (RLS policies). Cursor fixes edge cases.
+Day 13: You process 3 sample leases manually. Time: 15 min each.
+Day 14: You write 10-shot examples for GPT-4 prompt. Cursor formats JSON.
+Day 15: Deploy to Vercel. Test live site.
+What You Must Do (Not Cursor)
+Label 10 "golden" leases manually (3 hours). These are your 10-shot examples.
+Test 20 edge cases (5 hours). Find leases where:
+Rent table spans 2 pages
+CPI clause mentions "urban index"
+Renewal notice is "90 days prior to end of term"
+Hire contractors (2 hours). Post on OnlineJobs.ph, interview 3, hire 2.
+Write the sales email (1 hour). Not Cursor's job.
+Close the first pilot (6 hours). Discovery call, proposal, contract.
+Total human-only work: 17 hours. Cursor does the rest.
+The Magic: Why This Works
+You are the domain expert. You know that "Base Rent" can be called "Minimum Rent" or "Annual Rent." You write the regex. Cursor just types it.
+Cursor is the code monkey. It knows how to connect Supabase to Next.js. It doesn't know that rent schedules must sum to ±$1. You provide that logic.
+Result: 70 hours of founder work + 132 hours of Cursor work = $200K revenue system.

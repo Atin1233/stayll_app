@@ -1,6 +1,11 @@
 import Sidebar from '@/components/dashboard/Sidebar'
 import Navbar from '@/components/dashboard/Navbar'
 
+// Import debug utilities for development
+if (process.env.NODE_ENV === 'development') {
+  import('@/lib/sessionStorageDebug')
+}
+
 export default function AppLayout({
   children,
 }: {
