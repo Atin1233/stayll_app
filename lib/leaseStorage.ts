@@ -12,12 +12,12 @@ export interface LeaseRecord {
   user_id?: string;
   tenant_name: string | null;
   property_address: string | null;
-  monthly_rent: string | null;
-  lease_start: string | null;
-  lease_end: string | null;
+  monthly_rent?: string | null;
+  lease_start?: string | null;
+  lease_end?: string | null;
   due_date?: string;
-  late_fee: string | null;
-  security_deposit: string | null;
+  late_fee?: string | null;
+  security_deposit?: string | null;
   utilities?: string;
   parking?: string;
   pets?: string;
