@@ -9,27 +9,27 @@ export interface LeaseUploadData {
 
 export interface LeaseRecord {
   id: string;
-  user_id: string;
-  tenant_name: string;
-  property_address: string;
-  monthly_rent: string;
-  lease_start: string;
-  lease_end: string;
-  due_date: string;
-  late_fee: string;
-  security_deposit: string;
-  utilities: string;
-  parking: string;
-  pets: string;
-  smoking: string;
-  file_url: string;
+  user_id?: string;
+  tenant_name: string | null;
+  property_address: string | null;
+  monthly_rent: string | null;
+  lease_start: string | null;
+  lease_end: string | null;
+  due_date?: string;
+  late_fee: string | null;
+  security_deposit: string | null;
+  utilities?: string;
+  parking?: string;
+  pets?: string;
+  smoking?: string;
+  file_url?: string;
   file_name: string;
   file_size: number;
-  confidence_score: number;
-  analysis_data: any;
-  portfolio_impact: any;
-  compliance_assessment: any;
-  strategic_recommendations: any;
+  confidence_score?: number;
+  analysis_data?: any;
+  portfolio_impact?: any;
+  compliance_assessment?: any;
+  strategic_recommendations?: any;
   created_at: string;
   updated_at: string;
 }
